@@ -75,7 +75,26 @@ public class RedeSocial {
 
 	}
 		
+	/**
+	 * Recupera a altual Lista de Usuarios do Sistema
+	 * @return
+	 *        A Atual Lista de Usuarios do Sistema
+	 */
 	
+	public ArrayList<Usuario> getListaDeUsuarios() {
+		return listaDeUsuarios;
+	}
+	
+	/**
+	 * Altera a altual Lista de Usuarios do Sistema
+	 * @param listaDeUsuarios
+	 *              Nova Lista de Usuarios do Sistema
+	 */
+	
+	public void setListaDeUsuarios(ArrayList<Usuario> listaDeUsuarios) {
+		this.listaDeUsuarios = listaDeUsuarios;
+	}
+
 	/**
 	 * Cria um Vinculo de Amizade entre dois Usuarios distintos
 	 * @param usr1 
