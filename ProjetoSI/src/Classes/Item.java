@@ -14,7 +14,6 @@ public class Item {
 	String nome;
 	String descricao;
     String categoria;
-    Usuario donoDoItem;
     
     /**
      * 
@@ -144,31 +143,6 @@ public class Item {
 		return resp;
 	}
 	
-	/**
-	 * Recupera o Usuario dono do Item
-	 * 
-	 * @return
-	 *        Usuario dono do Item
-	 */
-	
-	public Usuario getDonoItem(){
-		return donoDoItem;
-	}
-	
-	/**
-	 * Altera o Usuario Dono do Item
-	 * @param usr
-	 *           Usuario Dono do Item
-	 * @throws Exception
-	 *           Caso o Parametro esteja igual a Null
-	 */
-	
-	public void setDonoItem(Usuario usr)throws Exception{
-		if (usr==null){
-			throw new Exception("Usuario nao pode ser igual a Null");
-		}
-		this.donoDoItem = usr;	
-	}
 
 	/**
  	* Retorna uma String que representa a Classe
