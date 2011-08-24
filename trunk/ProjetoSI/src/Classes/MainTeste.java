@@ -46,15 +46,43 @@ public class MainTeste {
 			System.out.print("Digite sua Senha: ");
 			String senha = recebeEntrada();
 			
-			if (localizarUsuario(login, senha)==null){
+			Usuario usr = localizarUsuario(login, senha);
+			if (usr == null){
 				System.out.println("Usuario Nao Encontrado");
 			}
 			else{
-				System.out.println("ENTRA NO MENU DO USUARIO!!!");
+				menuDoUsuario(usr);
 			}
 		}
 	}
 	//---------------------------------------------------------------------------
+	
+	
+	private static void menuDoUsuario(Usuario usr){
+		
+		System.out.println("\nMostra perfil de usuario!!\n");
+		System.out.println("Olá sr(a): " + usr.getNome() + "\n"); 
+		
+		while (true){
+			opcoesQueOUsuarioPodeFazer(usr);
+			String entrada = recebeEntrada();
+			
+			if (entrada.equals("1")){
+				cadastrarItem(usr);
+			}
+			else if(entrada.equals("2")){
+				System.out.println("nada ainda");;
+			}
+			else if(entrada.equals("3")){
+				System.out.println("Usuario saiu com sucesso!");
+				break;
+			}
+			else{
+				System.out.println("Opcao Invalida!");
+			}
+		}
+	}
+	
 	
 	//-----------------------#IMPRIMI MENU PRINCIPAL#----------------------------
 	
@@ -139,5 +167,71 @@ public class MainTeste {
 		}
 	}
 	//----------------------------------------------------------------------------------------
-
+	
+	private static void cadastrarItem(Usuario usr){
+		String nome, descricao, categoria;
+				
+		System.out.print("Digite o nome do item: ");
+		nome = recebeEntrada();
+		
+		System.out.print("Digite a descicao do item: ");
+		descricao = recebeEntrada();
+		
+		//TODO Acho que devemos criar um enum para a categoria
+			
+		while (true){
+			imprimirMenuItens();
+			String entrada = recebeEntrada();
+			
+			if (entrada.equals("1")){
+				categoria = "Livro";
+				break;
+			}
+			else if(entrada.equals("2")){
+				categoria =  "Filme";
+				break;
+			}
+			else if(entrada.equals("3")){
+				categoria = "Jogos";
+				break;
+			}
+			else{
+				System.out.println("Opcao Invalida!");
+			}
+		}
+		
+		try {
+			usr.getGerenciadorItens().adicionarItemParaEmprestar(new Item(nome, descricao, categoria));
+			System.out.println(categoria + " cadastrado com sucesso\n");
+		} catch (Exception e) {
+			System.out.print(e.getLocalizedMessage());
+			//TODO depois arrumar isso;
+		}
+		
+	}
+	
+	
+	//---------------------------------------------------------------------------
+	
+	//-----------------------#IMPRIMI MENU Itens#----------------------------
+	
+	private static void imprimirMenuItens(){
+		System.out.print("Digite a categoria do item:\n " +
+		           "1) Livro\n 2) Filme\n 3) Jogos"   );
+	}
+	
+	//---------------------------------------------------------------------------
+	
+	
+	//-----------------------#IMPRIMI MENU Usuario#----------------------------
+	
+	//TODO Depois mudar nome desse metodo ta ridiculo. =]
+	private static void opcoesQueOUsuarioPodeFazer(Usuario usr){
+		System.out.print("O que deseja fazer?\n " + 
+        "1) Cadastrar novo item\n 2) Outras coisas\n 3) Sair\n"   );
+		
+	}
+	
+	
+	
 }
