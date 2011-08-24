@@ -177,7 +177,10 @@ public class RedeSocial {
 	 *          Uma lista com todos os Usuarios que tem aquele nome
 	 */
 	
-	public ArrayList<Usuario> buscarUsuarioPorNome(String nome){
+	public ArrayList<Usuario> buscarUsuarioPorNome(String nome)throws Exception{
+		if (nome==null || nome.isEmpty()){
+			throw new Exception("Nome Invalido");
+		}
 		ArrayList<Usuario> listaDeNomes = new ArrayList<Usuario>();
 		
 		for (Usuario usr: listaDeUsuarios){
