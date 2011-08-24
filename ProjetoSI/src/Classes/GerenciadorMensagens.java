@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public class GerenciadorMensagens {
 	
-	private ArrayList<Mensagem> listaDeMensagens;
+	private ArrayList<Mensagem> listaDeMensagensRecebidas;
+	private ArrayList<Mensagem> listaDeMensagensEnviadas;
 	
 	
 	/**
@@ -18,18 +19,26 @@ public class GerenciadorMensagens {
 	 */
 	
 	public GerenciadorMensagens(){
-		listaDeMensagens = new ArrayList<Mensagem>();
+		listaDeMensagensRecebidas = new ArrayList<Mensagem>();
 	}
 	
 	/**
-	 * Recupera a Lista com todas as Mensagens do Usuario
+	 * Recupera a Lista com todas as Mensagens Recebida do Usuario
 	 * @return 
 	 *         Uma Lista com todas as mensagens do Usuario
 	 */
 	
-	public ArrayList<Mensagem> getListaDeMensagens(){
-		return listaDeMensagens;
+	public ArrayList<Mensagem> getListaDeMensagensRecebidas(){
+		return listaDeMensagensRecebidas;
 	}
 	
+	/**
+	 * Recupera a Lista com todas as Mensagens Envidas do Usuario
+	 * @return 
+	 *         Uma Lista com todas as mensagens enviadas do Usuario
+	 */
+	public ArrayList<Mensagem> getListaDeMensagensEnviadas(){
+		return listaDeMensagensEnviadas;
+	}
 	
 }

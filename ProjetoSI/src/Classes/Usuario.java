@@ -1,8 +1,5 @@
 package Classes;
 
-import java.util.ArrayList;
-
-
 /**
  * Esta Classe representa um Usuário da Rede Social
  * 
@@ -18,9 +15,9 @@ public class Usuario {
 	private String senha;
 	private Endereco end;
 	
-	private GerenciadorAmizades gerenciaAmizade = new GerenciadorAmizades();
-	private GerenciadorMensagens gerenciaMensagens = new GerenciadorMensagens();
-	private GerenciadorItens gerenciaItens = new GerenciadorItens();
+	private GerenciadorAmizades gerenciaAmizade;
+	private GerenciadorMensagens gerenciaMensagens;
+	private GerenciadorItens gerenciaItens;
 
 	/**
 	 * Inicia os Atributos da Classe
@@ -51,6 +48,9 @@ public class Usuario {
 		this.login = login;
 		this.senha = senha;
 		this.end = end;
+		gerenciaAmizade = new GerenciadorAmizades();
+		gerenciaItens = new GerenciadorItens();
+		gerenciaMensagens = new GerenciadorMensagens();
 	}
 
 	/**

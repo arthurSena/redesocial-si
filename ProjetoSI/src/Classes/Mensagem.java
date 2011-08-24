@@ -1,7 +1,5 @@
 package Classes;
 
-import java.util.GregorianCalendar;
-
 /**
  * Classe que representa uma Mensagem enviada ou recebida
  * @author ARTHUR SENA, IGOR GOMES, RENAN PINTO, RODOLFO DE LIMA
@@ -28,6 +26,18 @@ public class Mensagem {
 		this.assunto = assunto;
 		this.tipoDaMensagem = tipoDaMensagem;
 		this.corpoDaMensagem = corpoMensagem;
+	}
+
+	public String getTipoDaMensagem() {
+		return tipoDaMensagem;
+	}
+
+	public String getCorpoDaMensagem() {
+		return corpoDaMensagem;
+	}
+	
+	public String getAssunto() {
+		return assunto;
 	}
 	
 	
