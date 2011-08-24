@@ -67,11 +67,11 @@ public class RedeSocial {
 			throw new Exception(usr2.getNome() + "nao esta cadastrado no sistema");
 		}
 		
-	    else if(usr2.getListaDeProvaveisAmigos().contains(usr1)){
+	    else if(usr2.getGerenciadorAmizades().ehUmProvavelAmigo(usr1)){
 	    	throw new Exception("Um convite seu ja foi enviado para " + usr2.getNome());
 	    }
 		
-		usr2.getListaDeProvaveisAmigos().add(usr1);
+		usr2.getGerenciadorAmizades().adicionarProvavelAmigo(usr1);
 
 	}
 		
@@ -113,14 +113,9 @@ public class RedeSocial {
 		else if(!listaDeUsuarios.contains(usr2)){
 			throw new Exception(usr2.getNome() + "nao esta cadastrado no Sistema");
 		}
-		
-		else if (!usr1.getListaDeAmigos().contains(usr2)){
-			usr1.getListaDeAmigos().add(usr2);
-		}
-		else if (!usr2.getListaDeAmigos().contains(usr1)){
-			usr2.getListaDeAmigos().add(usr1);
-		}
-		
+		usr1.getGerenciadorAmizades().adicionarAmigo(usr2);
+		usr2.getGerenciadorAmizades().adicionarAmigo(usr1);
+
 	}
 	
 	/**
@@ -131,28 +126,17 @@ public class RedeSocial {
 	 *          Usuario 2 
 	 * @throws Exception
 	 *          Caso um dos Usuarios nao esteja no Sistema ou
-	 *          Caso os usuarios nao sejam amigos
 	 */
 	
 	public void desfazerAmizade(Usuario usr1, Usuario usr2)throws Exception{
 		if (!listaDeUsuarios.contains(usr1)){
 			throw new Exception(usr1.getNome() + "nao esta cadastrado no Sistema");
 		}
-		
 		else if(!listaDeUsuarios.contains(usr2)){
 			throw new Exception(usr2.getNome() + "nao esta cadastrado no Sistema");
 		}
-		
-		else if(!usr1.getListaDeAmigos().contains(usr2)){
-			throw new Exception(usr2.getNome() + "nao eh amigo de" + usr1.getNome());
-		}
-		
-		else if(!usr2.getListaDeAmigos().contains(usr1)){
-			throw new Exception(usr1.getNome() + "nao eh amigo de" + usr2.getNome());
-		}
-		
-		usr1.getListaDeAmigos().remove(usr2);
-		usr2.getListaDeAmigos().remove(usr1);
+		usr1.getGerenciadorAmizades().removerAmigo(usr2);
+		usr2.getGerenciadorAmizades().removerAmigo(usr1);
 	}
 	
 	/**
@@ -174,19 +158,17 @@ public class RedeSocial {
 		listaDeUsuarios.remove(usr);	
 		for (Usuario usuarios: listaDeUsuarios){
 			
-			if (usuarios.getListaDeAmigos().contains(usr)){
-				usuarios.getListaDeAmigos().remove(usr);
+			if (usuarios.getGerenciadorAmizades().ehMeuAmigo(usr)){
+				usuarios.getGerenciadorAmizades().removerAmigo(usr);
 			}
 			
-			if (usuarios.getListaDeProvaveisAmigos().contains(usr)){
-				usuarios.getListaDeProvaveisAmigos().remove(usr);
+			if (usuarios.getGerenciadorAmizades().ehUmProvavelAmigo(usr)){
+				usuarios.getGerenciadorAmizades().removerProvavelAmigo(usr);
 			}
 			
 		}
 	}
-	
-	
-	
+
 	/**
 	 * Recupera todos os Usuarios com determinado nome
 	 * @param nome

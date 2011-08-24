@@ -13,18 +13,15 @@ import java.util.ArrayList;
 
 public class Usuario {
 	
-	String nome;
-	String login;
-	String senha;
-	Endereco end;
+	private String nome;
+	private String login;
+	private String senha;
+	private Endereco end;
 	
-	ArrayList<Usuario> listaDeAmigos = new ArrayList<Usuario>();
-	ArrayList<Usuario> listaDeProvaveisAmigos = new ArrayList<Usuario>();
-	
-	ArrayList<Item> itensPraEmprestar = new ArrayList<Item>();
-	ArrayList<Item> itensPraDevolver = new ArrayList<Item>();
+	private GerenciadorAmizades gerenciaAmizade = new GerenciadorAmizades();
+	private GerenciadorMensagens gerenciaMensagens = new GerenciadorMensagens();
+	private GerenciadorItens gerenciaItens = new GerenciadorItens();
 
-	ArrayList<Mensagem> listaDeMensagens = new ArrayList<Mensagem>();
 	/**
 	 * Inicia os Atributos da Classe
 	 * @param nome 
@@ -41,13 +38,13 @@ public class Usuario {
 	
 	public Usuario(String nome, String login, String senha, Endereco end)throws Exception{
 		if (!stringValida(nome)){
-			throw new Exception("Dado(s) Invalido(s)");
+			throw new Exception("Nome Invalido");
 		}
 		else if (!stringValida(login)){
-			throw new Exception("Dado(s) Invalido(s)");
+			throw new Exception("Login Invalido");
 		}
 		else if (!stringValida(senha)){
-			throw new Exception("Dado(s) Invalido(s)");
+			throw new Exception("Senha Invalida");
 		}
 		
 		this.nome = nome;
@@ -131,64 +128,39 @@ public class Usuario {
 	public void setEnd(Endereco end) {
 		this.end = end;
 	}
-
+	
+	
 	/**
-	 * Recupera a Lista de Amigos do Usuario 
-	 * @return Lista de Amigos do Usuario
+	 * Recupera o Gerenciador de Amizades do Usuario
+	 * @return 
+	 *      O gerenciador de amizades do usuario
 	 */
 	
-	public ArrayList<Usuario> getListaDeAmigos() {
-		return listaDeAmigos;
+	public GerenciadorAmizades getGerenciadorAmizades(){
+		return gerenciaAmizade;
 	}
-
+	
 	/**
-	 * Altera a Lista de Amigos do Usuario
-	 * @param listaDeAmigos 
-	 *                 Nova Lista de Amigos do Usuario
+	 * Recupera o Gerenciador de itens do Usuario
+	 * @return 
+	 *      O gerenciador de itens do usuario
 	 */
 	
-	public void setListaDeAmigos(ArrayList<Usuario> listaDeAmigos) {
-		this.listaDeAmigos = listaDeAmigos;
+	public GerenciadorItens getGerenciadorItens(){
+		return gerenciaItens;
 	}
-
+	
 	/**
-	 * Recupera os Itens que o Usuario pode emprestas
-	 * @return Uma Array contendo os itens que o Usuario pode emprestar
+	 * Recupera o Gerenciador de Mensagens do Usuario
+	 * @return 
+	 *      O gerenciador de mensagens do usuario
 	 */
 	
-	public ArrayList<Item> getItensPraEmprestar() {
-		return itensPraEmprestar;
+	public GerenciadorMensagens getGerenciadorMensagens(){
+		return gerenciaMensagens;
 	}
-
-	/**
-	 * Altera a Lista de Itens que o Usuario pode emprestar
-	 * @param itensPraEmprestar
-	 *              Uma array com os novos itens que o Usuario pode emprestar
-	 */
 	
-	public void setItensPraEmprestar(ArrayList<Item> itensPraEmprestar) {
-		this.itensPraEmprestar = itensPraEmprestar;
-	}
-
-	/**
-	 * Recupera a Lista com os Amigos que enviaram convite pra Usuario
-	 * @return A Lista com os provaveis Amigos do Usuario
-	 */
 	
-	public ArrayList<Usuario> getListaDeProvaveisAmigos() {
-		return listaDeProvaveisAmigos;
-	}
-    
-	/**
-	 * Altera a Lista de Provaveis Amigos do Usuario
-	 * @param listaDeProvaveisAmigos 
-	 *                    Uma nova lista com os Usuarios que enviaram convite
-	 */
-	
-	public void setListaDeProvaveisAmigos(ArrayList<Usuario> listaDeProvaveisAmigos) {
-		this.listaDeProvaveisAmigos = listaDeProvaveisAmigos;
-	}
-
 	/**
 	 * Compara Dois Usuarios
 	 * @param usr
