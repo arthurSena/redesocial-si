@@ -1,9 +1,10 @@
 package Classes;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * 
+ * Classe Principal do Sistema
  * @author ARTHUR SENA, IGOR GOMES, RENAN PINTO, RODOLFO DE LIMA
  * @version 1.0
  */
@@ -71,7 +72,7 @@ public class MainTeste {
 				cadastrarItem(usr);
 			}
 			else if(entrada.equals("2")){
-				System.out.println("nada ainda");;
+				localizarUsuario();
 			}
 			else if(entrada.equals("3")){
 				System.out.println("Usuario saiu com sucesso!");
@@ -80,6 +81,66 @@ public class MainTeste {
 			else{
 				System.out.println("Opcao Invalida!");
 			}
+		}
+	}
+	
+	//---------------------------#LOCALIZA UM USUARIO#-------------------------------------
+	private static void localizarUsuario(){
+		System.out.println("Voce deseja localizar Usuarios atraves de: \n"+
+				            "1)Nome\n2)Endereco");
+		
+		String opcao = recebeEntrada();
+		
+		if (opcao.equals("1")){
+			System.out.println("Digite o nome: ");
+			String nome = recebeEntrada();
+			try{
+				ArrayList<Usuario> listaDeUsuario = rede.buscarUsuarioPorNome(nome);
+				System.out.println(listaDeUsuario.size() + "Usuarios tem o nome de "+nome);
+				
+				//TODO temos que imprimir o perfil de cada usuario com aquele nome
+			}
+			
+			catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+		}
+		else if(opcao.equals("2")){
+			String estado, cidade, rua, bairro, numero, cep;
+			System.out.println("\n----------------ENDERECO------------");
+			
+			System.out.print("Estado: ");
+			estado = recebeEntrada();
+			
+			System.out.print("Cidade: ");
+			cidade = recebeEntrada();
+			
+			System.out.print("Bairro: ");
+			bairro = recebeEntrada();
+			
+			System.out.print("Rua: ");
+			rua = recebeEntrada();
+			
+			System.out.print("Numero: ");
+			numero = recebeEntrada();
+			
+			System.out.print("Cep: ");
+			cep = recebeEntrada();
+			
+			try{
+				Endereco endereco = new Endereco(estado, cidade, rua, bairro, numero, cep);
+				ArrayList<Usuario> listaDeUsuarios = rede.buscarUsuarioPorEndereco(endereco);
+				System.out.println(listaDeUsuarios.size()+" Usuarios satisfazem esse endereco");
+				
+				//TODO temos que imprimir o perfil de cada usuario
+			}
+			
+			catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+		}
+		else{
+			System.out.println("\nOpcao Invalida");
 		}
 	}
 	
@@ -103,7 +164,7 @@ public class MainTeste {
 	}
 	//---------------------------------------------------------------------------
 	
-	//----------------------------#LOCALIZA UM USUARIO DA REDE#-------------------
+	//-------------#LOCALIZA UM USUARIO DA REDE ATRAVES DA SENHA E LOGIN#-------------------
 	private static Usuario localizarUsuario(String login, String senha){
 		
 		Usuario usr = null;
@@ -166,7 +227,7 @@ public class MainTeste {
 			System.out.println(e.getMessage());
 		}
 	}
-	//----------------------------------------------------------------------------------------
+	//----------------------------CADASTRAR UM ITEM NO SISTEMA------------------------------------------------
 	
 	private static void cadastrarItem(Usuario usr){
 		String nome, descricao, categoria;
@@ -228,7 +289,7 @@ public class MainTeste {
 	//TODO Depois mudar nome desse metodo ta ridiculo. =]
 	private static void opcoesQueOUsuarioPodeFazer(Usuario usr){
 		System.out.print("O que deseja fazer?\n " + 
-        "1) Cadastrar novo item\n 2) Outras coisas\n 3) Sair\n"   );
+        "1) Cadastrar novo item\n 2) Localizar Usuario\n 3) Sair\n"   );
 		
 	}
 	
