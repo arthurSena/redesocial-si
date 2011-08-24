@@ -55,6 +55,9 @@ public class GerenciadorAmizades {
 		else if(listaDeAmigos.contains(usr)){
 			throw new Exception("Usuario ja eh seu Amigo");
 		}
+		else if(!listaDeProvaveisAmigos.contains(usr)){
+			throw new Exception("Voce nao enviou convite para " + usr.getNome() + "ou ele nao solicitou sua amizade");
+		}
 		listaDeAmigos.add(usr);
 		listaDeProvaveisAmigos.remove(usr);
 	}

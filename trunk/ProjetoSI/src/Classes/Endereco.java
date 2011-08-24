@@ -3,7 +3,7 @@ package Classes;
 /**
  * Esta Classe representa um endereco residencial que eh representado por um estado, cidade, rua, 
  * bairro, numero e cep
- * @author ARTHUR SENA, IGOR GOMES, LUIZ HENRIQUE
+ * @author ARTHUR SENA, IGOR GOMES, RODOLFO DE LIMA, RENAN PINTO
  * @version 1.0
  */
 

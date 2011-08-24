@@ -99,4 +99,62 @@ public class GerenciadorItens {
 		}
 		itensPraEmprestar.add(it);
 	}
+	
+	/**
+	 * Remove um item que voce pode emprestar
+	 * @param it
+	 *         Item a remover
+	 * @throws Exception
+	 *         Caso seja null ou nao esteja na lista de itens pra emprestar
+	 */
+	
+	public void removerItemParaEmprestar(Item it)throws Exception{
+		if (it == null){
+			throw new Exception("Item nao pode ser igual a null");
+		}
+		else if(!itensPraEmprestar.contains(it)){
+			throw new Exception("Item nao esta na lista de Itens que voce pode Emprestar");
+		}
+		itensPraEmprestar.remove(it);
+	}
+	
+	/**
+	 * Remove Item que 
+	 * @param it
+	 *         Item a Remover
+	 * @throws Exception
+	 *         Caso seja null ou nao esta na lista
+	 */
+	
+	public void removerItemPraDevolver(Item it)throws Exception{
+		if (it == null){
+			throw new Exception("Item nao pode ser igual a null");
+		}
+		else if(!itensPraDevolver.contains(it)){
+			throw new Exception("Item nao esta na lista de Itens que voce tem que devolver");
+		}
+		itensPraDevolver.remove(it);
+	}
+	
+	/**
+	 * Remove um Item do Usuario
+	 * @param it
+	 *         Item a ser removido
+	 * @throws Exception
+	 *        Caso seja null, ou nao esta na lista ou esta sendo 
+	 *        ultilizado no momento
+	 */
+	public void removerItem(Item it) throws Exception{
+		if (it == null){
+			throw new Exception("Item nao pode ser igual a null");
+		}
+		else if(itensPraEmprestar.contains(it)){
+			throw new Exception("Item nao pode ser removido, pois esta emprestado");
+		}
+		else if (!listaMeusItens.contains(it)){
+			throw new Exception("Voce nao possui este item");
+		}
+		listaMeusItens.remove(it);
+	}
+	
 }
