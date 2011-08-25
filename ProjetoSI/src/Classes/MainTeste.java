@@ -61,7 +61,7 @@ public class MainTeste {
 	
 	private static void menuDoUsuario(Usuario usr){
 		
-		System.out.println("\nMostra perfil de usuario!!\n");
+		System.out.println(usr.perfilUsuario());
 		System.out.println("Olá sr(a): " + usr.getNome() + "\n"); 
 		
 		while (true){
@@ -75,6 +75,12 @@ public class MainTeste {
 				localizarUsuario();
 			}
 			else if(entrada.equals("3")){
+				System.out.println(usr.perfilUsuario());
+			}
+			else if(entrada.equals("4")){
+				visualizarPerfilDosAmigos(usr);
+			}
+			else if(entrada.equals("5")){
 				System.out.println("Usuario saiu com sucesso!");
 				break;
 			}
@@ -83,6 +89,24 @@ public class MainTeste {
 			}
 		}
 	}
+	
+	//------------------------#IMPRIMI O PERFIL DOS AMIGOS DO USUARIO#------------------------
+	private static void visualizarPerfilDosAmigos(Usuario usr){
+		
+		ArrayList<Usuario> listaDeAmigos = usr.getGerenciadorAmizades().getListaDeAmigos();
+		
+		if(listaDeAmigos.isEmpty()){
+			System.out.println("Voce Nao tem nenhum amigo =( \n");
+		}
+		else{
+			for (Usuario usuarios: listaDeAmigos){
+				System.out.println(usuarios.perfilUsuario());
+				System.out.println("------------------------");
+			}
+		}
+
+	}
+	
 	
 	//---------------------------#LOCALIZA UM USUARIO#-------------------------------------
 	private static void localizarUsuario(){
@@ -95,10 +119,13 @@ public class MainTeste {
 			System.out.println("Digite o nome: ");
 			String nome = recebeEntrada();
 			try{
-				ArrayList<Usuario> listaDeUsuario = rede.buscarUsuarioPorNome(nome);
-				System.out.println(listaDeUsuario.size() + "Usuarios tem o nome de "+nome);
+				ArrayList<Usuario> listaDeUsuarios = rede.buscarUsuarioPorNome(nome);
+				System.out.println(listaDeUsuarios.size() + "Usuarios tem o nome de "+nome);
 				
-				//TODO temos que imprimir o perfil de cada usuario com aquele nome
+				for(Usuario usr: listaDeUsuarios){
+					System.out.println(usr.perfilUsuario());
+					System.out.println("\n-------------------");
+				}
 			}
 			
 			catch(Exception e){
@@ -132,7 +159,10 @@ public class MainTeste {
 				ArrayList<Usuario> listaDeUsuarios = rede.buscarUsuarioPorEndereco(endereco);
 				System.out.println(listaDeUsuarios.size()+" Usuarios satisfazem esse endereco");
 				
-				//TODO temos que imprimir o perfil de cada usuario
+				for(Usuario usr: listaDeUsuarios){
+					System.out.println(usr.perfilUsuario());
+					System.out.println("\n-------------------");
+				}
 			}
 			
 			catch(Exception e){
@@ -159,7 +189,7 @@ public class MainTeste {
 	
 	private static String recebeEntrada(){
 		Scanner sc = new Scanner(System.in);
-		String entrada = sc.nextLine();
+		String entrada = sc.nextLine().trim();
 		return entrada;
 	}
 	//---------------------------------------------------------------------------
@@ -289,7 +319,7 @@ public class MainTeste {
 	//TODO Depois mudar nome desse metodo ta ridiculo. =]
 	private static void opcoesQueOUsuarioPodeFazer(Usuario usr){
 		System.out.print("O que deseja fazer?\n " + 
-        "1) Cadastrar novo item\n 2) Localizar Usuario\n 3) Sair\n"   );
+        "1) Cadastrar novo item\n 2) Localizar Usuario\n 3) Visualizar Meu Perfil\n 4) Visualizar Perfil dos Meus Amigos\n 5)Deslogar\n"   );
 		
 	}
 	
