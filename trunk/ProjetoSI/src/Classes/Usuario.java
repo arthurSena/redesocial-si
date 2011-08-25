@@ -160,6 +160,31 @@ public class Usuario {
 		return gerenciaMensagens;
 	}
 	
+	/**
+	 * Recupera o Perfil do Usuario
+	 * @return
+	 *        Uma String que representa o perfil do Usuario
+	 */
+	
+	public String perfilUsuario(){
+		String amigosDoUsuario = "";
+		String itensDoUsuario = "";
+		
+		if(!gerenciaAmizade.getListaDeAmigos().isEmpty()){
+			for (Usuario usr : gerenciaAmizade.getListaDeAmigos()){
+				amigosDoUsuario+= "Nome: " + usr.getNome() + "\n";
+			}
+		}
+		
+		if(!gerenciaItens.getMeusItens().isEmpty()){
+			for (Item it : gerenciaItens.getMeusItens()){
+				itensDoUsuario+= "Nome do Item: "+"it.getNome()" + "\n";
+			}
+		}
+
+		return "\n-----PERFIL DO USUARIO-----\n" + "Nome do Usuario: " + getNome() + "\n" + getEnd().toString()+ "\n" + amigosDoUsuario + itensDoUsuario;
+		
+	}
 	
 	/**
 	 * Compara Dois Usuarios

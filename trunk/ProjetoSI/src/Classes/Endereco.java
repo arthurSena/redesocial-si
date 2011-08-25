@@ -176,7 +176,7 @@ public class Endereco {
      */
    
     public String toString(){
-        return "Estado: "+ estado + "Cidade: " + cidade + "Bairro: " + bairro + "Rua: " + rua + "Numero: " + numero + "CEP: " + cep;
+        return "\n------ENDERECO-----\n"+ "Estado: "+ estado + "\n" + "Cidade: " + cidade + "\n"+  "Bairro: " + bairro + "\n"+ "Rua: " + rua + "\n"+ "Numero: " + numero + "\n"+ "CEP: " + cep+ "\n";
      }
    
     /**
