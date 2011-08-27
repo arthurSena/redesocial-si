@@ -1,13 +1,13 @@
 package Classes;
 
-import java.util.ArrayList;
+/*import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
+*//**
  * Classe Principal do Sistema
  * @author ARTHUR SENA, IGOR GOMES, RENAN PINTO, RODOLFO DE LIMA
  * @version 1.0
- */
+ *//*
 
 
 public class MainTeste {
@@ -62,7 +62,7 @@ public class MainTeste {
 	private static void menuDoUsuario(Usuario usr){
 		
 		System.out.println(usr.perfilUsuario());
-		System.out.println("Olá sr(a): " + usr.getNome() + "\n"); 
+		System.out.println("Olï¿½ sr(a): " + usr.getNome() + "\n"); 
 		
 		while (true){
 			opcoesQueOUsuarioPodeFazer(usr);
@@ -326,3 +326,4 @@ public class MainTeste {
 	
 	
 }
+*/
