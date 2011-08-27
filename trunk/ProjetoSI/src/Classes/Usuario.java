@@ -1,7 +1,9 @@
 package Classes;
 
+import java.util.Random;
+
 /**
- * Esta Classe representa um Usu�rio da Rede Social
+ * Esta Classe representa um Usu�rio da Rede Social
  * 
  * @author ARTHUR SENA, RODOLFO DE LIMA, RENAN PINTO, IGOR GOMES
  * @version 1.0
@@ -12,8 +14,8 @@ public class Usuario {
 	
 	private String nome;
 	private String login;
-	private String senha;
-	private Endereco end;
+	private String end;
+	private String ID;
 	
 	private GerenciadorAmizades gerenciaAmizade;
 	private GerenciadorMensagens gerenciaMensagens;
@@ -33,24 +35,50 @@ public class Usuario {
 	 *           Lanca excecao quando qualquer um dos parametros for Invalido
 	 */
 	
-	public Usuario(String nome, String login, String senha, Endereco end)throws Exception{
+	public Usuario(String nome, String login, String end)throws Exception{
 		if (!stringValida(nome)){
-			throw new Exception("Nome Invalido");
+			throw new Exception("Nome inválido");
 		}
 		else if (!stringValida(login)){
-			throw new Exception("Login Invalido");
+			throw new Exception("Login inválido");
 		}
-		else if (!stringValida(senha)){
-			throw new Exception("Senha Invalida");
+		else if(!stringValida(end)){
+			throw new Exception("Endereco inválido");
 		}
 		
 		this.nome = nome;
 		this.login = login;
-		this.senha = senha;
 		this.end = end;
+		this.ID = "";
 		gerenciaAmizade = new GerenciadorAmizades();
 		gerenciaItens = new GerenciadorItens();
 		gerenciaMensagens = new GerenciadorMensagens();
+	}
+	
+	public String getID(){
+		return ID;
+	}
+	
+	/**
+	 * Gera um ID pro Usuario toda vez que uma sessao eh iniciada
+	 * @return
+	 *        ID do Usuario
+	 */
+	
+	public String gerarID(){
+		ID += "${sessao"+nomeModificado(this.login)+"}";
+		return ID;
+	}
+	
+	
+	/**
+	 * Recupera o Endereco do Usuario
+	 * @return 
+	 *        Endereco do Usuario
+	 */
+	
+	public String getEndereco(){
+		return end;
 	}
 
 	/**
@@ -88,46 +116,7 @@ public class Usuario {
 		this.nome = nome;
 	}
 
-	/**
-	 * Recupera a Senha
-	 * @return Senha do Usuario
-	 */
-	public String getSenha() {
-		return senha;
-	}
     
-	/**
-	 * Altera a Senha do Usuario
-	 * 
-	 * @param senha 
-	 *           Nova Senha do Usuario
-	 * @throws Exception
-	 *            Caso a Senha esteja invalida
-	 */
-	public void setSenha(String senha) throws Exception {
-		if (!stringValida(senha)){
-			throw new Exception("Dado(s) Invalido(s)");
-		}
-		this.senha = senha;
-	}
-
-	/**
-	 * Recupera o Endereco do Usuario 
-	 * @return Endereco do Usuario
-	 */
-	public Endereco getEnd() {
-		return end;
-	}
-	
-	/**
-	 * Altera o Endereco do Usuario
-	 * @param end 
-	 *          Novo Endereco do Usuario
-	 */
-	
-	public void setEnd(Endereco end) {
-		this.end = end;
-	}
 	
 	
 	/**
@@ -160,52 +149,18 @@ public class Usuario {
 		return gerenciaMensagens;
 	}
 	
-	/**
-	 * Recupera o Perfil do Usuario
-	 * @return
-	 *        Uma String que representa o perfil do Usuario
-	 */
-	
-	public String perfilUsuario(){
-		String amigosDoUsuario = "";
-		String itensDoUsuario = "";
-		
-		if(!gerenciaAmizade.getListaDeAmigos().isEmpty()){
-			for (Usuario usr : gerenciaAmizade.getListaDeAmigos()){
-				amigosDoUsuario+= "Nome: " + usr.getNome() + "\n";
-			}
-		}
-		
-		if(!gerenciaItens.getMeusItens().isEmpty()){
-			for (Item it : gerenciaItens.getMeusItens()){
-				itensDoUsuario+= "Nome do Item: "+"it.getNome()" + "\n";
-			}
-		}
-
-		return "\n-----PERFIL DO USUARIO-----\n" + "Nome do Usuario: " + getNome() + "\n" + getEnd().toString()+ "\n" + amigosDoUsuario + itensDoUsuario;
-		
-	}
-	
-	/**
-	 * Compara Dois Usuarios
-	 * @param usr
-	 * @return True, Caso os dois Usuarios sejam Iguais
-	 *         False, Caso contrario
-	 */
-	
 	public boolean equals(Usuario usr){
-		boolean resp = false;
-		
 		if (!(usr instanceof Usuario)){
-           resp = false;
-        }
-
-		else if (usr.getLogin().equals(this.login) && usr.getSenha().equals(this.senha) && 
-				usr.getNome().equals(this.nome) && usr.getEnd().equals(this.end)){
-			resp = true;
+			return false;
 		}
 		
-		return resp;
+		else if(usr.getLogin().equals(this.login)){
+			return true;
+		}
+		
+		else{
+			return false;
+		}
 	}
 	
 	private boolean stringValida(String string){
@@ -215,8 +170,10 @@ public class Usuario {
         return true;
     }
 	
-
-
-	
-
+	private String nomeModificado(String nome){
+		String nomeID = (login.charAt(0) + "").toUpperCase();
+		for (int i =1; i <nome.length();i++){
+			nomeID += login.charAt(i);
+		}return nomeID;
+	}
 }

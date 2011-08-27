@@ -1,223 +1,173 @@
 package Classes;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Esta Classe representa a Rede Social que criamos, onde nela se encontra as principais
- * funcionalidades do Sistema
- * 
- * @author ARTHUR SENA, IGOR GOMES, RENAN PINTO, RODOLFO DE LIMA
- * @version 1.0
- */
+import org.w3c.dom.ls.LSInput;
+
+
 
 public class RedeSocial {
-   
-	private ArrayList<Usuario> listaDeUsuarios;
 	
-	/**
-	 * Inicia os atributos da Classe
-	 */
+	List<Usuario> listaDeUsuarios;
+	List<Usuario> listaDeUsuariosLogados;
 	
 	public RedeSocial(){
 		listaDeUsuarios = new ArrayList<Usuario>();
+		listaDeUsuariosLogados = new ArrayList<Usuario>();
 	}
 	
-	/**
-	 * Adiciona um Usuario na Rede Social, caso este ainda nao esteja nela
-	 * 
-	 * @param usr Usuario que sera adicionado
-	 * 
-	 * */
+	public void zerarSistema(){
+		listaDeUsuarios =new ArrayList<Usuario>();;
+	}
 	
-	public void adicionaUsuario(Usuario usr)throws Exception{
-		if (usr == null){
-			throw new Exception("Usuario nao pode ser igual a null");
+	public void encerrarSistema(){
+		//TODO tem que salvar os dados dos usuarios em algum local
+	}
+	
+	
+	
+	public String getAtributoItem(String idItem, String atributo)throws Exception{
+		
+		if (!stringValida(idItem)){
+			throw new Exception("Identificador do item é inválido");
 		}
-		else if (listaDeUsuarios.contains(usr)){
-			throw new Exception("Usuario ja esta cadastrado no Sistema");
+		else if(!stringValida(atributo)){
+			throw new Exception("Atributo inválido");
+		}
+		else if(buscarItemPorID(idItem)==null){
+			throw new Exception("Item inexistente");
+		}
+		else if(atributo.equals("nome")){
+			return buscarItemPorID(idItem).getNome();
+		}
+		else if(atributo.equals("descricao")){
+			return buscarItemPorID(idItem).getDescricao();
+		}
+		else if(atributo.equals("categoria")){
+			return buscarItemPorID(idItem).getCategoria();
+		}
+		else{
+			throw new Exception("Atributo inexistente");
+		}
+	}
+	
+	public String cadastrarItem(String idSessao, String nome, String descricao, String categoria)throws Exception{
+		if (!stringValida(idSessao)){
+			throw new Exception("Sessao inválida");
+		}
+		else if(buscarUsuarioPorID(idSessao)==null){
+			throw new Exception("Sessao inexistente");
+		}
+		Item it = new Item(nome, descricao, categoria);
+		String id = it.gerarID(quantidadeDeItensLogados() + 1);
+
+		buscarUsuarioPorID(idSessao).getGerenciadorItens().adicionarItem(it);
+		
+		return id;
+	}
+	
+	public void criarUsuario(String login, String nome, String endereco)throws Exception{
+		Usuario usr = new Usuario(nome, login, endereco);
+		if (logiEhUsado(login)){
+			throw new Exception("Já existe um usuário com este login");
 		}
 		
-		else if (loginESenhaEhUltilizado(usr.getLogin(), usr.getSenha())){
-			throw new Exception("Login e Senha ja estao sendo Ultilizados");
-		}
 		listaDeUsuarios.add(usr);
 	}
 	
-	/**
-	 * Envia um Convite de Amizade do Usuario usr1 para o Usuario usr2
-	 * @param usr1 
-	 *           Usuario que manda o convite
-	 * @param usr2
-	 *           Usuario que recebera o convite
-	 *          
-	 */
-	
-	public void enviarConvite(Usuario usr1, Usuario usr2)throws Exception{
-		
-		
-		if (usr1==null || usr2==null){
-			throw new Exception("Usuario nao pode ser igual a Null");
+	public String abrirSessao(String login) throws Exception{
+		if (!stringValida(login)){
+			throw new Exception("Login inválido");
 		}
-		
-	    else if (!listaDeUsuarios.contains(usr1)){
-			throw new Exception(usr1.getNome() + "nao esta cadastrado no sistema");
+		Usuario usr = buscarUsuarioPorLogin(login);
+		if (usr==null){
+			throw new Exception("Usuário inexistente");
 		}
+		String id = usr.gerarID();
+		listaDeUsuariosLogados.add(usr);
+		return id;
 		
-	    else if (!listaDeUsuarios.contains(usr2)){
-			throw new Exception(usr2.getNome() + "nao esta cadastrado no sistema");
-		}
-		
-	    else if(usr2.getGerenciadorAmizades().ehUmProvavelAmigo(usr1)){
-	    	throw new Exception("Um convite seu ja foi enviado para " + usr2.getNome());
-	    }
-		
-		usr2.getGerenciadorAmizades().adicionarProvavelAmigo(usr1);
-
-	}
-		
-	/**
-	 * Recupera a altual Lista de Usuarios do Sistema
-	 * @return
-	 *        A Atual Lista de Usuarios do Sistema
-	 */
-	
-	public ArrayList<Usuario> getListaDeUsuarios() {
-		return listaDeUsuarios;
 	}
 	
-	/**
-	 * Altera a altual Lista de Usuarios do Sistema
-	 * @param listaDeUsuarios
-	 *              Nova Lista de Usuarios do Sistema
-	 */
-	
-	public void setListaDeUsuarios(ArrayList<Usuario> listaDeUsuarios) {
-		this.listaDeUsuarios = listaDeUsuarios;
-	}
-
-	/**
-	 * Cria um Vinculo de Amizade entre dois Usuarios distintos
-	 * @param usr1 
-	 *          Usuario que sera amigo de usr2
-	 * @param usr2
-	 *          Usuario que sera amigo de usr1 
-	 */
-	
-	
-	public void criarAmizade(Usuario usr1, Usuario usr2)throws Exception{
-		
-		if (!listaDeUsuarios.contains(usr1)){
-			throw new Exception(usr1.getNome() + "nao esta cadastrado no Sistema");
+	public String getAtributoUsuario(String login, String atributo)throws Exception{
+		if (!stringValida(login)){
+			throw new Exception("Login inválido");
+		}
+		else if(!stringValida(atributo)){
+			throw new Exception("Atributo inválido");
 		}
 		
-		else if(!listaDeUsuarios.contains(usr2)){
-			throw new Exception(usr2.getNome() + "nao esta cadastrado no Sistema");
-		}
-		usr1.getGerenciadorAmizades().adicionarAmigo(usr2);
-		usr2.getGerenciadorAmizades().adicionarAmigo(usr1);
-
-	}
-	
-	/**
-	 * Elimina o Vinculo de Amizade entra duas Pessoas
-	 * @param usr1 
-	 *          Usuario 1
-	 * @param usr2
-	 *          Usuario 2 
-	 * @throws Exception
-	 *          Caso um dos Usuarios nao esteja no Sistema ou
-	 */
-	
-	public void desfazerAmizade(Usuario usr1, Usuario usr2)throws Exception{
-		if (!listaDeUsuarios.contains(usr1)){
-			throw new Exception(usr1.getNome() + "nao esta cadastrado no Sistema");
-		}
-		else if(!listaDeUsuarios.contains(usr2)){
-			throw new Exception(usr2.getNome() + "nao esta cadastrado no Sistema");
-		}
-		usr1.getGerenciadorAmizades().removerAmigo(usr2);
-		usr2.getGerenciadorAmizades().removerAmigo(usr1);
-	}
-	
-	/**
-	 * Remove um Usuario da Rede Social
-	 * @param usr 
-	 *           Usuario a ser removido
-	 * @throws Exception
-	 *           Caso o Usuario seja igual a null ou nao esteja cadastrado
-	 */
-	
-	public void removerUsuario(Usuario usr)throws Exception{
+		Usuario usr = buscarUsuarioPorLogin(login);
 		
 		if (usr==null){
-			throw new Exception("Usuario nao pode ser igual a null");
+			throw new Exception("Usuário inexistente");
 		}
-		else if (!listaDeUsuarios.contains(usr)){
-			throw new Exception("Usuario nao esta cadastrado no Sistema");
+		else if(atributo.equals("nome")){
+			return usr.getNome();
 		}
-		listaDeUsuarios.remove(usr);	
-		for (Usuario usuarios: listaDeUsuarios){
-			
-			if (usuarios.getGerenciadorAmizades().ehMeuAmigo(usr)){
-				usuarios.getGerenciadorAmizades().removerAmigo(usr);
+		
+		else if(atributo.equals("endereco")){
+			return usr.getEndereco();
+		}
+		
+		else if(atributo.equals("login")){
+			return usr.getLogin();
+		}
+		else{
+			throw new Exception("Atributo inexistente");
+		}
+	}
+	
+	private Item buscarItemPorID(String id){
+		for (Usuario usr: listaDeUsuariosLogados){
+			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
+				
+				if (it.getID().equals(id)){
+					return it;
+				}
 			}
-			
-			if (usuarios.getGerenciadorAmizades().ehUmProvavelAmigo(usr)){
-				usuarios.getGerenciadorAmizades().removerProvavelAmigo(usr);
+		}return null;
+	}
+	
+	private Usuario buscarUsuarioPorLogin(String login){
+		for (Usuario usr: listaDeUsuarios){
+			if (usr.getLogin().equals(login)){
+				return usr;
 			}
-			
+		}return null;
+	}
+	
+	private boolean stringValida(String string){
+        if (string==null || string.isEmpty()){
+            return false;
+        }
+        return true;
+    }
+	
+	private boolean logiEhUsado(String login){
+		for (Usuario usr: listaDeUsuarios){
+			if (usr.getLogin().equals(login)){
+				return true;
+			}
+		}return false;
+	}
+	
+	private Usuario buscarUsuarioPorID(String id){
+		for (Usuario usr: listaDeUsuariosLogados){
+			if (usr.getID().equals(id)){
+				return usr;
+			}
+		}return null;
+	}
+	
+	private int quantidadeDeItensLogados(){
+		int cont = 0;
+		
+		for (Usuario usr : listaDeUsuariosLogados){
+			cont +=usr.getGerenciadorItens().getListaMeusItens().size();
 		}
+		return cont;
 	}
 
-	/**
-	 * Recupera todos os Usuarios com determinado nome
-	 * @param nome
-	 *          Nome a ser Pesquisado
-	 * @return 
-	 *          Uma lista com todos os Usuarios que tem aquele nome
-	 */
-	
-	public ArrayList<Usuario> buscarUsuarioPorNome(String nome)throws Exception{
-		if (nome==null || nome.isEmpty()){
-			throw new Exception("Nome Invalido");
-		}
-		ArrayList<Usuario> listaDeNomes = new ArrayList<Usuario>();
-		
-		for (Usuario usr: listaDeUsuarios){
-			if (usr.getNome().equals(nome)){
-				listaDeNomes.add(usr);
-			}
-		}return listaDeNomes;
-	}
-	
-	/**
-	 * Recupera todos os usuarios com determinado Endereco
-	 * @param end 
-	 *           Endereco a ser pesquisado
-	 * @return
-	 *           Uma lista com todos os Usuarios que tem aquele endereco
-	 */
-	
-	public ArrayList<Usuario> buscarUsuarioPorEndereco(Endereco end){
-		ArrayList<Usuario> listaDeEndereco = new ArrayList<Usuario>();
-		
-		for (Usuario usr: listaDeUsuarios){
-			if(usr.getEnd().equals(end)){
-				listaDeEndereco.add(usr);
-			}
-		}
-		return listaDeEndereco;
-	}
-	
-	private boolean loginESenhaEhUltilizado(String login, String senha){
-		boolean resp = false;
-		
-		for (Usuario usr: listaDeUsuarios){
-			if (usr.getLogin().equals(login) && usr.getSenha().equals(senha)){
-				resp = true;
-				break;
-			}
-		}return resp;
-	}
-	
 }
