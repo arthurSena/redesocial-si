@@ -55,6 +55,10 @@ public class Usuario {
 		gerenciaMensagens = new GerenciadorMensagens();
 	}
 	
+	public String visualizarPerfil(){
+		return nome + " - " + this.end;
+	}
+	
 	public String getID(){
 		return ID;
 	}

@@ -1,6 +1,7 @@
 package Classes;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.w3c.dom.ls.LSInput;
@@ -22,11 +23,40 @@ public class RedeSocial {
 	}
 	
 	public void encerrarSistema(){
-		//TODO tem que salvar os dados dos usuarios em algum local
+		// TODO tem que salvar os dados dos usuarios em algum local
+	}
+	
+	public String localizarUsuario(String idSessao, String chave, String atributo)throws Exception{
+		
+		if (!stringValida(idSessao)){
+			throw new Exception("Sessao inválida");
+		}
+		else if(buscarUsuarioPorID(idSessao)==null){
+			throw new Exception("Sessao inexistente");
+		}
+		else if (!stringValida(chave)){
+			throw new Exception("Palavra-chave inválida");
+		}
+		else if (!stringValida(atributo)){
+			throw new Exception("Atributo inválido");
+		}
+		
+		else if(atributo.equals("nome")){
+			return buscarPerfisDeUsuarios(idSessao, chave, atributo);
+		}
+		else if(atributo.equals("endereco")){
+			return buscarPerfisDeUsuarios(idSessao, chave, atributo);
+		}
+		else{
+			throw new Exception("Atributo inexistente");
+		}
 	}
 	
 	
 	
+	
+	
+
 	public String getAtributoItem(String idItem, String atributo)throws Exception{
 		
 		if (!stringValida(idItem)){
@@ -152,6 +182,40 @@ public class RedeSocial {
 			}
 		}return false;
 	}
+	
+	private String buscarPerfisDeUsuarios(String id, String chave, String atributo){
+ 		String listaUsuarios = "";
+ 		int cont = 0;
+ 		
+ 		for (int i = listaDeUsuarios.size()-1 ; i>=0; i--){
+ 			Usuario usr = listaDeUsuarios.get(i) ;
+ 			if (!(usr.getID().equals(id))){
+ 				if (atributo.equals("nome") && usr.getNome().toLowerCase().contains(chave.toLowerCase())){
+ 					if (cont==0){
+ 						listaUsuarios += usr.visualizarPerfil();
+ 					}
+ 					else{
+ 						listaUsuarios += usr.visualizarPerfil() + "; ";
+ 						
+ 					}
+ 					cont++;
+ 				}
+ 				else if(atributo.equals("endereco") && usr.getEndereco().toLowerCase().contains(chave.toLowerCase())){
+ 					if (cont==0){
+ 						listaUsuarios += usr.visualizarPerfil();
+ 					}
+ 					else{
+ 						listaUsuarios += "; " + usr.visualizarPerfil();
+ 					}
+ 					cont++;
+ 				}
+ 			}
+ 		}
+ 		if(listaUsuarios.equals("")){
+ 			return "Nenhum usuário encontrado";
+ 		}
+ 		return listaUsuarios;
+ 	}
 	
 	private Usuario buscarUsuarioPorID(String id){
 		for (Usuario usr: listaDeUsuariosLogados){
