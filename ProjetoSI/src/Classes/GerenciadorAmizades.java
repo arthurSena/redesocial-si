@@ -156,4 +156,28 @@ public class GerenciadorAmizades {
 		listaDeProvaveisAmigos.remove(usr);
 	}
 	
+	public String stringDeAmigos(){
+		String resp = "";
+		
+		for (Usuario usr : getListaDeAmigos()){
+			resp += usr.getLogin() + "; ";
+		}
+		
+		return formatarRequisicoes(resp);
+		
+	}
+	
+	//TODO depois arrumar isso
+	private String formatarRequisicoes(String requisicoes){
+		String retorno = "";
+		for (int i =0;i< requisicoes.split("; ").length;i++){
+			if (i==requisicoes.split("; ").length-1){
+				retorno +=requisicoes.split("; ")[i];
+				break;
+			}
+			retorno += requisicoes.split("; ")[i] + "; ";
+			
+		}return retorno;
+	}
+	
 }
