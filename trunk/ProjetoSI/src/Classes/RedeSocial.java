@@ -326,4 +326,28 @@ public class RedeSocial {
 		}return retorno;
 	}
 	
+	public String getAmigos(String idSessao)  {
+		
+		if (buscarUsuarioPorID(idSessao).getGerenciadorAmizades().getListaDeAmigos().size() == 0)
+			return "O usuário não possui amigos";
+		
+		else {
+			return buscarUsuarioPorID(idSessao).getGerenciadorAmizades().stringDeAmigos();
+		}
+	}
+	
+	public String getAmigos(String idSessao, String login){
+		
+		if (buscarUsuarioPorID(idSessao).getGerenciadorAmizades().getListaDeAmigos().size() == 0)
+			return "O usuário não possui amigos";
+		
+		else {
+			buscarUsuarioPorID(idSessao).getGerenciadorAmizades().getListaDeAmigos().contains(login);
+		}
+		
+		
+		return this.getAmigos(idSessao);
+		
+	}
+	
 }
