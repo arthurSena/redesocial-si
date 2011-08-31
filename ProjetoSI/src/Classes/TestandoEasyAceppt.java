@@ -17,10 +17,11 @@ public class TestandoEasyAceppt {
          files.add("US01.txt");
          files.add("US02.txt");
          files.add("US03.txt");
-         
+         files.add("US04.txt");
          RedeSocial rede  = new RedeSocial();
-
+         
          EasyAcceptFacade eaFacade = new EasyAcceptFacade(rede, files);
+        // EasyAcceptFacade eaFacade1 = new EasyAcceptFacade(facade, files)
 
          eaFacade.executeTests();
 

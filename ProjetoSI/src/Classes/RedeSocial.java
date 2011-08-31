@@ -19,11 +19,90 @@ public class RedeSocial {
 	}
 	
 	public void zerarSistema(){
-		listaDeUsuarios =new ArrayList<Usuario>();;
+		listaDeUsuarios =new ArrayList<Usuario>();
+		listaDeUsuariosLogados = new ArrayList<Usuario>();
 	}
 	
 	public void encerrarSistema(){
 		// TODO tem que salvar os dados dos usuarios em algum local
+	}
+	
+	public void aprovarAmizade(String idSessao, String login)throws Exception{
+		if (!stringValida(idSessao)){
+			throw new Exception("Sessão inválida");
+		}
+		else if(buscarUsuarioPorID(idSessao)==null){
+			throw new Exception("Sessão inexistente");
+		}
+		else if (!stringValida(login)){
+			throw new Exception("Login inválido");
+		}
+		else if (buscarUsuarioPorLogin(login)==null){
+			throw new Exception("Login inexistente");
+		}
+		buscarUsuarioPorID(idSessao).getGerenciadorAmizades().adicionarAmigo(buscarUsuarioPorLogin(login));
+		buscarUsuarioPorLogin(login).getGerenciadorAmizades().adicionarAmigo(buscarUsuarioPorID(idSessao));
+	}
+	
+	
+	public String getRequisicoesDeAmizade(String idSessao) throws Exception{
+		if (!stringValida(idSessao)){
+			throw new Exception("Sessão inválida");
+		}
+		else if(buscarUsuarioPorID(idSessao)==null){
+			throw new Exception("Sessão inexistente");
+		}
+		else if(buscarUsuarioPorID(idSessao).getGerenciadorAmizades().getListaDeProvaveisAmigos().isEmpty()){
+			return ("Não há requisições");
+		}
+		else{
+			String requisicoes = "";
+			for (Usuario usr : buscarUsuarioPorID(idSessao).getGerenciadorAmizades().getListaDeProvaveisAmigos()){
+				requisicoes+= usr.getLogin() + "; ";
+			}
+		
+			return formatarRequisicoes(requisicoes);
+		}
+	}
+	
+	public String ehAmigo(String idSessao, String login) throws Exception{
+		if (!stringValida(idSessao)){
+			throw new Exception("Sessão inválida");
+		}
+		else if(buscarUsuarioPorID(idSessao)==null){
+			throw new Exception("Sessão inexistente");
+		}
+		else if (!stringValida(login)){
+			throw new Exception("Login inválido");
+		}
+		else if (buscarUsuarioPorLogin(login)==null){
+			throw new Exception("Login inexistente");
+		}
+		else{
+			if(buscarUsuarioPorID(idSessao).getGerenciadorAmizades().ehMeuAmigo(buscarUsuarioPorLogin(login))){
+				return "True";
+			}
+			else{
+				return "False";
+			}
+		}
+	}
+	
+	public void requisitarAmizade(String idSessao, String login)throws Exception{
+		if (!stringValida(idSessao)){
+			throw new Exception("Sessão inválida");
+		}
+		else if(buscarUsuarioPorID(idSessao)==null){
+			throw new Exception("Sessão inexistente");
+		}
+		else if (!stringValida(login)){
+			throw new Exception("Login inválido");
+		}
+		else if (buscarUsuarioPorLogin(login)==null){
+			throw new Exception("Login inexistente");
+		}
+		//buscarUsuarioPorID(idSessao).getGerenciadorAmizades().adicionarProvavelAmigo(buscarUsuarioPorLogin(login));
+		buscarUsuarioPorLogin(login).getGerenciadorAmizades().adicionarProvavelAmigo(buscarUsuarioPorID(idSessao));
 	}
 	
 	public String localizarUsuario(String idSessao, String chave, String atributo)throws Exception{
@@ -112,6 +191,7 @@ public class RedeSocial {
 		}
 		Usuario usr = buscarUsuarioPorLogin(login);
 		if (usr==null){
+			System.out.println(listaDeUsuarios);
 			throw new Exception("Usuário inexistente");
 		}
 		String id = usr.gerarID();
@@ -233,5 +313,17 @@ public class RedeSocial {
 		}
 		return cont;
 	}
-
+	
+	private String formatarRequisicoes(String requisicoes){
+		String retorno = "";
+		for (int i =0;i< requisicoes.split("; ").length;i++){
+			if (i==requisicoes.split("; ").length-1){
+				retorno +=requisicoes.split("; ")[i];
+				break;
+			}
+			retorno += requisicoes.split("; ")[i] + "; ";
+			
+		}return retorno;
+	}
+	
 }
