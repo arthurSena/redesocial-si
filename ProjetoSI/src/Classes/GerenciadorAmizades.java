@@ -156,6 +156,27 @@ public class GerenciadorAmizades {
 		listaDeProvaveisAmigos.remove(usr);
 	}
 	
+	
+	/**
+	 * Busca o perfil de um usuario na lista de amigos apartir de um login
+	 * @param login Login do usuario a ser pesquisado
+	 * @return Retorna o usuario caso seja encontrado ou null se nao achar nenhum usuario
+	 */
+	public Usuario buscaPerfil(String login){
+		for (Usuario usuario : getListaDeAmigos()){
+			if (usuario.getLogin().equalsIgnoreCase(login)){
+		
+				return usuario;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Retorna a lista de amigos em forma de String
+	 * @return Retorna a lista de amigos em forma de String
+	 */
 	public String stringDeAmigos(){
 		String resp = "";
 		

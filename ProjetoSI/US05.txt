@@ -1,4 +1,4 @@
-# User Story 05 - Visualização de perfil
+﻿# User Story 05 - Visualização de perfil
 
 zerarSistema
 
@@ -25,7 +25,7 @@ expect "mark" getAmigos idSessao=${sessaoMark} login="steve"
 expect "steve; bill" getAmigos idSessao=${sessaoBill} login="mark"
 
 expect "O usuário não possui itens cadastrados" getItens idSessao=${sessaoMark}
-expect "O usuário não possui itens cadastrados" getItens idSessao=${sessaBill} login="mark"
+expect "O usuário não possui itens cadastrados" getItens idSessao=${sessaoBill} login="mark"
 item1=cadastrarItem idSessao=${sessaoMark} nome="Guia do mochileiro das galáxias" descricao="Série de ficção científica criada por Douglas Adams" categoria="Livro"
 expect "Guia do mochileiro das galáxias" getItens idSessao=${sessaoMark}
 expect "Guia do mochileiro das galáxias" getItens idSessao=${sessaoBill} login="mark"

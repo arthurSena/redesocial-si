@@ -19,7 +19,7 @@ public class RedeSocial {
 	}
 	
 	public void zerarSistema(){
-		listaDeUsuarios =new ArrayList<Usuario>();
+		listaDeUsuarios = new ArrayList<Usuario>();
 		listaDeUsuariosLogados = new ArrayList<Usuario>();
 	}
 	
@@ -191,7 +191,7 @@ public class RedeSocial {
 		}
 		Usuario usr = buscarUsuarioPorLogin(login);
 		if (usr==null){
-			System.out.println(listaDeUsuarios);
+//			System.out.println(listaDeUsuarios);
 			throw new Exception("Usuário inexistente");
 		}
 		String id = usr.gerarID();
@@ -326,7 +326,19 @@ public class RedeSocial {
 		}return retorno;
 	}
 	
-	public String getAmigos(String idSessao)  {
+	/**
+	 * Retorna a lista de amigos que o usuario passado como idSessao tem. Isso em forma de string
+	 * @param idSessao
+	 * @return
+	 */
+	public String getAmigos(String idSessao) throws Exception{
+		if (!stringValida(idSessao)){
+			throw new Exception("Sessão inválida");
+		}
+		
+		if (buscarUsuarioPorID(idSessao) ==  null){
+			throw new Exception ("Sessão inexistente");
+		}
 		
 		if (buscarUsuarioPorID(idSessao).getGerenciadorAmizades().getListaDeAmigos().size() == 0)
 			return "O usuário não possui amigos";
@@ -336,18 +348,85 @@ public class RedeSocial {
 		}
 	}
 	
-	public String getAmigos(String idSessao, String login){
+	
+	/**
+	 * Retorna a lista de amigos que o usuario passado como login tem. Isso em forma de string
+	 * @param idSessao
+	 * @param login
+	 * @return
+	 */
+	public String getAmigos(String idSessao, String login)  throws Exception{
+		if (!stringValida(idSessao)){
+			throw new Exception("Sessão inválida");
+		}
+		
+		if (buscarUsuarioPorID(idSessao) ==  null){
+			throw new Exception ("Sessão inexistente");
+		}
+		
+		if (!stringValida(login)){
+			throw new Exception("Login inválido");
+		}
+		
+		if (!logiEhUsado(login)){
+			throw new Exception("Login inexistente");
+		}
 		
 		if (buscarUsuarioPorID(idSessao).getGerenciadorAmizades().getListaDeAmigos().size() == 0)
 			return "O usuário não possui amigos";
 		
 		else {
-			buscarUsuarioPorID(idSessao).getGerenciadorAmizades().getListaDeAmigos().contains(login);
+			return buscarUsuarioPorID(idSessao).getGerenciadorAmizades().buscaPerfil(login).getGerenciadorAmizades().stringDeAmigos();
+		}		
+	}
+	
+	public String getItens(String idSessao) throws Exception{
+		if (!stringValida(idSessao)){
+			throw new Exception("Sessão inválida");
 		}
 		
+		if (buscarUsuarioPorID(idSessao) ==  null){
+			throw new Exception ("Sessão inexistente");
+		}
 		
-		return this.getAmigos(idSessao);
+		if (buscarUsuarioPorID(idSessao).getGerenciadorItens().getListaMeusItens().size() == 0){
+			return "O usuário não possui itens cadastrados";
+		}
+		else {
+			return buscarUsuarioPorID(idSessao).getGerenciadorItens().stringDeItens();
+		}
+	}
+	
+	public String getItens(String idSessao, String login) throws Exception{
+		if (!stringValida(idSessao)){
+			throw new Exception("Sessão inválida");
+		}
+		
+		if (buscarUsuarioPorID(idSessao) ==  null){
+			throw new Exception ("Sessão inexistente");
+		}
+		
+		if (!stringValida(login)){
+			throw new Exception("Login inválido");
+		}
+		
+		if (!logiEhUsado(login)){
+			throw new Exception("Login inexistente");
+		}
+		
+		if (buscarUsuarioPorID(idSessao).getGerenciadorAmizades().buscaPerfil(login) == null){
+			throw new Exception ("O usuário não tem permissão para visualizar estes itens");
+		}
+		
+		if (buscarUsuarioPorID(idSessao).getGerenciadorAmizades().buscaPerfil(login).getGerenciadorItens().getListaMeusItens().size() == 0){
+			return "O usuário não possui itens cadastrados";
+		}
+		
+		else {
+			return buscarUsuarioPorID(idSessao).getGerenciadorAmizades().buscaPerfil(login).getGerenciadorItens().stringDeItens();
+		}
 		
 	}
+	
 	
 }
