@@ -47,6 +47,30 @@ public class GerenciadorItens {
 		this.itensPraDevolver = itensPraDevolver;
 	}
 	
+	public String stringDeItens(){
+		String resp = "";
+		
+		for (Item item : getListaMeusItens()){
+			resp += item.getNome() + "; ";
+		}
+		
+		
+		return formatarRequisicoes(resp);
+	}
+	
+	//TODO depois arrumar isso
+	private String formatarRequisicoes(String requisicoes){
+		String retorno = "";
+		for (int i =0;i< requisicoes.split("; ").length;i++){
+			if (i==requisicoes.split("; ").length-1){
+				retorno +=requisicoes.split("; ")[i];
+				break;
+			}
+			retorno += requisicoes.split("; ")[i] + "; ";
+			
+		}return retorno;
+	}
+	
 	
 
 }
