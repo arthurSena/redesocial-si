@@ -47,7 +47,28 @@ public class GerenciadorItens {
 		this.itensPraDevolver = itensPraDevolver;
 	}
 	
+	public String getAtributoItem(String idItem, String atributo)throws Exception{
+		if(!stringValida(atributo)){
+            throw new Exception("Atributo inválido");
+		}
+		else if(atributo.equals("nome")){
+            return buscarItemPorID(idItem).getNome();
+		}
+		else if(atributo.equals("descricao")){
+            return buscarItemPorID(idItem).getDescricao();
+		}
+		else if(atributo.equals("categoria")){
+            return buscarItemPorID(idItem).getCategoria();
+		}
+		else{
+            throw new Exception("Atributo inexistente");
+        }
+	}
+	
 	public String stringDeItens(){
+		if (getListaMeusItens().isEmpty()){
+			 return "O usuário não possui itens cadastrados";
+		}
 		String resp = "";
 		
 		for (Item item : getListaMeusItens()){
@@ -71,6 +92,24 @@ public class GerenciadorItens {
 		}return retorno;
 	}
 	
+	public int getQuantidadeMeusItens(){
+		return listaMeusItens.size();
+	}
 	
+	private boolean stringValida(String string) {
+		if (string == null || string.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+	
+	private Item buscarItemPorID(String id) {
+		for (Item it : getListaMeusItens()) {
+			if (it.getID().equals(id)) {
+				return it;
+			}
+		}
+		return null;
+	}
 
 }

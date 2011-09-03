@@ -161,16 +161,34 @@ public class GerenciadorAmizades {
 	 * Busca o perfil de um usuario na lista de amigos apartir de um login
 	 * @param login Login do usuario a ser pesquisado
 	 * @return Retorna o usuario caso seja encontrado ou null se nao achar nenhum usuario
+	 * @throws Exception 
 	 */
-	public Usuario buscaPerfil(String login){
-		for (Usuario usuario : getListaDeAmigos()){
-			if (usuario.getLogin().equalsIgnoreCase(login)){
-		
+	public Usuario buscaPerfil(String login) throws Exception {
+		if (!stringValida(login)) {
+			throw new Exception("Login inválido");
+		}
+		for (Usuario usuario : getListaDeAmigos()) {
+			if (usuario.getLogin().equalsIgnoreCase(login)) {
+
 				return usuario;
 			}
 		}
-		
+
 		return null;
+	}
+	
+	public String getRequisicoesDeAmizade() throws Exception {
+
+		if (getListaDeProvaveisAmigos().isEmpty()) {
+			return ("Não há requisições");
+		} else {
+			String requisicoes = "";
+			for (Usuario usr : getListaDeProvaveisAmigos()) {
+				requisicoes += usr.getLogin() + "; ";
+			}
+
+			return formatarRequisicoes(requisicoes);
+		}
 	}
 	
 	/**
@@ -178,6 +196,9 @@ public class GerenciadorAmizades {
 	 * @return Retorna a lista de amigos em forma de String
 	 */
 	public String stringDeAmigos(){
+		if (getListaDeAmigos().isEmpty()){
+			return "O usuário não possui amigos";
+		}
 		String resp = "";
 		
 		for (Usuario usr : getListaDeAmigos()){
@@ -199,6 +220,13 @@ public class GerenciadorAmizades {
 			retorno += requisicoes.split("; ")[i] + "; ";
 			
 		}return retorno;
+	}
+	
+	private boolean stringValida(String string) {
+		if (string == null || string.isEmpty()) {
+			return false;
+		}
+		return true;
 	}
 	
 }

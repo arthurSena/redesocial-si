@@ -26,9 +26,9 @@ expect "Jogo" getAtributoItem idItem=${item3} atributo="categoria"
 
 # entradas inválidas
 
-expectError "Sessao inválida" cadastrarItem idSessao= nome="xpto" descricao="xpto" categoria="Jogo"
-expectError "Sessao inválida" cadastrarItem idSessao="" nome="xpto" descricao="xpto" categoria="Jogo"
-expectError "Sessao inexistente" cadastrarItem idSessao="xpto" nome="xpto" descricao="xpto" categoria="Jogo"
+expectError "Sessão inválida" cadastrarItem idSessao= nome="xpto" descricao="xpto" categoria="Jogo"
+expectError "Sessão inválida" cadastrarItem idSessao="" nome="xpto" descricao="xpto" categoria="Jogo"
+expectError "Sessão inexistente" cadastrarItem idSessao="xpto" nome="xpto" descricao="xpto" categoria="Jogo"
 
 expectError "Nome inválido" cadastrarItem idSessao=${sessaoMark} nome= descricao="xpto" categoria="Jogo"
 expectError "Nome inválido" cadastrarItem idSessao=${sessaoMark} nome="" descricao="xpto" categoria="Jogo"
