@@ -21,7 +21,7 @@ expect "Steven Paul Jobs - Palo Alto, California; Mark Zuckerberg - Palo Alto, C
 
 expectError "Sessao inválida" localizarUsuario idSessao= chave="xpto" atributo="nome"
 expectError "Sessao inválida" localizarUsuario idSessao="" chave="xpto" atributo="nome"
-expectError "Sessao inexistente" localizarUsuario idSessao="xpto" chave="xpto" atributo="nome"
+expectError "Sessão inexistente" localizarUsuario idSessao="xpto" chave="xpto" atributo="nome"
 
 expectError "Palavra-chave inválida" localizarUsuario idSessao=${sessaoMark} chave= atributo="nome"
 expectError "Palavra-chave inválida" localizarUsuario idSessao=${sessaoMark} chave="" atributo="nome"
