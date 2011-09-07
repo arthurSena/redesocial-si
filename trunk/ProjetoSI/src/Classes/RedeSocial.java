@@ -200,9 +200,10 @@ public class RedeSocial {
 	}
 	
 	public String aprovarEmprestimo(String idSessao, String idRequisicaoEmprestimo)throws Exception{
-		/*if(this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idRequisicaoEmprestimo).equals(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
-			throw new Exception("O empréstimo só pode ser aprovado pelo dono do item");
+		/*if(!this.getGerenciadorUsuarios().requisicaoEmprestimoExiste(idRequisicaoEmprestimo)){
+			throw new Exception("Requisição de empréstimo inexistente");
 		}*/
-		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().aprovarRequisicaoEmprestimo(idRequisicaoEmprestimo);
+		
+		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().aprovarRequisicaoEmprestimo(this.getGerenciadorUsuarios().requisicaoEmprestimoExiste(idRequisicaoEmprestimo),idRequisicaoEmprestimo);
 	}
 }
