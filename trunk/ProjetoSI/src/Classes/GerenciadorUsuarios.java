@@ -63,7 +63,7 @@ public class GerenciadorUsuarios {
 			String atributo) throws Exception {
 
 		if (!stringValida(idSessao)) {
-			throw new Exception("Sessao inválida");
+			throw new Exception("Sessão inválida");
 		} else if (buscarUsuarioPorID(idSessao) == null) {
 			throw new Exception("Sessão inexistente");
 		} else if (!stringValida(chave)) {
@@ -183,6 +183,36 @@ public class GerenciadorUsuarios {
 			}
 		}
 		throw new Exception("Item inexistente");
+	}
+	
+	public String getEmprestimos(String idSessao, String tipo) throws Exception {
+		return buscarUsuarioPorID(idSessao).getGerenciadorItens()
+				.getEmprestimo(buscarUsuarioEmprestador(idSessao),
+						buscarUsuarioPorID(idSessao), tipo);
+	}
+	
+	private Usuario buscarUsuarioEmprestador(String idSessao) throws Exception{
+		for (Usuario usr: listaDeUsuarios){
+			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
+				if (it.getEmprestimo() != null && it.getEmprestimo().emprestimoFoiAprovado()){
+					if (it.getEmprestimo().getBeneficiado().equals(buscarUsuarioPorID(idSessao))){
+						return usr;
+					}
+				}
+			}
+		}return null;
+	}
+	
+	public Usuario buscarUsuarioEmprestador2(String idRequisicaoEmprestimo){
+		for (Usuario usr: listaDeUsuarios){
+			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
+				if (it.getEmprestimo() != null && !it.getEmprestimo().emprestimoFoiAprovado()){
+					if (it.getEmprestimo().gerarIDRequisicao().equals(idRequisicaoEmprestimo)){
+						return usr;
+					}
+				}
+			}
+		}return null;
 	}
 
 }

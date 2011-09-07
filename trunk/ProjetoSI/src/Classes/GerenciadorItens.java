@@ -96,6 +96,98 @@ public class GerenciadorItens {
 		return listaMeusItens.size();
 	}
 	
+	public String getEmprestimo(Usuario usr1,Usuario usr,String tipo)throws Exception{
+		if (!stringValida(tipo)){
+			throw new Exception("Tipo inválido");
+		}
+		else if (tipo.equals("beneficiado")){
+			String retorno = "";
+			if (usr1==null){
+				
+				return ("Não há empréstimos deste tipo");
+			}
+			for (Item it: usr1.getGerenciadorItens().getListaMeusItens()){
+				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && it.getEmprestimo().getBeneficiado().equals(usr)){
+					retorno += usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+				}
+			}
+			if (retorno.isEmpty()){
+				return ("Não há empréstimos deste tipo");
+			}
+			return retorno;
+		}
+		else if(tipo.equals("emprestador")){
+			String retorno = "";
+			for (Item it: listaMeusItens){
+				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado()){
+					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+				}
+			}
+			if (retorno.isEmpty()){
+				return ("Não há empréstimos deste tipo");
+			}
+			return retorno;
+		}
+		else if(tipo.equals("todos")){
+			String retorno = "";
+			
+			int cont = 0;
+			for (Item it: listaMeusItens){
+				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado()){
+					if (cont==0){
+						retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+						cont++;
+					}
+					else{
+						retorno += "; "+usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+						cont++;
+					}
+				}
+			}
+			if (usr1!=null){
+				for (Item it: usr1.getGerenciadorItens().getListaMeusItens()){
+					if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && it.getEmprestimo().getBeneficiado().equals(usr)){
+						if (cont==0){
+							retorno += usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+							cont++;
+						}
+						else{
+							retorno += "; "+usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+							cont++;
+						}
+					}
+				}
+			}
+			if (retorno.isEmpty()){
+				return ("Não há empréstimos deste tipo");
+			}
+			return retorno;
+		}
+		else{
+			throw new Exception("Tipo inexistente");
+		}
+	}
+	
+	public String requisitarEmprestimos(Usuario beneficiado,String idItem, int dias) throws Exception{
+		if (buscarItemPorID(idItem).getEmprestimo()!=null && buscarItemPorID(idItem).getEmprestimo().getBeneficiado().equals(beneficiado)){
+			throw new Exception("Requisicao já solicitada");
+		}
+		return buscarItemPorID(idItem).criarRequisicaoEmprestimo(beneficiado, dias);
+	}
+	
+	public String aprovarRequisicaoEmprestimo(String idRequisicaoEmprestimo) throws Exception{
+		if (!stringValida(idRequisicaoEmprestimo)){
+			throw new Exception("Identificador da requisição de empréstimo é inválido");
+		}
+		for (Item it: listaMeusItens){
+			if (it.getEmprestimo()!=null && it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo)){
+				return it.getEmprestimo().aprovarEmprestimo();
+			}
+		}
+		throw new Exception("Requisição de empréstimo inexistente");
+		//throw new Exception("O empréstimo só pode ser aprovado pelo dono do item");
+	}
+	
 	private boolean stringValida(String string) {
 		if (string == null || string.isEmpty()) {
 			return false;

@@ -8,6 +8,7 @@ public class Item {
 	private String descricao;
     private String categoria;
     private String idItem;
+    private Emprestimo emprestimo;
     
     public Item(String nome, String descricao, String categoria) throws Exception{
     	if (!stringValida(nome)){
@@ -48,6 +49,15 @@ public class Item {
 		idItem += "${item" +quantItens + "}";
 		return idItem;
 	}
+    
+    public String criarRequisicaoEmprestimo(Usuario beneficiado, int duracao) throws Exception{
+    	emprestimo = new Emprestimo(beneficiado, duracao);
+    	return emprestimo.gerarIDRequisicao();
+    }
+    
+    public Emprestimo getEmprestimo(){
+    	return emprestimo;
+    }
     
     public boolean equals(Item it){
     	if (!(it instanceof Item)){

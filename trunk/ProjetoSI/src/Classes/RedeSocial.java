@@ -182,4 +182,27 @@ public class RedeSocial {
 		}
 
 	}
+	
+	public String requisitarEmprestimo(String idSessao, String idItem, int dias) throws Exception {
+		Usuario usr = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		if (getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorAmizades().ehMeuAmigo(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
+			return getGerenciadorUsuarios()
+			.buscarDonoItem(idItem)
+			.getGerenciadorItens()
+			.requisitarEmprestimos(usr,idItem, dias);
+		}
+		throw new Exception("O usuário não tem permissão para requisitar o empréstimo deste item");
+
+	}
+	
+	public String getEmprestimos(String idSessao, String tipo)throws Exception{
+		return this.getGerenciadorUsuarios().getEmprestimos(idSessao, tipo);
+	}
+	
+	public String aprovarEmprestimo(String idSessao, String idRequisicaoEmprestimo)throws Exception{
+		/*if(this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idRequisicaoEmprestimo).equals(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
+			throw new Exception("O empréstimo só pode ser aprovado pelo dono do item");
+		}*/
+		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().aprovarRequisicaoEmprestimo(idRequisicaoEmprestimo);
+	}
 }
