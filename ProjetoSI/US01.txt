@@ -8,6 +8,7 @@ criarUsuario login="mark" nome="Mark Zuckerberg" endereco="Palo Alto, California
 criarUsuario login="steve" nome="Steven Paul Jobs" endereco="Palo Alto, California"
 criarUsuario login="bill" nome="William Henry Gates III" endereco="Medina, Washington"
 
+# o método 'abrirSessao' retorna o ID da sessão
 sessaoMark=abrirSessao login="mark"
 expect "Mark Zuckerberg" getAtributoUsuario login="mark" atributo="nome"
 expect "Palo Alto, California" getAtributoUsuario login="mark" atributo="endereco"

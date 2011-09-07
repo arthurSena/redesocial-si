@@ -8,6 +8,8 @@ criarUsuario login="mark" nome="Mark Zuckerberg" endereco="Palo Alto, California
 criarUsuario login="steve" nome="Steven Paul Jobs" endereco="Palo Alto, California"
 
 sessaoMark=abrirSessao login="mark"
+
+# o método 'cadastrarItem' retorna o ID do item
 item1=cadastrarItem idSessao=${sessaoMark} nome="The Social Network" descricao="Filme sobre a fundação da rede social Facebook" categoria="Filme"
 expect "The Social Network" getAtributoItem idItem=${item1} atributo="nome"
 expect "Filme sobre a fundação da rede social Facebook" getAtributoItem idItem=${item1} atributo="descricao"
