@@ -207,12 +207,24 @@ public class GerenciadorUsuarios {
 		for (Usuario usr: listaDeUsuarios){
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
 				if (it.getEmprestimo() != null && !it.getEmprestimo().emprestimoFoiAprovado()){
-					if (it.getEmprestimo().gerarIDRequisicao().equals(idRequisicaoEmprestimo)){
+					if (it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo)){
 						return usr;
 					}
 				}
 			}
 		}return null;
+	}
+	
+	public boolean requisicaoEmprestimoExiste(String idRequisicaoEmprestimo) throws Exception{
+		for (Usuario usr: listaDeUsuarios){
+			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
+				if (it.getEmprestimo() != null){
+					if (it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo)){
+						return true;
+					}
+				}
+			}
+		}return false;
 	}
 
 }

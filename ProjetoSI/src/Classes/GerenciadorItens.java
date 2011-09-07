@@ -175,17 +175,24 @@ public class GerenciadorItens {
 		return buscarItemPorID(idItem).criarRequisicaoEmprestimo(beneficiado, dias);
 	}
 	
-	public String aprovarRequisicaoEmprestimo(String idRequisicaoEmprestimo) throws Exception{
+	public String aprovarRequisicaoEmprestimo(boolean requisicaoExiste,String idRequisicaoEmprestimo) throws Exception{
 		if (!stringValida(idRequisicaoEmprestimo)){
 			throw new Exception("Identificador da requisição de empréstimo é inválido");
 		}
 		for (Item it: listaMeusItens){
-			if (it.getEmprestimo()!=null && it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo)){
+			if (it.getEmprestimo()!=null && it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo) && !it.getEmprestimo().emprestimoFoiAprovado()){
 				return it.getEmprestimo().aprovarEmprestimo();
 			}
+			else if(it.getEmprestimo()!=null && it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo) && it.getEmprestimo().emprestimoFoiAprovado()){
+				throw new Exception("Empréstimo já aprovado");
+			}	
 		}
-		throw new Exception("Requisição de empréstimo inexistente");
-		//throw new Exception("O empréstimo só pode ser aprovado pelo dono do item");
+		
+		if (!requisicaoExiste){
+			throw new Exception("Requisição de empréstimo inexistente");
+		}
+		//throw new Exception("Requisição de empréstimo inexistente");
+		throw new Exception("O empréstimo só pode ser aprovado pelo dono do item");
 	}
 	
 	private boolean stringValida(String string) {

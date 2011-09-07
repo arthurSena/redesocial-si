@@ -64,7 +64,7 @@ public class Emprestimo {
 	
 	public String gerarIDEmprestimo(){
 		idEmprestimo = beneficiado.getID() + "Emprestimo" + (new Random()).nextInt(1000);
-		idRequisicao = null;
+		//idRequisicao = null;
 		return idEmprestimo;
 	}
 
