@@ -26,10 +26,10 @@ expect "steve; bill" getAmigos idSessao=${sessaoBill} login="mark"
 
 expect "O usuário não possui itens cadastrados" getItens idSessao=${sessaoMark}
 expect "O usuário não possui itens cadastrados" getItens idSessao=${sessaoBill} login="mark"
-item1=cadastrarItem idSessao=${sessaoMark} nome="Guia do mochileiro das galáxias" descricao="Série de ficção científica criada por Douglas Adams" categoria="Livro"
+idItem1=cadastrarItem idSessao=${sessaoMark} nome="Guia do mochileiro das galáxias" descricao="Série de ficção científica criada por Douglas Adams" categoria="Livro"
 expect "Guia do mochileiro das galáxias" getItens idSessao=${sessaoMark}
 expect "Guia do mochileiro das galáxias" getItens idSessao=${sessaoBill} login="mark"
-item2=cadastrarItem idSessao=${sessaoMark} nome="Final Fantasy XIII" descricao="Décimo terceiro jogo da série produzida pela Square Enix" categoria="Jogo"
+idItem2=cadastrarItem idSessao=${sessaoMark} nome="Final Fantasy XIII" descricao="Décimo terceiro jogo da série produzida pela Square Enix" categoria="Jogo"
 expect "Guia do mochileiro das galáxias; Final Fantasy XIII" getItens idSessao=${sessaoMark}
 expect "Guia do mochileiro das galáxias; Final Fantasy XIII" getItens idSessao=${sessaoBill} login="mark"
 
@@ -46,7 +46,7 @@ expectError "Sessão inválida" getAmigos idSessao="" login="xpto"
 expectError "Sessão inexistente" getAmigos idSessao="xpto" login="xpto"
 expectError "Login inválido" getAmigos idSessao=${sessaoMark} login=
 expectError "Login inválido" getAmigos idSessao=${sessaoMark} login=""
-expectError "Login inexistente" getAmigos idSessao=${sessaoMark} login="xpto"
+expectError "Usuário inexistente" getAmigos idSessao=${sessaoMark} login="xpto"
 
 expectError "Sessão inválida" getItens idSessao=
 expectError "Sessão inválida" getItens idSessao=""
@@ -57,7 +57,7 @@ expectError "Sessão inválida" getItens idSessao="" login="xpto"
 expectError "Sessão inexistente" getItens idSessao="xpto" login="xpto"
 expectError "Login inválido" getItens idSessao=${sessaoMark} login=
 expectError "Login inválido" getItens idSessao=${sessaoMark} login=""
-expectError "Login inexistente" getItens idSessao=${sessaoMark} login="xpto"
+expectError "Usuário inexistente" getItens idSessao=${sessaoMark} login="xpto"
 
 encerrarSistema
 quit
