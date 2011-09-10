@@ -87,14 +87,14 @@ public class GerenciadorUsuarios {
 		if (!stringValida(login)) {
 			throw new Exception("Login inválido");
 		}else if (!logiEhUsado(login)) {
-			throw new Exception("Login inexistente");
+			throw new Exception("Usuário inexistente");
 		}
 		for (Usuario usr : listaDeUsuarios) {
 			if (usr.getLogin().equals(login)) {
 				return usr;
 			}
 		}
-		return null;
+		throw new Exception("Usuário inexistente");
 	}
 
 	private boolean stringValida(String string) {
