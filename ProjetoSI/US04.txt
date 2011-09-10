@@ -1,4 +1,4 @@
-﻿# User Story 04 - Adição de amigos 
+# User Story 04 - Adição de amigos
 
 zerarSistema
 
@@ -19,18 +19,18 @@ expect "Não há requisições" getRequisicoesDeAmizade idSessao=${sessaoSteve}
 sessaoBill=abrirSessao login="bill"
 requisitarAmizade idSessao=${sessaoBill} login="mark"
 expect "steve; bill" getRequisicoesDeAmizade idSessao=${sessaoMark}
-expect "False" ehAmigo idSessao=${sessaoMark} login="steve"
-expect "False" ehAmigo idSessao=${sessaoMark} login="bill"
+expect "false" ehAmigo idSessao=${sessaoMark} login="steve"
+expect "false" ehAmigo idSessao=${sessaoMark} login="bill"
 
 aprovarAmizade idSessao=${sessaoMark} login="steve"
 expect "bill" getRequisicoesDeAmizade idSessao=${sessaoMark}
-expect "True" ehAmigo idSessao=${sessaoMark} login="steve"
-expect "True" ehAmigo idSessao=${sessaoSteve} login="mark"
+expect "true" ehAmigo idSessao=${sessaoMark} login="steve"
+expect "true" ehAmigo idSessao=${sessaoSteve} login="mark"
 
 aprovarAmizade idSessao=${sessaoMark} login="bill"
 expect "Não há requisições" getRequisicoesDeAmizade idSessao=${sessaoMark}
-expect "True" ehAmigo idSessao=${sessaoMark} login="bill"
-expect "True" ehAmigo idSessao=${sessaoBill} login="mark"
+expect "true" ehAmigo idSessao=${sessaoMark} login="bill"
+expect "true" ehAmigo idSessao=${sessaoBill} login="mark"
 
 requisitarAmizade idSessao=${sessaoSteve} login="bill"
 
@@ -45,7 +45,7 @@ expectError "Sessão inválida" requisitarAmizade idSessao="" login="xpto"
 expectError "Sessão inexistente" requisitarAmizade idSessao="xpto" login="xpto"
 expectError "Login inválido" requisitarAmizade idSessao=${sessaoMark} login=
 expectError "Login inválido" requisitarAmizade idSessao=${sessaoMark} login=""
-expectError "Login inexistente" requisitarAmizade idSessao=${sessaoMark} login="xpto"
+expectError "Usuário inexistente" requisitarAmizade idSessao=${sessaoMark} login="xpto"
 expectError "Os usuários já são amigos" requisitarAmizade idSessao=${sessaoMark} login="steve"
 expectError "Requisição já solicitada" requisitarAmizade idSessao=${sessaoSteve} login="bill"
 
@@ -54,15 +54,16 @@ expectError "Sessão inválida" ehAmigo idSessao="" login="xpto"
 expectError "Sessão inexistente" ehAmigo idSessao="xpto" login="xpto"
 expectError "Login inválido" ehAmigo idSessao=${sessaoMark} login=
 expectError "Login inválido" ehAmigo idSessao=${sessaoMark} login=""
-expectError "Login inexistente" ehAmigo idSessao=${sessaoMark} login="xpto"
+expectError "Usuário inexistente" ehAmigo idSessao=${sessaoMark}login="xpto"
 
 expectError "Sessão inválida" aprovarAmizade idSessao= login="xpto"
 expectError "Sessão inválida" aprovarAmizade idSessao="" login="xpto"
 expectError "Sessão inexistente" aprovarAmizade idSessao="xpto" login="xpto"
 expectError "Login inválido" aprovarAmizade idSessao=${sessaoMark} login=
 expectError "Login inválido" aprovarAmizade idSessao=${sessaoMark} login=""
-expectError "Login inexistente" aprovarAmizade idSessao=${sessaoMark} login="xpto"
+expectError "Usuário inexistente" aprovarAmizade idSessao=${sessaoMark} login="xpto"
 expectError "Os usuários já são amigos" aprovarAmizade idSessao=${sessaoMark} login="bill"
+expectError "Requisição de amizade inexistente" aprovarAmizade idSessao=${sessaoBill} login="steve"
 
 encerrarSistema
 quit
