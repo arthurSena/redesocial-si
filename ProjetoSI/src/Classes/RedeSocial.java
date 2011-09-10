@@ -51,9 +51,9 @@ public class RedeSocial {
 				.getGerenciadorAmizades()
 				.ehMeuAmigo(
 						getGerenciadorUsuarios().buscarUsuarioPorLogin(login))) {
-			return "True";
+			return "true";
 		} else {
-			return "False";
+			return "false";
 		}
 
 	}
@@ -141,7 +141,7 @@ public class RedeSocial {
 		}
 
 		else if (!getGerenciadorUsuarios().logiEhUsado(login)) {
-			throw new Exception("Login inexistente");
+			throw new Exception("Usuário inexistente");
 		}
 
 		else {
@@ -174,7 +174,7 @@ public class RedeSocial {
 				.getGerenciadorItens().getListaMeusItens().isEmpty()) {
 			return "O usuário não possui itens cadastrados";
 		}
-
+		
 		else {
 			return getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)
 					.getGerenciadorAmizades().buscaPerfil(login)

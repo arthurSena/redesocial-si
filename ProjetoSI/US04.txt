@@ -54,7 +54,7 @@ expectError "Sessão inválida" ehAmigo idSessao="" login="xpto"
 expectError "Sessão inexistente" ehAmigo idSessao="xpto" login="xpto"
 expectError "Login inválido" ehAmigo idSessao=${sessaoMark} login=
 expectError "Login inválido" ehAmigo idSessao=${sessaoMark} login=""
-expectError "Usuário inexistente" ehAmigo idSessao=${sessaoMark}login="xpto"
+expectError "Usuário inexistente" ehAmigo idSessao=${sessaoMark} login="xpto"
 
 expectError "Sessão inválida" aprovarAmizade idSessao= login="xpto"
 expectError "Sessão inválida" aprovarAmizade idSessao="" login="xpto"
@@ -63,7 +63,7 @@ expectError "Login inválido" aprovarAmizade idSessao=${sessaoMark} login=
 expectError "Login inválido" aprovarAmizade idSessao=${sessaoMark} login=""
 expectError "Usuário inexistente" aprovarAmizade idSessao=${sessaoMark} login="xpto"
 expectError "Os usuários já são amigos" aprovarAmizade idSessao=${sessaoMark} login="bill"
-expectError "Requisição de amizade inexistente" aprovarAmizade idSessao=${sessaoBill} login="steve"
+expectError "Requisição de amizade inexistente" aprovarAmizade idSessao=${sessaoSteve} login="bill"
 
 encerrarSistema
 quit
