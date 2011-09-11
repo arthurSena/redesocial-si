@@ -39,12 +39,12 @@ idEmprestimo2=aprovarEmprestimo idSessao=${sessaoSteve} idRequisicaoEmprestimo=$
 adicionarDias dias=7
 requisitarDevolucao idSessao=${sessaoSteve} idEmprestimo=${idEmprestimo2}
 expect "mark-steve:The Social Network:Cancelado; steve-mark:Guia do mochileiro das galáxias:Andamento" getEmprestimos idSessao=${sessaoMark} tipo="todos"
-expect "mark-steve:The Social Network:Cancelado; steve-mark:Guia do mochileiro das galáxias:Andamento" getEmprestimos idSessao=${sessaoSteve} tipo="todos"
+expect "steve-mark:Guia do mochileiro das galáxias:Andamento; mark-steve:The Social Network:Cancelado" getEmprestimos idSessao=${sessaoSteve} tipo="todos"
 
 devolverItem idSessao=${sessaoMark} idEmprestimo=${idEmprestimo2}
 confirmarTerminoEmprestimo idSessao=${sessaoSteve} idEmprestimo=${idEmprestimo2}
 expect "mark-steve:The Social Network:Cancelado; steve-mark:Guia do mochileiro das galáxias:Completado" getEmprestimos idSessao=${sessaoMark} tipo="todos"
-expect "mark-steve:The Social Network:Cancelado; steve-mark:Guia do mochileiro das galáxias:Completado" getEmprestimos idSessao=${sessaoSteve} tipo="todos"
+expect "steve-mark:Guia do mochileiro das galáxias:Completado; mark-steve:The Social Network:Cancelado" getEmprestimos idSessao=${sessaoSteve} tipo="todos"
 
 # entradas inválidas
 

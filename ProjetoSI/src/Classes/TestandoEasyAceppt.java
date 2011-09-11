@@ -20,6 +20,7 @@ public class TestandoEasyAceppt {
          files.add("US04.txt");
          files.add("US05.txt");
          files.add("US06.txt");
+         files.add("US07.txt");
          RedeSocial rede  = new RedeSocial();
          
          EasyAcceptFacade eaFacade = new EasyAcceptFacade(rede, files);

@@ -206,4 +206,42 @@ public class RedeSocial {
 		
 		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().aprovarRequisicaoEmprestimo(this.getGerenciadorUsuarios().requisicaoEmprestimoExiste(idRequisicaoEmprestimo),idRequisicaoEmprestimo);
 	}
+	
+	
+	public void devolverItem(String idSessao, String idEmprestimo) throws Exception{
+		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		if (!stringValida(idEmprestimo)){
+			throw new Exception("Identificador do empréstimo é inválido");
+		}
+		if (this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo) == null){
+			throw new Exception("Empréstimo inexistente");
+		}
+		
+		if (this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().isDevolucao()){
+			throw new Exception("Item já devolvido");
+		}
+		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
+			throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
+		}
+		
+	}
+	
+	public void confirmarTerminoEmprestimo(String idSessao, String idEmprestimo) throws Exception{
+		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		
+		if (!stringValida(idEmprestimo)){
+			throw new Exception("Identificador do empréstimo é inválido");
+		}
+		
+		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().setDevolucao(true);
+
+		
+	}
+	
+	private boolean stringValida(String string) {
+		if (string == null || string.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
 }

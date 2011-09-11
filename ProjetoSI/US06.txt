@@ -18,15 +18,9 @@ requisitarAmizade idSessao=${sessaoBill} login="mark"
 aprovarAmizade idSessao=${sessaoMark} login="steve"
 aprovarAmizade idSessao=${sessaoMark} login="bill"
 
-<<<<<<< .mine
 idItem1=cadastrarItem idSessao=${sessaoMark} nome="The Social Network" descricao="Filme sobre a fundação da rede social Facebook" categoria="Filme"
 idItem2=cadastrarItem idSessao=${sessaoSteve} nome="Guia do mochileiro das galáxias" descricao="Serie de ficção científica criada por Douglas Adams" categoria="Livro"
 idItem3=cadastrarItem idSessao=${sessaoBill} nome="Final Fantasy XIII" descricao="Décimo terceiro jogo da série produzida pela Square Enix" categoria="Jogo"
-=======
-idItem1=cadastrarItem idSessao=${sessaoMark} nome="The Social Network" descricao="Filme sobre a fundação da rede social Facebook" categoria="Filme"
-ididItem2=cadastrarItem idSessao=${sessaoSteve} nome="Guia do mochileiro das galáxias" descricao="Serie de ficção científica criada por Douglas Adams" categoria="Livro"
-idItem3=cadastrarItem idSessao=${sessaoBill} nome="Final Fantasy XIII" descricao="Décimo terceiro jogo da série produzida pela Square Enix" categoria="Jogo"
->>>>>>> .r19
 
 expect "Não há empréstimos deste tipo" getEmprestimos idSessao=${sessaoMark} tipo="emprestador"
 expect "Não há empréstimos deste tipo" getEmprestimos idSessao=${sessaoMark} tipo="beneficiado"
@@ -54,7 +48,7 @@ expect "mark-steve:The Social Network:Andamento; steve-mark:Guia do mochileiro d
 
 expect "steve-mark:Guia do mochileiro das galáxias:Andamento" getEmprestimos idSessao=${sessaoSteve} tipo="emprestador"
 expect "mark-steve:The Social Network:Andamento" getEmprestimos idSessao=${sessaoSteve} tipo="beneficiado"
-expect "mark-steve:The Social Network:Andamento; steve-mark:Guia do mochileiro das galáxias:Andamento" getEmprestimos idSessao=${sessaoSteve} tipo="todos"
+expect "steve-mark:Guia do mochileiro das galáxias:Andamento; mark-steve:The Social Network:Andamento" getEmprestimos idSessao=${sessaoSteve} tipo="todos"
 
 # entradas inválidas
 
@@ -88,7 +82,4 @@ expectError "Tipo inválido" getEmprestimos idSessao=${sessaoMark} tipo=""
 expectError "Tipo inexistente" getEmprestimos idSessao=${sessaoMark} tipo="xpto"
 
 encerrarSistema
-<<<<<<< .mine
-quit=======
 quit
->>>>>>> .r19

@@ -96,7 +96,7 @@ public class GerenciadorItens {
 		return listaMeusItens.size();
 	}
 	
-	public String getEmprestimo(Usuario usr1,Usuario usr,String tipo)throws Exception{
+	public String getEmprestimo(Usuario usr1, Usuario usr, String tipo)throws Exception{
 		if (!stringValida(tipo)){
 			throw new Exception("Tipo inválido");
 		}
@@ -107,7 +107,7 @@ public class GerenciadorItens {
 				return ("Não há empréstimos deste tipo");
 			}
 			for (Item it: usr1.getGerenciadorItens().getListaMeusItens()){
-				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && it.getEmprestimo().getBeneficiado().equals(usr)){
+				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && (!it.getEmprestimo().isDevolucao()) && it.getEmprestimo().getBeneficiado().equals(usr)){
 					retorno += usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
 				}
 			}
@@ -119,7 +119,7 @@ public class GerenciadorItens {
 		else if(tipo.equals("emprestador")){
 			String retorno = "";
 			for (Item it: listaMeusItens){
-				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado()){
+				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && (!it.getEmprestimo().isDevolucao())){
 					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
 				}
 			}
@@ -133,7 +133,12 @@ public class GerenciadorItens {
 			
 			int cont = 0;
 			for (Item it: listaMeusItens){
-				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado()){
+				if (it.getEmprestimo()!=null && it.getEmprestimo().isDevolucao()){
+					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado";
+					cont++;
+				}
+				
+				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && (!it.getEmprestimo().isDevolucao())){
 					if (cont==0){
 						retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
 						cont++;
@@ -146,7 +151,12 @@ public class GerenciadorItens {
 			}
 			if (usr1!=null){
 				for (Item it: usr1.getGerenciadorItens().getListaMeusItens()){
-					if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && it.getEmprestimo().getBeneficiado().equals(usr)){
+					if (it.getEmprestimo()!=null && it.getEmprestimo().isDevolucao()){
+						retorno += usr1.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado";
+						cont++;
+					}
+					
+					if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && (!it.getEmprestimo().isDevolucao()) && it.getEmprestimo().getBeneficiado().equals(usr)){
 						if (cont==0){
 							retorno += usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
 							cont++;
@@ -175,7 +185,7 @@ public class GerenciadorItens {
 		return buscarItemPorID(idItem).criarRequisicaoEmprestimo(beneficiado, dias);
 	}
 	
-	public String aprovarRequisicaoEmprestimo(boolean requisicaoExiste,String idRequisicaoEmprestimo) throws Exception{
+	public String aprovarRequisicaoEmprestimo(boolean requisicaoExiste, String idRequisicaoEmprestimo) throws Exception{
 		if (!stringValida(idRequisicaoEmprestimo)){
 			throw new Exception("Identificador da requisição de empréstimo é inválido");
 		}
@@ -209,6 +219,40 @@ public class GerenciadorItens {
 			}
 		}
 		return null;
+	}
+	
+	public Item buscarItemIdEmprestimo(String idEmpretimo){
+		
+		for (Item it : getListaMeusItens()){
+			if (it.getEmprestimo() != null){
+				if (it.getEmprestimo().getIDEmprestimo().equals(idEmpretimo)){
+					return it;
+				}
+			}
+			
+		}
+		
+		return null;
+		
+	}
+	
+	public void confirmarTerminoEmprestimo(String idEmprestimo){
+		
+	}
+	
+	public String confirmarTerminoEmprestimo(Usuario usr, Item item){
+		String retorno = "";
+		
+		for (Item it: listaMeusItens){
+			if (!it.equals(item)){
+				retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+			} else {
+				
+				retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado";
+			}
+		}
+		return retorno;
+		
 	}
 
 }
