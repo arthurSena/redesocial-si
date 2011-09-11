@@ -120,8 +120,8 @@ public class GerenciadorUsuarios {
 			String atributo) {
 		String listaUsuarios = "";
 		int cont = 0;
-
-		for (int i = listaDeUsuarios.size() - 1; i >= 0; i--) {
+		for (int i = 0; i<=listaDeUsuarios.size() - 1; i++) {
+		//for (int i = listaDeUsuarios.size() - 1; i >= 0; i--) {
 			Usuario usr = listaDeUsuarios.get(i);
 			if (!(usr.getID().equals(id))) {
 				if (atributo.equals("nome")
