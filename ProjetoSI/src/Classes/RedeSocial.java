@@ -187,10 +187,10 @@ public class RedeSocial {
 		Usuario usr = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
 		if (getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorAmizades().ehMeuAmigo(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
 			String idRequisicaoEmprestim = getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().requisitarEmprestimos(usr,idItem, dias);
-			String assunto = "Empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome() + " a " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome();
-			String mensagem = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome() + " solicitou o empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome();
-			
-			enviarMensagem(idSessao, getGerenciadorUsuarios().buscarDonoItem(idItem).getLogin(), assunto, mensagem, idRequisicaoEmprestim);
+//			String assunto = "Empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome() + " a " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome();
+//			String mensagem = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome() + " solicitou o empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome();
+//			
+//			enviarMensagem(idSessao, getGerenciadorUsuarios().buscarDonoItem(idItem).getLogin(), assunto, mensagem, idRequisicaoEmprestim);
 			return idRequisicaoEmprestim;
 		}
 		throw new Exception("O usuário não tem permissão para requisitar o empréstimo deste item");
