@@ -30,7 +30,7 @@ public class RedeSocial {
 		this.getGerenciadorUsuarios()
 				.buscarUsuarioPorID(idSessao)
 				.getGerenciadorAmizades()
-				.adicionarAmigo(
+				.adicionarAmigo2(
 						getGerenciadorUsuarios().buscarUsuarioPorLogin(login));
 		this.getGerenciadorUsuarios()
 				.buscarUsuarioPorLogin(login)

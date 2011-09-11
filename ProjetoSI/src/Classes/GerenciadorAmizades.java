@@ -62,6 +62,20 @@ public class GerenciadorAmizades {
 		listaDeProvaveisAmigos.remove(usr);
 	}
 	
+	public void adicionarAmigo2(Usuario usr)throws Exception{
+		if (usr==null){
+			throw new Exception("Usuario nao pode ser igual a null");
+		}
+		else if(listaDeAmigos.contains(usr)){
+			throw new Exception("Os usuários já são amigos");
+		}
+		else if(!listaDeProvaveisAmigos.contains(usr)){
+			throw new Exception("Requisição de amizade inexistente");
+		}
+		listaDeAmigos.add(usr);
+		listaDeProvaveisAmigos.remove(usr);
+	}
+	
 	/**
 	 * Adiciona um Usuario na Lista de Provaveis Amigos de outro Usuario
 	 * @param usr 
