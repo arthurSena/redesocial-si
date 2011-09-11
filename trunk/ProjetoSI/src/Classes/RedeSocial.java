@@ -230,6 +230,10 @@ public class RedeSocial {
 			throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
 		}
 		
+		if (!this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getBeneficiado().equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
+			throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
+		}
+		
 		this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().setDevolvido(true);
 		}
 		
