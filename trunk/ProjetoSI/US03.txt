@@ -15,7 +15,7 @@ expect "Steven Paul Jobs - Palo Alto, California" localizarUsuario idSessao=${se
 
 criarUsuario login="bill" nome="William Henry Gates III" endereco="Medina, Washington"
 sessaoBill=abrirSessao login="bill"
-expect "Steven Paul Jobs - Palo Alto, California; Mark Zuckerberg - Palo Alto, California" localizarUsuario idSessao=${sessaoBill} chave="Palo Alto" atributo="endereco"
+expect "Mark Zuckerberg - Palo Alto, California; Steven Paul Jobs - Palo Alto, California" localizarUsuario idSessao=${sessaoBill} chave="Palo Alto" atributo="endereco"
 
 # entradas inválidas
 

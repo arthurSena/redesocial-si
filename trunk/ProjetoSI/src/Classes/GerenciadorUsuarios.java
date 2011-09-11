@@ -186,12 +186,12 @@ public class GerenciadorUsuarios {
 	}
 	
 	public String getEmprestimos(String idSessao, String tipo) throws Exception {
-		return buscarUsuarioPorID(idSessao).getGerenciadorItens()
-				.getEmprestimo(buscarUsuarioEmprestador(idSessao),
+		return buscarUsuarioPorID(idSessao).getGerenciadorItens().getEmprestimo(buscarUsuarioEmprestador(idSessao),
 						buscarUsuarioPorID(idSessao), tipo);
 	}
 	
 	private Usuario buscarUsuarioEmprestador(String idSessao) throws Exception{
+		
 		for (Usuario usr: listaDeUsuarios){
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
 				if (it.getEmprestimo() != null && it.getEmprestimo().emprestimoFoiAprovado()){
@@ -206,13 +206,26 @@ public class GerenciadorUsuarios {
 	public Usuario buscarUsuarioEmprestador2(String idRequisicaoEmprestimo){
 		for (Usuario usr: listaDeUsuarios){
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
-				if (it.getEmprestimo() != null && !it.getEmprestimo().emprestimoFoiAprovado()){
-					if (it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo)){
+				if (it.getEmprestimo() != null /*&& !it.getEmprestimo().emprestimoFoiAprovado()*/){
+					if (it.getEmprestimo().getIDEmprestimo().equals(idRequisicaoEmprestimo)){
 						return usr;
 					}
 				}
 			}
 		}return null;
+	}
+	
+	public Item buscarItemEmprestador(String idEmprestimo){
+		Usuario usr = buscarUsuarioEmprestador2(idEmprestimo);
+		
+		if (usr != null){
+			usr.getGerenciadorItens().confirmarTerminoEmprestimo(idEmprestimo);
+		}
+		
+		
+		return null;
+		
+		
 	}
 	
 	public boolean requisicaoEmprestimoExiste(String idRequisicaoEmprestimo) throws Exception{
