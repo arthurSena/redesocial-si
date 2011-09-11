@@ -265,4 +265,24 @@ public class RedeSocial {
 		}
 		return true;
 	}
+	
+	
+	public String enviarMensagem (String destinatario, String assunto, String mensagem){	
+		return "";
+	}
+	
+	public String enviarMensagem (String destinatario, String assunto, String mensagem, String idRequisicaoEmprestimo){
+		return "";
+	}
+	
+	public String lerTopicos (String idSessao, String tipo){
+		return "";
+	}
+	
+	public String lerMensagens (String idSessao, String idTopico){
+		return "";
+	}
+	
+	
+	
 }
