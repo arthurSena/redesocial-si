@@ -16,6 +16,7 @@ public class Emprestimo {
 	boolean requisicaoEmprestimo;
 	boolean emprestimoAprovado;
 	boolean devolucao;
+	boolean devolvido;
 	
 	
 	public Emprestimo(Usuario beneficiado, int duracao)throws Exception{
@@ -30,6 +31,7 @@ public class Emprestimo {
 		requisicaoEmprestimo  = true;
 		emprestimoAprovado = false;
 		devolucao = false;
+		devolvido = false;
 		
 	}
 	
@@ -55,6 +57,14 @@ public class Emprestimo {
 
 	public void setDevolucao(boolean devolucao) {
 		this.devolucao = devolucao;
+	}
+
+	public boolean isDevolvido() {
+		return devolvido;
+	}
+
+	public void setDevolvido(boolean devolvido) {
+		this.devolvido = devolvido;
 	}
 
 	public String aprovarEmprestimo()throws Exception{

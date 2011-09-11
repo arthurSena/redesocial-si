@@ -190,7 +190,7 @@ public class GerenciadorUsuarios {
 						buscarUsuarioPorID(idSessao), tipo);
 	}
 	
-	private Usuario buscarUsuarioEmprestador(String idSessao) throws Exception{
+	public Usuario buscarUsuarioEmprestador(String idSessao) throws Exception{
 		
 		for (Usuario usr: listaDeUsuarios){
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
