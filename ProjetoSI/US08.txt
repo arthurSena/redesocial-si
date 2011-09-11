@@ -1,4 +1,4 @@
-# User Story 08 - Troca de mensagens privadas entre usuários
+﻿# User Story 08 - Troca de mensagens privadas entre usuários
 
 zerarSistema
 
@@ -41,7 +41,7 @@ expect "Não há tópicos criados" lerTopicos idSessao=${sessaoMark} tipo="negoc
 expect "Hello Mark; Hello Bill" lerTopicos idSessao=${sessaoMark} tipo="offtopic"
 expect "Hello Mark; Hello Bill" lerTopicos idSessao=${sessaoMark} tipo="todos"
 
-idRequisicaoEmprestimo1=requisitarEmprestimo idSessao=${sessaoSteve} idItem=${itemId1} duracao=7
+idRequisicaoEmprestimo1=requisitarEmprestimo idSessao=${sessaoSteve} idItem=${idItem1} duracao=7
 expect "Empréstimo do item The Social Network a Steven Paul Jobs" lerTopicos idSessao=${sessaoMark} tipo="negociacao"
 expect "Hello Mark; Hello Bill" lerTopicos idSessao=${sessaoMark} tipo="offtopic"
 expect "Empréstimo do item The Social Network a Steven Paul Jobs; Hello Mark; Hello Bill" lerTopicos idSessao=${sessaoMark} tipo="todos"

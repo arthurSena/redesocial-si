@@ -30,7 +30,7 @@ public class RedeSocial {
 		this.getGerenciadorUsuarios()
 				.buscarUsuarioPorID(idSessao)
 				.getGerenciadorAmizades()
-				.adicionarAmigo2(
+				.adicionarAmigo(
 						getGerenciadorUsuarios().buscarUsuarioPorLogin(login));
 		this.getGerenciadorUsuarios()
 				.buscarUsuarioPorLogin(login)
@@ -186,10 +186,12 @@ public class RedeSocial {
 	public String requisitarEmprestimo(String idSessao, String idItem, int dias) throws Exception {
 		Usuario usr = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
 		if (getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorAmizades().ehMeuAmigo(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
-			return getGerenciadorUsuarios()
-			.buscarDonoItem(idItem)
-			.getGerenciadorItens()
-			.requisitarEmprestimos(usr,idItem, dias);
+			String idRequisicaoEmprestim = getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().requisitarEmprestimos(usr,idItem, dias);
+			String assunto = "Empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome() + " a " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome();
+			String mensagem = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome() + " solicitou o empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome();
+			
+			enviarMensagem(idSessao, getGerenciadorUsuarios().buscarDonoItem(idItem).getLogin(), assunto, mensagem, idRequisicaoEmprestim);
+			return idRequisicaoEmprestim;
 		}
 		throw new Exception("O usuário não tem permissão para requisitar o empréstimo deste item");
 
@@ -230,10 +232,6 @@ public class RedeSocial {
 			throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
 		}
 		
-		if (!this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getBeneficiado().equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
-			throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
-		}
-		
 		this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().setDevolvido(true);
 		}
 		
@@ -271,20 +269,103 @@ public class RedeSocial {
 	}
 	
 	
-	public String enviarMensagem (String destinatario, String assunto, String mensagem){	
-		return "";
+	public String enviarMensagem (String idSessao, String destinatario, String assunto, String mensagem) throws Exception{		
+		if (!stringValida(idSessao)) {
+			throw new Exception("Sessão inválida");
+		}
+		
+		if (!stringValida(destinatario)){
+			throw new Exception ("Destinário inválido");
+		}
+		
+		try {
+			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		} catch (Exception e){
+			throw new Exception ("Sessão inexistente");
+		}
+		
+		try {
+			getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario);
+		} catch (Exception e){
+			throw new Exception ("Destinário inexistente");
+		}
+		
+		if (!stringValida(assunto)){
+			throw new Exception("Assunto inválido");
+		}
+		
+		if (!stringValida(mensagem)){
+			throw new Exception("Mensagem inválida");
+		}
+		
+		
+		
+		
+//		
+//		try {
+//			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+//		} catch (Exception e){
+//			throw new Exception ("Sessão inexistente");
+//		}
+//		
+//		
+//		
+//		try {
+//			this.getGerenciadorUsuarios().buscarUsuarioPorID(destinatario);
+//		} catch (Exception e){
+//			throw new Exception ("Destinário inexistente");
+//		}
+		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().enviarMensagem(getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario), assunto, mensagem);
 	}
 	
-	public String enviarMensagem (String destinatario, String assunto, String mensagem, String idRequisicaoEmprestimo){
-		return "";
+	public String enviarMensagem (String idSessao, String destinatario, String assunto, String mensagem, String idRequisicaoEmprestimo) throws Exception{
+		if (!stringValida(idSessao)) {
+			throw new Exception("Sessão inválida");
+		}
+		
+		if (!stringValida(destinatario)){
+			throw new Exception ("Destinário inválido");
+		}
+		
+		try {
+			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		} catch (Exception e){
+			throw new Exception ("Sessão inexistente");
+		}
+		
+		try {
+			getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario);
+		} catch (Exception e){
+			throw new Exception ("Destinário inexistente");
+		}
+		
+		if (!stringValida(mensagem)){
+			throw new Exception("Mensagem inválida");
+		}
+		
+		if (!stringValida(assunto)){
+			throw new Exception("Assunto inválido");
+		}
+		
+		if (!stringValida(idRequisicaoEmprestimo)){
+			throw new Exception("Identificador da requisição de empréstimo é inválido");
+		}
+		
+		try {
+			this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idRequisicaoEmprestimo);
+		} catch (Exception e) {
+			throw new Exception("Requisição de empréstimo inexistente");
+		}
+		
+		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().enviarMensagem(getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario), assunto, mensagem, idRequisicaoEmprestimo);
 	}
 	
-	public String lerTopicos (String idSessao, String tipo){
-		return "";
+	public String lerTopicos (String idSessao, String tipo) throws Exception{
+		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().lerTopicos(tipo);
 	}
 	
-	public String lerMensagens (String idSessao, String idTopico){
-		return "";
+	public String lerMensagens (String idSessao, String idTopico) throws Exception{
+		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().lerMensagens(idTopico);
 	}
 	
 	
