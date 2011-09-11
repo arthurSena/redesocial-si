@@ -213,24 +213,45 @@ public class RedeSocial {
 		if (!stringValida(idEmprestimo)){
 			throw new Exception("Identificador do empréstimo é inválido");
 		}
-		if (this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo) == null){
+		
+		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo) == null){
 			throw new Exception("Empréstimo inexistente");
 		}
 		
-		if (this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().isDevolucao()){
+		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo) == null){
+			throw new Exception("Empréstimo inexistente");
+		}
+		
+		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().isDevolvido()){
 			throw new Exception("Item já devolvido");
 		}
+		
 		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
 			throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
 		}
 		
-	}
+		this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().setDevolvido(true);
+		}
+		
+	
 	
 	public void confirmarTerminoEmprestimo(String idSessao, String idEmprestimo) throws Exception{
 		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
 		
 		if (!stringValida(idEmprestimo)){
 			throw new Exception("Identificador do empréstimo é inválido");
+		}
+		
+		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo) == null){
+			throw new Exception("Empréstimo inexistente");
+		}
+		
+		if (!this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
+			throw new Exception("O término do empréstimo só pode ser confirmado pelo dono do item");
+		}
+		
+		if (this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().isDevolucao()){
+			throw new Exception("Término do empréstimo já confirmado");
 		}
 		
 		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().setDevolucao(true);
