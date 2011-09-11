@@ -212,7 +212,7 @@ public class GerenciadorItens {
 		return true;
 	}
 	
-	private Item buscarItemPorID(String id) {
+	public Item buscarItemPorID(String id) {
 		for (Item it : getListaMeusItens()) {
 			if (it.getID().equals(id)) {
 				return it;

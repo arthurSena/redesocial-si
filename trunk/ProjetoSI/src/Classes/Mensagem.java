@@ -1,5 +1,7 @@
 package Classes;
 
+import java.util.Random;
+
 /**
  * Classe que representa uma Mensagem enviada ou recebida
  * @author ARTHUR SENA, IGOR GOMES, RENAN PINTO, RODOLFO DE LIMA
@@ -11,6 +13,8 @@ public class Mensagem {
 	String tipoDaMensagem;
 	String corpoDaMensagem; 
 	String assunto;
+	Usuario destinatario;
+	String idMensagem;
 	
 	/**
 	 * Inicia os Atributos da Classe
@@ -22,10 +26,21 @@ public class Mensagem {
 	 *                Indica do que se trata a Mensagem
 	 */
 	
-	public Mensagem(String tipoDaMensagem, String corpoMensagem, String assunto){
+	public Mensagem(Usuario destinatario, String assunto, String mensagem){
+		this.destinatario = destinatario;
 		this.assunto = assunto;
-		this.tipoDaMensagem = tipoDaMensagem;
-		this.corpoDaMensagem = corpoMensagem;
+		this.tipoDaMensagem = "offtopic";
+		this.corpoDaMensagem = mensagem;
+		this.idMensagem = geraId();
+	}
+	
+	
+	public Mensagem(Usuario destinatario, String assunto, String mensagem, String idRequisicaoEmprestimo){
+		this.destinatario = destinatario;
+		this.assunto = assunto;
+		this.tipoDaMensagem = "negociacao";
+		this.corpoDaMensagem = mensagem;
+		this.idMensagem = geraId();
 	}
 
 	public String getTipoDaMensagem() {
@@ -40,5 +55,17 @@ public class Mensagem {
 		return assunto;
 	}
 	
+	public String getIdMensagem() {
+		return idMensagem;
+	}
+
+	private String geraId(){
+		return this.destinatario.getLogin() + "-" + this.getTipoDaMensagem() + (new Random()).nextInt(1000);
+	}
+
+
+	public void addMensagem(String mensagem) {
+		this.corpoDaMensagem += "; " + mensagem;		
+	}
 	
 }
