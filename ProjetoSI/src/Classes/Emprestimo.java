@@ -5,18 +5,19 @@ import java.util.Random;
 
 public class Emprestimo {
 	
-	Usuario beneficiado;
-	Usuario Emprestador;
+	private Usuario beneficiado;
+	private Usuario Emprestador;
 	
-	int duracao;
+	private int duracao;
 	
-	String idRequisicao;
-	String idEmprestimo;
+	private String idRequisicao;
+	private String idEmprestimo;
 	
-	boolean requisicaoEmprestimo;
-	boolean emprestimoAprovado;
-	boolean devolucao;
-	boolean devolvido;
+	private boolean requisicaoEmprestimo;
+	private boolean emprestimoAprovado;
+	private boolean devolucao;
+	private boolean devolvido;
+	private boolean requisitarDevolucao;
 	
 	
 	public Emprestimo(Usuario beneficiado, int duracao)throws Exception{
@@ -32,6 +33,7 @@ public class Emprestimo {
 		emprestimoAprovado = false;
 		devolucao = false;
 		devolvido = false;
+		requisitarDevolucao = false;
 		
 	}
 	
@@ -87,5 +89,15 @@ public class Emprestimo {
 		//idRequisicao = null;
 		return idEmprestimo;
 	}
+
+	public void requisitarDevolucao() {
+		this.requisitarDevolucao = true;
+	}
+
+	public boolean isRequisitarDevolucao() {
+		return requisitarDevolucao;
+	}
+	
+	
 
 }

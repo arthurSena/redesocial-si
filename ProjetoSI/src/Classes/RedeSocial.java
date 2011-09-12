@@ -377,5 +377,12 @@ public class RedeSocial {
 	}
 	
 	
+	public void requisitarDevolucao(String idSessao, String idEmprestimo) throws Exception{
+		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().requisitarDevolucao();
+	}
+	
+	public void adicionarDias(String dias){
+		
+	}
 	
 }
