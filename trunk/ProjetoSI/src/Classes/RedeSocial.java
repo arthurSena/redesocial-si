@@ -187,10 +187,16 @@ public class RedeSocial {
 		Usuario usr = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
 		if (getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorAmizades().ehMeuAmigo(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
 			String idRequisicaoEmprestim = getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().requisitarEmprestimos(usr,idItem, dias);
-//			String assunto = "Empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome() + " a " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome();
-//			String mensagem = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome() + " solicitou o empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome();
-//			
-//			enviarMensagem(idSessao, getGerenciadorUsuarios().buscarDonoItem(idItem).getLogin(), assunto, mensagem, idRequisicaoEmprestim);
+			
+			try {
+				String assunto = "Empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome() + " a " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome();
+				String mensagem = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome() + " solicitou o empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome();
+				
+				enviarMensagem(idSessao, getGerenciadorUsuarios().buscarDonoItem(idItem).getLogin(), assunto, mensagem, idRequisicaoEmprestim);
+				
+			} catch (Exception e){
+				
+			}
 			return idRequisicaoEmprestim;
 		}
 		throw new Exception("O usuário não tem permissão para requisitar o empréstimo deste item");
@@ -351,10 +357,12 @@ public class RedeSocial {
 			throw new Exception("Identificador da requisição de empréstimo é inválido");
 		}
 		
-		try {
-			this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idRequisicaoEmprestimo);
-		} catch (Exception e) {
+		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador(idRequisicaoEmprestimo) == null){
 			throw new Exception("Requisição de empréstimo inexistente");
+		}
+		
+		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador(idRequisicaoEmprestimo).equals(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
+			throw new Exception("O usuário não participa deste empréstimo");
 		}
 		
 		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().enviarMensagem(getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario), assunto, mensagem, idRequisicaoEmprestimo);

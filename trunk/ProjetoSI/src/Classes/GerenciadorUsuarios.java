@@ -194,7 +194,7 @@ public class GerenciadorUsuarios {
 		
 		for (Usuario usr: listaDeUsuarios){
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
-				if (it.getEmprestimo() != null && it.getEmprestimo().emprestimoFoiAprovado()){
+				if (it.getEmprestimo() != null /*&& it.getEmprestimo().emprestimoFoiAprovado()*/){
 					if (it.getEmprestimo().getBeneficiado().equals(buscarUsuarioPorID(idSessao))){
 						return usr;
 					}
