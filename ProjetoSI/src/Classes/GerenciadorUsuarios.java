@@ -164,6 +164,21 @@ public class GerenciadorUsuarios {
 		throw new Exception("Sessão inexistente");
 	}
 	
+	public Usuario buscarUsuarioPorID(String idTopico,String idSessao) throws Exception {
+		if (!stringValida(idSessao)) {
+			throw new Exception("Sessão inválida");
+		}
+		
+		for (Usuario usr : listaDeUsuariosLogados) {
+			if (usr.getID().equals(idSessao)) {
+				return usr;
+			}
+		}
+		
+		
+		throw new Exception("Sessão inexistente");
+	}
+	
 	public int quantDeItensDosUsuariosLogados(){
 		int cont = 0;
 		for (Usuario usr: listaDeUsuariosLogados){
@@ -196,6 +211,7 @@ public class GerenciadorUsuarios {
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
 				if (it.getEmprestimo() != null /*&& it.getEmprestimo().emprestimoFoiAprovado()*/){
 					if (it.getEmprestimo().getBeneficiado().equals(buscarUsuarioPorID(idSessao))){
+						
 						return usr;
 					}
 				}
@@ -205,9 +221,27 @@ public class GerenciadorUsuarios {
 	
 	public Usuario buscarUsuarioEmprestador2(String idRequisicaoEmprestimo){
 		for (Usuario usr: listaDeUsuarios){
+			
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
+				
 				if (it.getEmprestimo() != null /*&& !it.getEmprestimo().emprestimoFoiAprovado()*/){
+			//		System.out.println(it.getEmprestimo().getIDEmprestimo()==null);
 					if (it.getEmprestimo().getIDEmprestimo().equals(idRequisicaoEmprestimo)){
+						return usr;
+					}
+				}
+			}
+		}return null;
+	}
+	
+	public Usuario buscarUsuarioEmprestador3(String idRequisicaoEmprestimo){
+		for (Usuario usr: listaDeUsuarios){
+			
+			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
+				
+				if (it.getEmprestimo() != null /*&& !it.getEmprestimo().emprestimoFoiAprovado()*/){
+				//	System.out.println(it.getEmprestimo().getIDEmprestimo()==null);
+					if (it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo)){
 						return usr;
 					}
 				}
@@ -228,6 +262,18 @@ public class GerenciadorUsuarios {
 		
 	}
 	
+	public Usuario buscarUsuarioBeneficiado(String idRequisicaoEmprestimo){
+		for (Usuario usr : listaDeUsuarios) {
+			for (Item it : usr.getGerenciadorItens().getListaMeusItens()) {
+				if (it.getEmprestimo().getIDRequisicao()
+						.equals(idRequisicaoEmprestimo)) {
+					return it.getEmprestimo().getBeneficiado();
+				}
+			}
+		}
+		return null;
+	}
+	
 	public boolean requisicaoEmprestimoExiste(String idRequisicaoEmprestimo) throws Exception{
 		for (Usuario usr: listaDeUsuarios){
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
@@ -239,5 +285,36 @@ public class GerenciadorUsuarios {
 			}
 		}return false;
 	}
+	
+	public Usuario buscarDestinatario(String idTopico){
+		for (Usuario usr: listaDeUsuarios){
+			for (Mensagem msg : usr.getGerenciadorMensagens().getListaDeMensagens()){
+				if (msg.getIdMensagem().equals(idTopico) && msg.getDestinatario().equals(usr)){
+					return msg.getDestinatario();
+				}
+			}
+		}return null;
+	}
+	
+	public Usuario buscarRemetente(String idTopico){
+		for (Usuario usr: listaDeUsuarios){
+			for (Mensagem msg : usr.getGerenciadorMensagens().getListaDeMensagens()){
+				if (msg.getIdMensagem().equals(idTopico) && !msg.getDestinatario().equals(usr)){
+					return usr;
+				}
+			}
+		}return null;
+	}
+	
+	public boolean msgExiste(String idTopico){
+		for (Usuario usr: listaDeUsuarios){
+			for (Mensagem msg : usr.getGerenciadorMensagens().getListaDeMensagens()){
+				if (msg.getIdMensagem().equals(idTopico)){
+					return true;
+				}
+			}
+		}return false;
+	}
+	
 
 }

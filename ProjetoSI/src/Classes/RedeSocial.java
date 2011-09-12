@@ -30,7 +30,7 @@ public class RedeSocial {
 		this.getGerenciadorUsuarios()
 				.buscarUsuarioPorID(idSessao)
 				.getGerenciadorAmizades()
-				.adicionarAmigo(
+				.adicionarAmigo2(
 						getGerenciadorUsuarios().buscarUsuarioPorLogin(login));
 		this.getGerenciadorUsuarios()
 				.buscarUsuarioPorLogin(login)
@@ -190,12 +190,13 @@ public class RedeSocial {
 			
 			try {
 				String assunto = "Empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome() + " a " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome();
+			//	System.out.println("sdfkslkad");
 				String mensagem = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome() + " solicitou o empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome();
 				
 				enviarMensagem(idSessao, getGerenciadorUsuarios().buscarDonoItem(idItem).getLogin(), assunto, mensagem, idRequisicaoEmprestim);
 				
 			} catch (Exception e){
-				
+				//System.out.println(e.getMessage());
 			}
 			return idRequisicaoEmprestim;
 		}
@@ -237,6 +238,11 @@ public class RedeSocial {
 		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
 			throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
 		}
+		
+		if (!this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getBeneficiado().equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
+            throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
+    }
+
 		
 		this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().setDevolvido(true);
 		}
@@ -335,6 +341,7 @@ public class RedeSocial {
 		
 		try {
 			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+			
 		} catch (Exception e){
 			throw new Exception ("Sessão inexistente");
 		}
@@ -356,12 +363,12 @@ public class RedeSocial {
 		if (!stringValida(idRequisicaoEmprestimo)){
 			throw new Exception("Identificador da requisição de empréstimo é inválido");
 		}
-		
-		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador(idRequisicaoEmprestimo) == null){
+		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador3(idRequisicaoEmprestimo) == null){
+			
 			throw new Exception("Requisição de empréstimo inexistente");
 		}
 		
-		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador(idRequisicaoEmprestimo).equals(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
+		if (!this.getGerenciadorUsuarios().buscarUsuarioEmprestador3(idRequisicaoEmprestimo).equals(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)) && !this.getGerenciadorUsuarios().buscarUsuarioBeneficiado(idRequisicaoEmprestimo).equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
 			throw new Exception("O usuário não participa deste empréstimo");
 		}
 		
@@ -369,20 +376,25 @@ public class RedeSocial {
 	}
 	
 	public String lerTopicos (String idSessao, String tipo) throws Exception{
+		
 		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().lerTopicos(tipo);
 	}
 	
 	public String lerMensagens (String idSessao, String idTopico) throws Exception{
-		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().lerMensagens(idTopico);
-	}
-	
-	
-	public void requisitarDevolucao(String idSessao, String idEmprestimo) throws Exception{
-		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().requisitarDevolucao();
-	}
-	
-	public void adicionarDias(String dias){
+		boolean resp1 = false;
+		boolean resp2 = false;
 		
+		if (!this.getGerenciadorUsuarios().msgExiste(idTopico)){
+			resp2=true;
+		}
+		
+		if (!this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).equals(getGerenciadorUsuarios().buscarDestinatario(idTopico)) && !this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).equals(getGerenciadorUsuarios().buscarRemetente(idTopico))){
+			resp1 = true;
+		}
+		
+		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idTopico,idSessao).getGerenciadorMensagens().lerMensagens(resp1,resp2,idTopico);
 	}
+	
+	
 	
 }
