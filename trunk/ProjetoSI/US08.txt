@@ -48,8 +48,8 @@ expect "Empréstimo do item The Social Network a Steven Paul Jobs; Hello Mark; H
 
 idTopico2=enviarMensagem idSessao=${sessaoMark} destinatario="steve" assunto="Empréstimo do item The Social Network a Steven Paul Jobs" mensagem="Right!" idRequisicaoEmprestimo=${idRequisicaoEmprestimo1}
 expect "Empréstimo do item The Social Network a Steven Paul Jobs" lerTopicos idSessao=${sessaoSteve} tipo="negociacao"
-expect "Não há tópicos criados" lerTopicos idSessao=${sessaoSteve} tipo="offtopic"
-expect "Empréstimo do item The Social Network a Steven Paul Jobs" lerTopicos idSessao=${sessaoSteve} tipo="todos"
+expect "Hello Mark" lerTopicos idSessao=${sessaoSteve} tipo="offtopic"
+expect "Empréstimo do item The Social Network a Steven Paul Jobs; Hello Mark" lerTopicos idSessao=${sessaoSteve} tipo="todos"
 
 expect "Steven Paul Jobs solicitou o empréstimo do item The Social Network; Right!" lerMensagens idSessao=${sessaoMark} idTopico=${idTopico2}
 expect "Steven Paul Jobs solicitou o empréstimo do item The Social Network; Right!" lerMensagens idSessao=${sessaoSteve} idTopico=${idTopico2}

@@ -121,10 +121,23 @@ public class GerenciadorMensagens {
 	}
 	
 	public String lerTopicos(String tipo) throws Exception {
+		//System.out.println(tipo.isEmpty());
+		if (tipo==null){
+			throw new Exception("Tipo inválido");
+		}
+		if (tipo.isEmpty()){
+			throw new Exception("Tipo inválido");
+		}
+		else if (!tipo.equals("negociacao") && !tipo.equals("offtopic") && !tipo.equals("todos")){
+			throw new Exception("Tipo inexistente");
+		}
 		String repString = "";
 		
 		if (this.getListaDeMensagens().size() > 1){
-			for (Mensagem msg : this.getListaDeMensagens()){
+			
+			for (int i =  this.getListaDeMensagens().size() -1 ; i>=0 ;i--){
+			 Mensagem msg = this.getListaDeMensagens().get(i);
+			//for (Mensagem msg : this.getListaDeMensagens()){
 				if (msg.getTipoDaMensagem().equals(tipo) || tipo.equals("todos")){
 					repString += msg.getAssunto() + "; ";
 				}
@@ -134,7 +147,9 @@ public class GerenciadorMensagens {
 			repString = formatarRequisicoes(repString);
 			
 		} else{
-			for (Mensagem msg : this.getListaDeMensagens()){
+			for (int i =  this.getListaDeMensagens().size() -1 ; i>=0 ;i--){
+				 Mensagem msg = this.getListaDeMensagens().get(i);
+			//for (Mensagem msg : this.getListaDeMensagens()){
 				if (msg.getTipoDaMensagem().equals(tipo) || tipo.equals("todos")){
 					repString += msg.getAssunto();
 				}
@@ -148,14 +163,26 @@ public class GerenciadorMensagens {
 		
 	}
 
-	public String lerMensagens(String idTopico) {
-		String reString = "";
+	public String lerMensagens(boolean resp,boolean resp2,String idTopico) throws Exception{
+		if (idTopico==null || idTopico.isEmpty()){
+			throw new Exception("Identificador do tópico é inválido");
+		}
 		
+		String reString = "";
+		Mensagem mensagem = null;
 		for (Mensagem msg : this.getListaDeMensagens()){
 			if (msg.getIdMensagem().equals(idTopico)){
 				reString += msg.getCorpoDaMensagem();
+				mensagem=msg;
 			}
 		}
+		if (resp2){
+			throw new Exception("Tópico inexistente");
+		}
+		if (resp){
+			throw new Exception("O usuário não tem permissão para ler as mensagens deste tópico");
+		}
+		
 		return reString;
 	}
 	

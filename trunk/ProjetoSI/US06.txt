@@ -62,7 +62,7 @@ expectError "Duracao inválida" requisitarEmprestimo idSessao=${sessaoMark} idIt
 expectError "Duracao inválida" requisitarEmprestimo idSessao=${sessaoMark} idItem=${idItem3} duracao=-1
 
 idRequisicaoEmprestimo3=requisitarEmprestimo idSessao=${sessaoMark} idItem=${idItem3} duracao=7
-expectError "Requisicao já solicitada" requisitarEmprestimo idSessao=${sessaoMark} idItem=${idItem3} duracao=7
+expectError "Requisição já solicitada" requisitarEmprestimo idSessao=${sessaoMark} idItem=${idItem3} duracao=7
 expectError "O usuário não tem permissão para requisitar o empréstimo deste item" requisitarEmprestimo idSessao=${sessaoSteve} idItem=${idItem3} duracao=7
 expectError "O empréstimo só pode ser aprovado pelo dono do item" aprovarEmprestimo idSessao=${sessaoMark} idRequisicaoEmprestimo=${idRequisicaoEmprestimo3}
 
@@ -83,3 +83,4 @@ expectError "Tipo inexistente" getEmprestimos idSessao=${sessaoMark} tipo="xpto"
 
 encerrarSistema
 quit
+

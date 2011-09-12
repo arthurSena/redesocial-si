@@ -46,6 +46,10 @@ public class Mensagem {
 	public String getTipoDaMensagem() {
 		return tipoDaMensagem;
 	}
+	
+	public Usuario getDestinatario(){
+		return destinatario;
+	}
 
 	public String getCorpoDaMensagem() {
 		return corpoDaMensagem;
