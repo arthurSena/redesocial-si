@@ -1,6 +1,5 @@
 package Classes;
 
-import java.util.Random;
 
 /**
  * Esta Classe representa um Usu�rio da Rede Social

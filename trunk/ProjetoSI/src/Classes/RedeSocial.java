@@ -1,10 +1,5 @@
 package Classes;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.w3c.dom.ls.LSInput;
 
 public class RedeSocial {
 
