@@ -107,7 +107,7 @@ public class GerenciadorItens {
 				return ("Não há empréstimos deste tipo");
 			}
 			for (Item it: usr1.getGerenciadorItens().getListaMeusItens()){
-				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && (!it.getEmprestimo().isDevolucao()) && it.getEmprestimo().getBeneficiado().equals(usr)){
+				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && !it.getEmprestimo().isRequisitarDevolucao() && (!it.getEmprestimo().isDevolucao()) && it.getEmprestimo().getBeneficiado().equals(usr)){
 					retorno += usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
 				}
 			}
@@ -119,7 +119,7 @@ public class GerenciadorItens {
 		else if(tipo.equals("emprestador")){
 			String retorno = "";
 			for (Item it: listaMeusItens){
-				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && (!it.getEmprestimo().isDevolucao())){
+				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && !it.getEmprestimo().isRequisitarDevolucao() && (!it.getEmprestimo().isDevolucao())){
 					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
 				}
 			}
@@ -133,12 +133,17 @@ public class GerenciadorItens {
 			
 			int cont = 0;
 			for (Item it: listaMeusItens){
-				if (it.getEmprestimo()!=null && it.getEmprestimo().isDevolucao()){
+				if (it.getEmprestimo()!=null && it.getEmprestimo().isDevolucao() && !it.getEmprestimo().isRequisitarDevolucao()){
 					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado";
 					cont++;
 				}
 				
-				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && (!it.getEmprestimo().isDevolucao())){
+				if (it.getEmprestimo()!=null && it.getEmprestimo().isRequisitarDevolucao() ){
+					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Cancelado";
+					cont++;
+				}
+				
+				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && !it.getEmprestimo().isRequisitarDevolucao() && (!it.getEmprestimo().isDevolucao())){
 					if (cont==0){
 						retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
 						cont++;
@@ -151,12 +156,17 @@ public class GerenciadorItens {
 			}
 			if (usr1!=null){
 				for (Item it: usr1.getGerenciadorItens().getListaMeusItens()){
-					if (it.getEmprestimo()!=null && it.getEmprestimo().isDevolucao()){
+					if (it.getEmprestimo()!=null && it.getEmprestimo().isDevolucao() && !it.getEmprestimo().isRequisitarDevolucao()){
 						retorno += usr1.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado";
 						cont++;
 					}
 					
-					if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && (!it.getEmprestimo().isDevolucao()) && it.getEmprestimo().getBeneficiado().equals(usr)){
+					if (it.getEmprestimo()!=null && it.getEmprestimo().isRequisitarDevolucao()){
+						retorno += usr1.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Cancelado";
+						cont++;
+					}
+					
+					if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && !it.getEmprestimo().isRequisitarDevolucao() && (!it.getEmprestimo().isDevolucao()) && it.getEmprestimo().getBeneficiado().equals(usr)){
 						if (cont==0){
 							retorno += usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
 							cont++;
