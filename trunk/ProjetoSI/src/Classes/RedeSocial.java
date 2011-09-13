@@ -185,7 +185,6 @@ public class RedeSocial {
 			
 			try {
 				String assunto = "Empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome() + " a " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome();
-			//	System.out.println("sdfkslkad");
 				String mensagem = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome() + " solicitou o empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome();
 				
 				enviarMensagem(idSessao, getGerenciadorUsuarios().buscarDonoItem(idItem).getLogin(), assunto, mensagem, idRequisicaoEmprestim);
@@ -389,6 +388,22 @@ public class RedeSocial {
 		
 		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idTopico,idSessao).getGerenciadorMensagens().lerMensagens(resp1,resp2,idTopico);
 	}
+	
+	public void requisitarDevolucao(String idSessao, String idEmprestimo) throws Exception{
+		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().requisitarDevolucao();
+		
+		try {
+			String assunto = "Empréstimo do item " + this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome() + " a " + this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getBeneficiado().getNome();
+			String mensagem = this.getGerenciadorUsuarios().buscarDonoItem(this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getID()).getNome() + " soliticou a devolução do item " + this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome();
+			enviarMensagem(idSessao, this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getBeneficiado().getLogin(), assunto, mensagem, idEmprestimo);
+		} catch (Exception e){
+			System.out.println(e.getLocalizedMessage());
+		}
+			}
+		
+	public void adicionarDias(String dias){
+			
+		}
 	
 	
 	
