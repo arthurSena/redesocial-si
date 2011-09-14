@@ -1,5 +1,7 @@
 package Classes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -18,6 +20,7 @@ public class Emprestimo {
 	private boolean devolucao;
 	private boolean devolvido;
 	private boolean requisitarDevolucao;
+	private List<Usuario> listaDeUsuariosInteressados;
 	
 	
 	public Emprestimo(Usuario beneficiado, int duracao)throws Exception{
@@ -27,6 +30,8 @@ public class Emprestimo {
 		else if(duracao<=0){
 			throw new Exception("Duracao inválida");
 		}
+		
+		this.listaDeUsuariosInteressados = new ArrayList<Usuario>();
 		this.beneficiado = beneficiado;
 		this.duracao = duracao;
 		requisicaoEmprestimo  = true;
@@ -58,7 +63,7 @@ public class Emprestimo {
 	}
 
 	public void setDevolucao(boolean devolucao) {
-		this.devolucao = devolucao;
+		this.devolucao = devolucao;		
 	}
 
 	public boolean isDevolvido() {
@@ -93,12 +98,24 @@ public class Emprestimo {
 
 	public void requisitarDevolucao() {
 		this.requisitarDevolucao = true;
+		
+		
+		
 	}
 
 	public boolean isRequisitarDevolucao() {
 		return requisitarDevolucao;
 	}
 	
+	public List<Usuario> getListaDeUsuariosInteressados() {
+		return listaDeUsuariosInteressados;
+	}
+
+	public void registrarInteresse (Usuario usuario){
+		if (!getListaDeUsuariosInteressados().contains(usuario)){
+			this.listaDeUsuariosInteressados.add(usuario);
+		}
+	}
 	
 
 }

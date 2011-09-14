@@ -263,7 +263,15 @@ public class RedeSocial {
 		}
 		
 		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().setDevolucao(true);
-
+				
+		String assunto = "O item " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome() + " do usuário " + this.getGerenciadorUsuarios().buscarDonoItem(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getID()).getNome() + " está disponível";
+		String mensagem = "Agora você pode requisitar o empréstimo do " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome();
+		 
+		
+		for (Usuario usuario : this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getListaDeUsuariosInteressados() ){
+			String destinatario = usuario.getLogin();
+			enviarMensagem(idSessao, destinatario, assunto, mensagem);
+		}
 		
 	}
 	
@@ -303,24 +311,6 @@ public class RedeSocial {
 		if (!stringValida(mensagem)){
 			throw new Exception("Mensagem inválida");
 		}
-		
-		
-		
-		
-//		
-//		try {
-//			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-//		} catch (Exception e){
-//			throw new Exception ("Sessão inexistente");
-//		}
-//		
-//		
-//		
-//		try {
-//			this.getGerenciadorUsuarios().buscarUsuarioPorID(destinatario);
-//		} catch (Exception e){
-//			throw new Exception ("Destinário inexistente");
-//		}
 		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().enviarMensagem(getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario), assunto, mensagem);
 	}
 	
@@ -443,8 +433,27 @@ public class RedeSocial {
 			}
 		
 	public void adicionarDias(String dias){
-			
 		}
+	
+	public void registrarInteresse(String idSessao, String idItem) throws Exception{
+		if (!stringValida(idSessao)) {
+			throw new Exception("Sessão inválida");
+		}
+		
+		try {
+			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+			
+		} catch (Exception e){
+			throw new Exception ("Sessão inexistente");
+		}
+		
+		
+		this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getEmprestimo().registrarInteresse(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao));
+		
+	}
+	
+	
+	
 	
 	
 	
