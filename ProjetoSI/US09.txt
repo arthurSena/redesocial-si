@@ -51,8 +51,8 @@ expect "steve-mark:Guia do mochileiro das galáxias:Completado; mark-steve:The S
 expectError "Sessão inválida" requisitarDevolucao idSessao= idEmprestimo="xpto"
 expectError "Sessão inválida" requisitarDevolucao idSessao="" idEmprestimo="xpto"
 expectError "Sessão inexistente" requisitarDevolucao idSessao="xpto" idEmprestimo="xpto"
-expectError "Identificador do empréstimo é inválido" requisitarDevolucao idSessao=${sessaoMark} idEmprestimo="xpto"
-expectError "Identificador do empréstimo é inválido" requisitarDevolucao idSessao=${sessaoMark} idEmprestimo="xpto"
+expectError "Identificador do empréstimo é inválido" requisitarDevolucao idSessao=${sessaoMark} idEmprestimo=
+expectError "Identificador do empréstimo é inválido" requisitarDevolucao idSessao=${sessaoMark} idEmprestimo=""
 expectError "Empréstimo inexistente" requisitarDevolucao idSessao=${sessaoMark} idEmprestimo="xpto"
 
 expectError "O usuário não tem permissão para requisitar a devolução deste item" requisitarDevolucao idSessao=${sessaoBill} idEmprestimo=${idEmprestimo1}
@@ -62,7 +62,7 @@ devolverItem idSessao=${sessaoSteve} idEmprestimo=${idEmprestimo1}
 expectError "Item já devolvido" requisitarDevolucao idSessao=${sessaoMark} idEmprestimo=${idEmprestimo1}
 
 confirmarTerminoEmprestimo idSessao=${sessaoMark} idEmprestimo=${idEmprestimo1}
-expect "mark-steve:The Social Network:Cancelado; steve-mark:Guia do mochileiro das galáxias:Completado" getEmprestimos idSessao=${sessaoSteve} tipo="todos"
+expect "steve-mark:Guia do mochileiro das galáxias:Completado; mark-steve:The Social Network:Cancelado" getEmprestimos idSessao=${sessaoSteve} tipo="todos"
 
 expectError "Item já devolvido" requisitarDevolucao idSessao=${sessaoMark} idEmprestimo=${idEmprestimo1}
 

@@ -358,7 +358,6 @@ public class RedeSocial {
 			throw new Exception("Identificador da requisição de empréstimo é inválido");
 		}
 		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador3(idRequisicaoEmprestimo) == null){
-			
 			throw new Exception("Requisição de empréstimo inexistente");
 		}
 		
@@ -390,12 +389,54 @@ public class RedeSocial {
 	}
 	
 	public void requisitarDevolucao(String idSessao, String idEmprestimo) throws Exception{
+		
+		if (!stringValida(idSessao)) {
+			throw new Exception("Sessão inválida");
+		}
+		
+		try {
+			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+			
+		} catch (Exception e){
+			throw new Exception ("Sessão inexistente");
+		}
+		
+		if (!stringValida(idEmprestimo)){
+			throw new Exception("Identificador do empréstimo é inválido");
+		}
+		
+		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo) == null){
+			throw new Exception("Empréstimo inexistente");
+		}
+		
+		try {
+			boolean testa = (!this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).equals(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)) && !this.getGerenciadorUsuarios().buscarUsuarioBeneficiado(idEmprestimo).equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)));	
+		}catch (Exception e){
+			throw new Exception("O usuário não tem permissão para requisitar a devolução deste item");
+		}	
+		
+		if (this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().isDevolucao()){
+			throw new Exception ("Item já devolvido");
+		}
+		
+		if (this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().isDevolvido()){
+			throw new Exception ("Item já devolvido");
+		}
+		
+		
+		
+		if (this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().isRequisitarDevolucao()){
+			throw new Exception ("Devolução já requisitada");
+		}
+		
 		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().requisitarDevolucao();
 		
 		try {
 			String assunto = "Empréstimo do item " + this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome() + " a " + this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getBeneficiado().getNome();
 			String mensagem = this.getGerenciadorUsuarios().buscarDonoItem(this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getID()).getNome() + " soliticou a devolução do item " + this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome();
-			enviarMensagem(idSessao, this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getBeneficiado().getLogin(), assunto, mensagem, idEmprestimo);
+			String destinatario = this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getBeneficiado().getLogin();
+			
+			enviarMensagem(idSessao, destinatario, assunto, mensagem, this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getIDRequisicao());
 		} catch (Exception e){
 			System.out.println(e.getLocalizedMessage());
 		}
