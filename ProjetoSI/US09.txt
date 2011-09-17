@@ -31,7 +31,7 @@ expect "mark-steve:The Social Network:Cancelado" getEmprestimos idSessao=${sessa
 idTopico1=enviarMensagem idSessao=${sessaoMark} destinatario="steve" assunto="Empréstimo do item The Social Network a Steven Paul Jobs" mensagem="Steve, I need the film back." idRequisicaoEmprestimo=${idRequisicaoEmprestimo1}
 
 expect "Empréstimo do item The Social Network a Steven Paul Jobs" lerTopicos idSessao=${sessaoSteve} tipo="todos"
-expect "Steven Paul Jobs solicitou o empréstimo do item The Social Network; Mark Zuckerberg soliticou a devolução do item The Social Network; Steve, I need the film back." lerMensagens idSessao=${sessaoSteve} idTopico=${idTopico1}
+expect "Steven Paul Jobs solicitou o empréstimo do item The Social Network; Mark Zuckerberg solicitou a devolução do item The Social Network; Steve, I need the film back." lerMensagens idSessao=${sessaoSteve} idTopico=${idTopico1}
 
 idRequisicaoEmprestimo2=requisitarEmprestimo idSessao=${sessaoMark} idItem=${idItem2} duracao=7
 idEmprestimo2=aprovarEmprestimo idSessao=${sessaoSteve} idRequisicaoEmprestimo=${idRequisicaoEmprestimo2}

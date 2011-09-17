@@ -130,7 +130,22 @@ public class RedeSocial {
 	 */
 	public String getAmigos(String idSessao, String login) throws Exception {
 //		Usuario usuario = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		
+		if (!stringValida(idSessao)) {
+			throw new Exception("Sessão inválida");
+		}
+		
+		try {
+			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+			
+		} catch (Exception e){
+			throw new Exception ("Sessão inexistente");
+		}
+		
 		Usuario usuario2 = getGerenciadorUsuarios().buscarUsuarioPorLogin(login);
+		
+	
+		
 		
 		if (usuario2.getGerenciadorAmizades().getListaDeAmigos().isEmpty()){
 			return "O usuário não possui amigos";
@@ -274,12 +289,10 @@ public class RedeSocial {
 		}
 		
 		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().setDevolucao(true);
-		
 		if(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().foiCompletado()){
 			System.out.println("TAH ENTRANDO AKI !!!");
 			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().addEmprestimoCompletado(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo());
 		}
-		
 		String assunto = "O item " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome() + " do usuário " + this.getGerenciadorUsuarios().buscarDonoItem(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getID()).getNome() + " está disponível";
 		String mensagem = "Agora você pode requisitar o empréstimo do " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome();
 		 
@@ -305,7 +318,7 @@ public class RedeSocial {
 		}
 		
 		if (!stringValida(destinatario)){
-			throw new Exception ("Destinário inválido");
+			throw new Exception ("Destinatário inválido");
 		}
 		
 		try {
@@ -317,7 +330,7 @@ public class RedeSocial {
 		try {
 			getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario);
 		} catch (Exception e){
-			throw new Exception ("Destinário inexistente");
+			throw new Exception ("Destinatário inexistente");
 		}
 		
 		if (!stringValida(assunto)){
@@ -336,7 +349,7 @@ public class RedeSocial {
 		}
 		
 		if (!stringValida(destinatario)){
-			throw new Exception ("Destinário inválido");
+			throw new Exception ("Destinatário inválido");
 		}
 		
 		try {
@@ -349,7 +362,7 @@ public class RedeSocial {
 		try {
 			getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario);
 		} catch (Exception e){
-			throw new Exception ("Destinário inexistente");
+			throw new Exception ("Destinatário inexistente");
 		}
 		
 		if (!stringValida(mensagem)){
@@ -614,7 +627,6 @@ public class RedeSocial {
 		usuario.getGerenciadorItens().apagarItem(item);
 
 	}
-	
 	
 	public String getRanking(String idSessao, String categoria) throws Exception{
 		return this.getGerenciadorUsuarios().getRanking(idSessao, categoria);

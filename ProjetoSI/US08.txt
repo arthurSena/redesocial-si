@@ -1,4 +1,4 @@
-﻿# User Story 08 - Troca de mensagens privadas entre usuários
+# User Story 08 - Troca de mensagens privadas entre usuários
 
 zerarSistema
 
@@ -59,9 +59,9 @@ expect "Steven Paul Jobs solicitou o empréstimo do item The Social Network; Rig
 expectError "Sessão inválida" enviarMensagem idSessao= destinatario="xpto" assunto="xpto" mensagem="xpto"
 expectError "Sessão inválida" enviarMensagem idSessao="" destinatario="xpto" assunto="xpto" mensagem="xpto"
 expectError "Sessão inexistente" enviarMensagem idSessao="xpto" destinatario="xpto" assunto="xpto" mensagem="xpto"
-expectError "Destinário inválido" enviarMensagem idSessao=${sessaoMark} destinatario= assunto="xpto" mensagem="xpto"
-expectError "Destinário inválido" enviarMensagem idSessao=${sessaoMark} destinatario="" assunto="xpto" mensagem="xpto"
-expectError "Destinário inexistente" enviarMensagem idSessao=${sessaoMark} destinatario="xpto" assunto="xpto" mensagem="xpto"
+expectError "Destinatário inválido" enviarMensagem idSessao=${sessaoMark} destinatario= assunto="xpto" mensagem="xpto"
+expectError "Destinatário inválido" enviarMensagem idSessao=${sessaoMark} destinatario="" assunto="xpto" mensagem="xpto"
+expectError "Destinatário inexistente" enviarMensagem idSessao=${sessaoMark} destinatario="xpto" assunto="xpto" mensagem="xpto"
 expectError "Assunto inválido" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto= mensagem="xpto"
 expectError "Assunto inválido" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto="" mensagem="xpto"
 expectError "Mensagem inválida" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto="xpto" mensagem=
@@ -70,13 +70,13 @@ expectError "Mensagem inválida" enviarMensagem idSessao=${sessaoMark} destinata
 expectError "Sessão inválida" enviarMensagem idSessao= destinatario="xpto" assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo="xpto"
 expectError "Sessão inválida" enviarMensagem idSessao="" destinatario="xpto" assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo="xpto"
 expectError "Sessão inexistente" enviarMensagem idSessao="xpto" destinatario="xpto" assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo="xpto"
-expectError "Destinário inválido" enviarMensagem idSessao=${sessaoMark} destinatario= assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo="xpto"
-expectError "Destinário inválido" enviarMensagem idSessao=${sessaoMark} destinatario="" assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo="xpto"
-expectError "Destinário inexistente" enviarMensagem idSessao=${sessaoMark} destinatario="xpto" assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo="xpto"
+expectError "Destinatário inválido" enviarMensagem idSessao=${sessaoMark} destinatario= assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo="xpto"
+expectError "Destinatário inválido" enviarMensagem idSessao=${sessaoMark} destinatario="" assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo="xpto"
+expectError "Destinatário inexistente" enviarMensagem idSessao=${sessaoMark} destinatario="xpto" assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo="xpto"
 expectError "Assunto inválido" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto= mensagem="xpto" idRequisicaoEmprestimo="xpto"
 expectError "Assunto inválido" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto="" mensagem="xpto" idRequisicaoEmprestimo="xpto"
-expectError "Mensagem inválida" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto= mensagem= idRequisicaoEmprestimo="xpto"
-expectError "Mensagem inválida" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto="" mensagem="" idRequisicaoEmprestimo="xpto"
+expectError "Mensagem inválida" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto="xpto" mensagem= idRequisicaoEmprestimo="xpto"
+expectError "Mensagem inválida" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto="xpto" mensagem="" idRequisicaoEmprestimo="xpto"
 expectError "Identificador da requisição de empréstimo é inválido" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo=
 expectError "Identificador da requisição de empréstimo é inválido" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo=""
 expectError "Requisição de empréstimo inexistente" enviarMensagem idSessao=${sessaoMark} destinatario="bill" assunto="xpto" mensagem="xpto" idRequisicaoEmprestimo="xpto"
