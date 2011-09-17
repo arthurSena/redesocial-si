@@ -67,14 +67,16 @@ public class GerenciadorMensagens {
 		Mensagem msgReturn = null;
 		
 		if (assuntoExiste(assunto)){
+			
 			for (Mensagem msg : this.getListaDeMensagens()){
 				if (msg.getAssunto().equals(assunto)){
 					msg.addMensagem(mensagem);
 					msgReturn = msg;
 				}
 			}
+			System.out.println(destinatario.getLogin() + "a");
+			System.out.println((destinatario.getGerenciadorMensagens().listaDeMensagens.isEmpty()));
 		} else{
-
 			Mensagem msg = new Mensagem(destinatario, assunto, mensagem);
 			this.addMensagem(msg);
 			destinatario.getGerenciadorMensagens().addMensagem(msg);
@@ -121,17 +123,14 @@ public class GerenciadorMensagens {
 	
 	public String lerTopicos(String tipo) throws Exception {
 		//System.out.println(tipo.isEmpty());
-		if (tipo==null){
+		if (tipo==null || tipo.isEmpty()){
 			throw new Exception("Tipo inválido");
 		}
-		if (tipo.isEmpty()){
-			throw new Exception("Tipo inválido");
-		}
+		
 		else if (!tipo.equals("negociacao") && !tipo.equals("offtopic") && !tipo.equals("todos")){
 			throw new Exception("Tipo inexistente");
 		}
 		String repString = "";
-		
 		if (this.getListaDeMensagens().size() > 1){
 			
 			for (int i =  this.getListaDeMensagens().size() -1 ; i>=0 ;i--){
@@ -151,6 +150,7 @@ public class GerenciadorMensagens {
 			//for (Mensagem msg : this.getListaDeMensagens()){
 				if (msg.getTipoDaMensagem().equals(tipo) || tipo.equals("todos")){
 					repString += msg.getAssunto();
+					
 				}
 			}
 		}
