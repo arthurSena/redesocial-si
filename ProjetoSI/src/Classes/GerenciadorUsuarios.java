@@ -321,5 +321,13 @@ public class GerenciadorUsuarios {
 			usr.getGerenciadorItens().incrementarDias(dias);
 		}
 	}
+	
+	public void desfazerAmizade(Usuario usuario, Usuario usuario2){
+		usuario.getGerenciadorAmizades().desfazerAmizade(usuario2);
+		usuario2.getGerenciadorAmizades().desfazerAmizade(usuario);
+	}
+	
+	
+
 
 }

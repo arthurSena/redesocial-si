@@ -129,9 +129,10 @@ public class RedeSocial {
 	 * @return
 	 */
 	public String getAmigos(String idSessao, String login) throws Exception {
-
-		if (getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)
-				.getGerenciadorAmizades().getListaDeAmigos().isEmpty()) {
+//		Usuario usuario = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		Usuario usuario2 = getGerenciadorUsuarios().buscarUsuarioPorLogin(login);
+		
+		if (usuario2.getGerenciadorAmizades().getListaDeAmigos().isEmpty()){
 			return "O usuário não possui amigos";
 		}
 
@@ -139,10 +140,9 @@ public class RedeSocial {
 			throw new Exception("Usuário inexistente");
 		}
 
-		else {
-			return getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)
-					.getGerenciadorAmizades().buscaPerfil(login)
-					.getGerenciadorAmizades().stringDeAmigos();
+		else {	
+				return usuario2.getGerenciadorAmizades().stringDeAmigos();
+
 		}
 	}
 
@@ -203,10 +203,21 @@ public class RedeSocial {
 	}
 	
 	public String aprovarEmprestimo(String idSessao, String idRequisicaoEmprestimo)throws Exception{
-		/*if(!this.getGerenciadorUsuarios().requisicaoEmprestimoExiste(idRequisicaoEmprestimo)){
-			throw new Exception("Requisição de empréstimo inexistente");
-		}*/
-		
+//		Usuario usuario = null;
+//		Usuario usuario2 = null;
+//		
+//		try {
+//
+//			usuario = this.getGerenciadorUsuarios().buscarUsuarioEmprestador3(idRequisicaoEmprestimo);
+//			usuario2 = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+//		} catch (Exception e){
+//			System.out.println(e.getMessage());
+//			
+//		}
+//		if (!usuario.getGerenciadorAmizades().ehMeuAmigo(usuario2)){
+//			throw new Exception ("Requisição de empréstimo inexistente");
+//			
+//		}
 		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().aprovarRequisicaoEmprestimo(this.getGerenciadorUsuarios().requisicaoEmprestimoExiste(idRequisicaoEmprestimo),idRequisicaoEmprestimo);
 	}
 	
@@ -533,7 +544,44 @@ public class RedeSocial {
 		}
 		return false;
 	}
-
+	
+	public void desfazerAmizade (String idSessao, String loginAmigo) throws Exception{
+		
+		
+		if (!stringValida(idSessao)) {
+			throw new Exception("Sessão inválida");
+		}
+		
+		try {
+			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+			
+		} catch (Exception e){
+			throw new Exception ("Sessão inexistente");
+		}
+		
+		if (!stringValida(loginAmigo)) {
+			throw new Exception("Login inválido");
+		}
+		
+		if (!getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorAmizades().ehMeuAmigo(getGerenciadorUsuarios().buscarUsuarioPorLogin(loginAmigo))) {
+			throw new Exception("Amizade inexistente");
+		}
+		
+		Usuario usuario =  null;
+		Usuario usuario2 = null;
+		
+		
+		try{
+			usuario = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+			usuario2 = this.getGerenciadorUsuarios().buscarUsuarioPorLogin(loginAmigo);
+		} catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+		
+		
+		this.getGerenciadorUsuarios().desfazerAmizade(usuario, usuario2);
+		
+	}  
 	
 	
 }

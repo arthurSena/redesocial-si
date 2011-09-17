@@ -243,4 +243,8 @@ public class GerenciadorAmizades {
 		return true;
 	}
 	
+	public void desfazerAmizade (Usuario usuario){
+		this.listaDeAmigos.remove(usuario);
+	}
+	
 }
