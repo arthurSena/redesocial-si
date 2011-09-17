@@ -306,5 +306,14 @@ public class GerenciadorItens {
 		
 		return resp;
 	}
+	
+	public void apagarItem(Item item){
+//		if (this.getListaMeusItens().contains(item) && !itensPraEmprestar.contains(item)){
+//			//TODO lancar erro pois nao pode excluir item se ele ta emprstado
+//			
+//		} else {
+			this.getListaMeusItens().remove(item);
+//		}
+	}
 
 }
