@@ -1,5 +1,7 @@
 package Classes;
 
+import java.util.List;
+
 
 /**
  * Esta Classe representa um Usu�rio da Rede Social
@@ -19,6 +21,7 @@ public class Usuario {
 	private GerenciadorAmizades gerenciaAmizade;
 	private GerenciadorMensagens gerenciaMensagens;
 	private GerenciadorItens gerenciaItens;
+
 
 	/**
 	 * Inicia os Atributos da Classe
@@ -208,5 +211,10 @@ public class Usuario {
 		return resposta;
 	}
 	
+	public int getReputacao(){
+		return getGerenciadorItens().quantEmprestimosCompletados();
+	}
+	
+
 	
 }

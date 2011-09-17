@@ -51,6 +51,7 @@ public class Item {
     
     public String criarRequisicaoEmprestimo(Usuario beneficiado, int duracao) throws Exception{
     	emprestimo = new Emprestimo(beneficiado, duracao);
+    	emprestimo.requisitarEmprestimo();
     	return emprestimo.gerarIDRequisicao();
     }
     

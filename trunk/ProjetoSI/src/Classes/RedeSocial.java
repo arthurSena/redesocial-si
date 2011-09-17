@@ -274,7 +274,12 @@ public class RedeSocial {
 		}
 		
 		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().setDevolucao(true);
-				
+		
+		if(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().foiCompletado()){
+			System.out.println("TAH ENTRANDO AKI !!!");
+			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().addEmprestimoCompletado(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo());
+		}
+		
 		String assunto = "O item " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome() + " do usuário " + this.getGerenciadorUsuarios().buscarDonoItem(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getID()).getNome() + " está disponível";
 		String mensagem = "Agora você pode requisitar o empréstimo do " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome();
 		 
@@ -608,6 +613,11 @@ public class RedeSocial {
 		
 		usuario.getGerenciadorItens().apagarItem(item);
 
+	}
+	
+	
+	public String getRanking(String idSessao, String categoria) throws Exception{
+		return this.getGerenciadorUsuarios().getRanking(idSessao, categoria);
 	}
 	
 	

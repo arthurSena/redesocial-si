@@ -325,4 +325,81 @@ public class GerenciadorUsuarios {
 		usuario.getGerenciadorAmizades().desfazerAmizade(usuario2);
 		usuario2.getGerenciadorAmizades().desfazerAmizade(usuario);
 	}
+	
+	public String getRanking(String idSessao, String categoria) throws Exception{
+		buscarUsuarioPorID(idSessao);
+		String retorno = "";
+		if(!stringValida(categoria)){
+			throw new Exception("Categoria inválida");
+		}
+		else if(categoria.equals("amigos")){
+			List<Usuario> listaUsuarioReputacao = new ArrayList<Usuario>();
+			listaUsuarioReputacao.add(buscarUsuarioPorID(idSessao));
+			for(Usuario usuarios: listaDeUsuarios){
+				if(buscarUsuarioPorID(idSessao).getGerenciadorAmizades().ehMeuAmigo(usuarios)){
+					listaUsuarioReputacao.add(usuarios);
+				}
+			}
+			
+			while(!listaUsuarioReputacao.isEmpty()){
+				Usuario usr = usuarioComMaisAltaReputacaoDaLista(listaUsuarioReputacao);
+				retorno+=usr.getLogin() + "; ";
+				System.out.println(usr.getReputacao());
+				listaUsuarioReputacao.remove(usr);
+			}
+			
+
+			return formatarRequisicoes(retorno);
+		}
+		else if(categoria.equals("global")){
+			List<Usuario> listaUsuarioReputacao = new ArrayList<Usuario>();
+			
+			for(Usuario usuarios: listaDeUsuarios){
+				listaUsuarioReputacao.add(usuarios);
+			}
+			
+			while(!listaUsuarioReputacao.isEmpty()){
+				Usuario usr = usuarioComMaisAltaReputacaoDaLista(listaUsuarioReputacao);
+				retorno+=usr.getLogin() + "; ";
+				System.out.println(usr.getReputacao());
+				listaUsuarioReputacao.remove(usr);
+			}
+			
+			
+			return formatarRequisicoes(retorno);
+			
+		}
+		else{
+			throw new Exception("Categoria inexistente");
+		}
+	}
+	
+	private Usuario usuarioComMaisAltaReputacaoDaLista(List<Usuario> lista){
+		Usuario usuario = lista.get(0);
+		for(Usuario usr: lista){
+			if (usr.getReputacao()>usuario.getReputacao()){
+				usuario = usr;
+			}
+		}return usuario;
+	}
+	//TODO dpois arruma isso
+	private String formatarRequisicoes(String requisicoes){
+		String retorno = "";
+		for (int i =0;i< requisicoes.split("; ").length;i++){
+			if (i==requisicoes.split("; ").length-1){
+				retorno +=requisicoes.split("; ")[i];
+				break;
+			}
+
+//			if (retorno.contains("; ")){
+//				retorno += requisicoes.split("; ")[i];
+//			}
+//			else{
+				retorno += requisicoes.split("; ")[i] + "; ";
+
+//			}
+			
+			
+		}return retorno;
+	}
 }

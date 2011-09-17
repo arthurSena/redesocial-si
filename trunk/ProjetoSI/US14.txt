@@ -38,7 +38,6 @@ devolverItem idSessao=${sessaoMark} idEmprestimo=${idEmprestimo3}
 confirmarTerminoEmprestimo idSessao=${sessaoBill} idEmprestimo=${idEmprestimo3}
 
 expect "steve; bill; mark" getRanking idSessao=${sessaoMark} categoria="global"
-
 expect "steve; bill; mark" getRanking idSessao=${sessaoMark} categoria="amigos"
 expect "steve; mark" getRanking idSessao=${sessaoSteve} categoria="amigos"
 expect "bill; mark" getRanking idSessao=${sessaoBill} categoria="amigos"

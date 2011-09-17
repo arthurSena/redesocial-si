@@ -29,6 +29,7 @@ public class Emprestimo {
 	private String dataDeDevolucao;
 	private GregorianCalendar calendario;
 	private boolean isCancelado;
+	private boolean isCompletado;
 	private int metodoFoiXamado = 0;
 	
 	public Emprestimo(Usuario beneficiado, int duracao)throws Exception{
@@ -71,6 +72,9 @@ public class Emprestimo {
 	}
 
 	public void setDevolucao(boolean devolucao) {
+		if(devolucao){
+			this.isCompletado = ((!isRequisitarDevolucao()) /*|| (isDevolucao() && !tempoEmprestimoNaoExpiro()*/);
+		}
 		this.devolucao = devolucao;		
 	}
 
@@ -178,6 +182,18 @@ public class Emprestimo {
 			calendario = new GregorianCalendar();			
 		}
 		calendario.add(Calendar.DATE, dias);
+	}
+	
+	public void requisitarEmprestimo(){
+		requisicaoEmprestimo = true;
+	}
+	
+	public boolean emprestimoFoiRequisitado(){
+		return requisicaoEmprestimo;
+	}
+	
+	public boolean foiCompletado(){
+		return isCompletado;
 	}
 }
 
