@@ -28,6 +28,8 @@ public class Emprestimo {
 	private List<Usuario> listaDeUsuariosInteressados;
 	private String dataDeDevolucao;
 	private GregorianCalendar calendario;
+	private boolean isCancelado;
+	private int metodoFoiXamado = 0;
 	
 	public Emprestimo(Usuario beneficiado, int duracao)throws Exception{
 		if (beneficiado==null){
@@ -106,9 +108,12 @@ public class Emprestimo {
 	}
 
 	public void requisitarDevolucao() {
-		calendario = new  GregorianCalendar();
+		if(calendario==null){
+			calendario = new  GregorianCalendar();
+		}
 		this.requisitarDevolucao = true;
 	}
+			
 
 	public boolean isRequisitarDevolucao() {
 		
@@ -125,35 +130,48 @@ public class Emprestimo {
 		}
 	}
 	
-	public boolean tempoEmprestimoExpiro(){
+	public boolean tempoEmprestimoNaoExpiro(){
+		if (this.metodoFoiXamado>=1){
+			return isCancelado;
+		}
 		boolean retorno = false;
 		String[] data1 = this.dataDeDevolucao.split("/");
 		String[] dataHJ = DateFormat.getDateInstance().format(this.calendario.getTime()).split("/");
-		if (data1[2].equals(dataHJ[2])){
+		
+		if(this.dataDeDevolucao.equals(DateFormat.getDateInstance().format(this.calendario.getTime()))){
+			retorno= false;
+		}
+		
+		else if (data1[2].equals(dataHJ[2])){
 			if (data1[1].equals(dataHJ[1])){
 				if (Integer.parseInt(data1[0])>=(Integer.parseInt(dataHJ[0]))){
-					retorno = false;
+					retorno = true;
 				}
 				else{
-					retorno = true;
+					retorno = false;
 				}
 			}
 		}
 		else if (data1[2].equals(dataHJ[2])){
 			
 			if (Integer.parseInt(data1[1])>=(Integer.parseInt(dataHJ[1]))){
-				retorno = false;
+				retorno =true;
 			}
 			else{
-				retorno = true;
+				retorno = false;
 			}
 		}
 		else if(Integer.parseInt(data1[2])>=(Integer.parseInt(dataHJ[2]))){
-			retorno =false;
+			retorno =true;
 		}
 		else{
-			retorno = true;
+			retorno = false;
 		}
+		System.out.println(data1[0]+"/"+data1[1]+"/"+data1[2]);
+		System.out.println(dataHJ[0]+"/"+dataHJ[1]+"/"+dataHJ[2]);
+		System.out.println(retorno+"\n");
+		this.isCancelado = retorno;
+		this.metodoFoiXamado++;
 		return retorno;
 	}
 	
