@@ -432,8 +432,11 @@ public class RedeSocial {
 		}
 			}
 		
-	public void adicionarDias(String dias){
-		}
+	public void adicionarDias(int dias){
+	
+		this.getGerenciadorUsuarios().simularPassagemDoTempo(dias);
+		
+	}
 	
 	public void registrarInteresse(String idSessao, String idItem) throws Exception{
 		if (!stringValida(idSessao)) {
