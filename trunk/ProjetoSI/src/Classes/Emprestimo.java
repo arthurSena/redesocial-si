@@ -167,9 +167,7 @@ public class Emprestimo {
 		else{
 			retorno = false;
 		}
-		System.out.println(data1[0]+"/"+data1[1]+"/"+data1[2]);
-		System.out.println(dataHJ[0]+"/"+dataHJ[1]+"/"+dataHJ[2]);
-		System.out.println(retorno+"\n");
+		
 		this.isCancelado = retorno;
 		this.metodoFoiXamado++;
 		return retorno;
