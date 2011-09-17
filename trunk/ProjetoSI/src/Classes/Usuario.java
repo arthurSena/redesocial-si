@@ -183,6 +183,7 @@ public class Usuario {
 	public String pesquisarItem(String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao){
 		String resposta = "";
 		
+		
 		if (tipoOrdenacao.equals("crescente")){
 			for (Usuario usuario : this.getGerenciadorAmizades().getListaDeAmigos()){
 				if (resposta.equals("")){

@@ -87,7 +87,15 @@ public class GerenciadorItens {
 				retorno +=requisicoes.split("; ")[i];
 				break;
 			}
-			retorno += requisicoes.split("; ")[i] + "; ";
+
+			if (retorno.contains("; ")){
+				retorno += requisicoes.split("; ")[i];
+			}
+			else{
+				retorno += requisicoes.split("; ")[i] + "; ";
+				System.out.println(requisicoes.split("; ")[i]);
+			}
+			
 			
 		}return retorno;
 	}
@@ -108,25 +116,25 @@ public class GerenciadorItens {
 			}
 			for (Item it: usr1.getGerenciadorItens().getListaMeusItens()){
 				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && !it.getEmprestimo().isRequisitarDevolucao() && (!it.getEmprestimo().isDevolucao()) && it.getEmprestimo().getBeneficiado().equals(usr)){
-					retorno += usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+					retorno += usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento; ";
 				}
 			}
 			if (retorno.isEmpty()){
 				return ("Não há empréstimos deste tipo");
 			}
-			return retorno;
+			return formatarRequisicoes(retorno);
 		}
 		else if(tipo.equals("emprestador")){
 			String retorno = "";
 			for (Item it: listaMeusItens){
 				if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && !it.getEmprestimo().isRequisitarDevolucao() && (!it.getEmprestimo().isDevolucao())){
-					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento; ";
 				}
 			}
 			if (retorno.isEmpty()){
 				return ("Não há empréstimos deste tipo");
 			}
-			return retorno;
+			return formatarRequisicoes(retorno);
 		}
 		else if(tipo.equals("todos")){
 			String retorno = "";
@@ -134,38 +142,38 @@ public class GerenciadorItens {
 			int cont = 0;
 			for (Item it: listaMeusItens){
 				if (it.getEmprestimo()!=null && it.getEmprestimo().isDevolucao() && !it.getEmprestimo().isRequisitarDevolucao()){
-					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado";
+					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado; ";
 					cont++;
 				}
 				
 				else if (it.getEmprestimo()!=null && it.getEmprestimo().isDevolucao() && !it.getEmprestimo().tempoEmprestimoNaoExpiro() && (it.getEmprestimo().isDevolucao())){
-					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado";
+					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado; ";
 					cont++;
 				}
 				
 				else if (it.getEmprestimo()!=null && it.getEmprestimo().isRequisitarDevolucao() && it.getEmprestimo().tempoEmprestimoNaoExpiro()){
-					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Cancelado";
+					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Cancelado; ";
 					cont++;
 				}
 				
 				else if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && !it.getEmprestimo().isRequisitarDevolucao() && (!it.getEmprestimo().isDevolucao())){
 					if (cont==0){
-						retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+						retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento; ";
 						cont++;
 					}
 					else{
-						retorno += "; "+usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+						retorno += "; "+usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento; ";
 						cont++;
 					}
 				}
 				
 				else if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && !it.getEmprestimo().tempoEmprestimoNaoExpiro() && (!it.getEmprestimo().isDevolucao())){
 					if (cont==0){
-						retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+						retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento; ";
 						cont++;
 					}
 					else{
-						retorno += "; "+usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+						retorno += "; "+usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento; ";
 						cont++;
 					}
 				}
@@ -173,26 +181,26 @@ public class GerenciadorItens {
 			if (usr1!=null){
 				for (Item it: usr1.getGerenciadorItens().getListaMeusItens()){
 					if (it.getEmprestimo()!=null && it.getEmprestimo().isDevolucao() && !it.getEmprestimo().isRequisitarDevolucao()){
-						retorno += usr1.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado";
+						retorno += usr1.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado; ";
 						cont++;
 					}
 					else if (it.getEmprestimo()!=null && it.getEmprestimo().isDevolucao() && !it.getEmprestimo().tempoEmprestimoNaoExpiro() && (it.getEmprestimo().isDevolucao())){
-						retorno += usr1.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado";
+						retorno += usr1.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado; ";
 						cont++;
 					}
 					
 					else if (it.getEmprestimo()!=null && it.getEmprestimo().isRequisitarDevolucao() && it.getEmprestimo().tempoEmprestimoNaoExpiro()){
-						retorno += usr1.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Cancelado";
+						retorno += usr1.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Cancelado; ";
 						cont++;
 					}
 					
 					else if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() /*&& !it.getEmprestimo().isRequisitarDevolucao()*/ && (!it.getEmprestimo().isDevolucao()) && it.getEmprestimo().getBeneficiado().equals(usr)){
 						if (cont==0){
-							retorno += usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+							retorno += usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento; ";
 							cont++;
 						}
 						else{
-							retorno += "; "+usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
+							retorno += "; "+usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento; ";
 							cont++;
 						}
 					}
@@ -201,7 +209,7 @@ public class GerenciadorItens {
 			if (retorno.isEmpty()){
 				return ("Não há empréstimos deste tipo");
 			}
-			return retorno;
+			return formatarRequisicoes(retorno);
 		}
 		else{
 			throw new Exception("Tipo inexistente");
