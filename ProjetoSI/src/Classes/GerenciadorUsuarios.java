@@ -390,16 +390,7 @@ public class GerenciadorUsuarios {
 				retorno +=requisicoes.split("; ")[i];
 				break;
 			}
-
-//			if (retorno.contains("; ")){
-//				retorno += requisicoes.split("; ")[i];
-//			}
-//			else{
-				retorno += requisicoes.split("; ")[i] + "; ";
-
-//			}
-			
-			
+			retorno += requisicoes.split("; ")[i] + "; ";
 		}return retorno;
 	}
 }
