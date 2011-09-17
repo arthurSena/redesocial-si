@@ -112,4 +112,9 @@ public class Item {
     	
     	return "";
     }
+    
+    
+    public void acaba(){
+    	
+    }
 }

@@ -1,6 +1,7 @@
 package Classes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe que guarda as amizades de um Usuario
@@ -245,4 +246,17 @@ public class GerenciadorAmizades {
 	public void desfazerAmizade (Usuario usuario){
 		this.listaDeAmigos.remove(usuario);
 	}
+	
+	
+	public Usuario amigoComReputacaoMaisAlta(){
+		
+		Usuario usuario = listaDeAmigos.get(0);
+		for(Usuario usr: listaDeAmigos){
+			if (usr.getReputacao()>usuario.getReputacao()){
+				usuario = usr;
+			}
+		}return usuario;
+		
+	}
+	
 }
