@@ -1,6 +1,10 @@
 package Classes;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
 
@@ -11,6 +15,7 @@ public class Emprestimo {
 	private Usuario Emprestador;
 	
 	private int duracao;
+	private String dataDevolucao;
 	
 	private String idRequisicao;
 	private String idEmprestimo;
@@ -21,7 +26,8 @@ public class Emprestimo {
 	private boolean devolvido;
 	private boolean requisitarDevolucao;
 	private List<Usuario> listaDeUsuariosInteressados;
-	
+	private String dataDeDevolucao;
+	private GregorianCalendar calendario;
 	
 	public Emprestimo(Usuario beneficiado, int duracao)throws Exception{
 		if (beneficiado==null){
@@ -39,7 +45,7 @@ public class Emprestimo {
 		devolucao = false;
 		devolvido = false;
 		requisitarDevolucao = false;
-		
+		dataDevolucao = null;
 	}
 	
 	public Usuario getBeneficiado(){
@@ -80,6 +86,9 @@ public class Emprestimo {
 		}*/
 		emprestimoAprovado = true;
 		requisicaoEmprestimo = false;
+		GregorianCalendar calendario = new GregorianCalendar();
+		calendario.add(Calendar.DATE, this.duracao);
+		this.dataDeDevolucao = DateFormat.getDateInstance().format(calendario.getTime());
 		return gerarIDEmprestimo();
 	}
 	
@@ -97,13 +106,12 @@ public class Emprestimo {
 	}
 
 	public void requisitarDevolucao() {
+		calendario = new  GregorianCalendar();
 		this.requisitarDevolucao = true;
-		
-		
-		
 	}
 
 	public boolean isRequisitarDevolucao() {
+		
 		return requisitarDevolucao;
 	}
 	
@@ -117,5 +125,43 @@ public class Emprestimo {
 		}
 	}
 	
-
+	public boolean tempoEmprestimoExpiro(){
+		boolean retorno = false;
+		String[] data1 = this.dataDeDevolucao.split("/");
+		String[] dataHJ = DateFormat.getDateInstance().format(this.calendario.getTime()).split("/");
+		if (data1[2].equals(dataHJ[2])){
+			if (data1[1].equals(dataHJ[1])){
+				if (Integer.parseInt(data1[0])>=(Integer.parseInt(dataHJ[0]))){
+					retorno = false;
+				}
+				else{
+					retorno = true;
+				}
+			}
+		}
+		else if (data1[2].equals(dataHJ[2])){
+			
+			if (Integer.parseInt(data1[1])>=(Integer.parseInt(dataHJ[1]))){
+				retorno = false;
+			}
+			else{
+				retorno = true;
+			}
+		}
+		else if(Integer.parseInt(data1[2])>=(Integer.parseInt(dataHJ[2]))){
+			retorno =false;
+		}
+		else{
+			retorno = true;
+		}
+		return retorno;
+	}
+	
+	public void adicionarDias(int dias){
+		if (calendario==null){
+			calendario = new GregorianCalendar();			
+		}
+		calendario.add(Calendar.DATE, dias);
+	}
 }
+

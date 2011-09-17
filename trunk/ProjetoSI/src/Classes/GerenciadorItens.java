@@ -138,7 +138,7 @@ public class GerenciadorItens {
 					cont++;
 				}
 				
-				if (it.getEmprestimo()!=null && it.getEmprestimo().isRequisitarDevolucao() ){
+				if (it.getEmprestimo()!=null && it.getEmprestimo().isRequisitarDevolucao() && !it.getEmprestimo().tempoEmprestimoExpiro()){
 					retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Cancelado";
 					cont++;
 				}
@@ -161,12 +161,12 @@ public class GerenciadorItens {
 						cont++;
 					}
 					
-					if (it.getEmprestimo()!=null && it.getEmprestimo().isRequisitarDevolucao()){
+					if (it.getEmprestimo()!=null && it.getEmprestimo().isRequisitarDevolucao() && !it.getEmprestimo().tempoEmprestimoExpiro()){
 						retorno += usr1.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Cancelado";
 						cont++;
 					}
 					
-					if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() && !it.getEmprestimo().isRequisitarDevolucao() && (!it.getEmprestimo().isDevolucao()) && it.getEmprestimo().getBeneficiado().equals(usr)){
+					else if (it.getEmprestimo()!=null && it.getEmprestimo().emprestimoFoiAprovado() /*&& !it.getEmprestimo().isRequisitarDevolucao()*/ && (!it.getEmprestimo().isDevolucao()) && it.getEmprestimo().getBeneficiado().equals(usr)){
 						if (cont==0){
 							retorno += usr1.getLogin() + "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
 							cont++;
@@ -265,6 +265,14 @@ public class GerenciadorItens {
 		}
 		return retorno;
 		
+	}
+	
+	public void incrementarDias(int dias){
+		for (Item it: listaMeusItens){
+			if (it.getEmprestimo()!=null){
+				it.getEmprestimo().adicionarDias(dias);
+			}
+		}
 	}
 
 }

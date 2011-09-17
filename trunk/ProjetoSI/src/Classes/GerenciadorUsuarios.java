@@ -219,14 +219,14 @@ public class GerenciadorUsuarios {
 		}return null;
 	}
 	
-	public Usuario buscarUsuarioEmprestador2(String idRequisicaoEmprestimo){
+	public Usuario buscarUsuarioEmprestador2(String idEmprestimo){
 		for (Usuario usr: listaDeUsuarios){
 			
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
 				
 				if (it.getEmprestimo() != null /*&& !it.getEmprestimo().emprestimoFoiAprovado()*/){
 			//		System.out.println(it.getEmprestimo().getIDEmprestimo()==null);
-					if (it.getEmprestimo().getIDEmprestimo().equals(idRequisicaoEmprestimo)){
+					if (it.getEmprestimo().getIDEmprestimo().equals(idEmprestimo)){
 						return usr;
 					}
 				}
@@ -316,5 +316,10 @@ public class GerenciadorUsuarios {
 		}return false;
 	}
 	
+	public void simularPassagemDoTempo(int dias){
+		for (Usuario usr: listaDeUsuarios){
+			usr.getGerenciadorItens().incrementarDias(dias);
+		}
+	}
 
 }
