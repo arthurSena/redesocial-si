@@ -193,7 +193,7 @@ public class Usuario {
 				}
 			}
 		} else {
-			for (int i = this.getGerenciadorAmizades().getListaDeAmigos().size(); 0 < i; i--){
+			for (int i = this.getGerenciadorAmizades().getListaDeAmigos().size() - 1; i >= 0; i--){
 				if (resposta.equals("")){
 					resposta += this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
 					

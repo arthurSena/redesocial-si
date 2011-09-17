@@ -51,7 +51,7 @@ expectError "Sessão inexistente" desfazerAmizade idSessao="xpto" amigo="xpto"
 
 expectError "Login inválido" desfazerAmizade idSessao=${sessaoMark} amigo=
 expectError "Login inválido" desfazerAmizade idSessao=${sessaoMark} amigo=""
-expectError "Usuário inexistente" desfazerAmizade idSessao=${sessaoMark} amigo="xpto"
+expectError "Usuário inexistente" desfazerAmizade idSessao=${sessaoMark} amigo="foo"
 expectError "Amizade inexistente" desfazerAmizade idSessao=${sessaoMark} amigo="steve"
 
 idRequisicaoEmprestimo2=requisitarEmprestimo idSessao=${sessaoXpto} idItem=${idItem1} duracao=7
