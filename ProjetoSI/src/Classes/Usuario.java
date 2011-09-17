@@ -1,5 +1,6 @@
 package Classes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -210,9 +211,11 @@ public class Usuario {
 		else if(criterioOrdenacao.equals("reputacao")){
 			if (tipoOrdenacao.equals("crescente")){
 				
-				
-				List<Usuario> lista = this.getGerenciadorAmizades().getListaDeAmigos();
-				
+				List<Usuario> lista = new ArrayList<Usuario>();
+				//List<Usuario> lista = this.getGerenciadorAmizades().getListaDeAmigos();
+				for(Usuario usr:this.getGerenciadorAmizades().getListaDeAmigos()){
+					lista.add(usr);
+				}
 				while(!lista.isEmpty()){
 					
 					Usuario usr = usuarioComMenorReputacaoDaLista(lista);
@@ -224,10 +227,17 @@ public class Usuario {
 					lista.remove(usr);
 				}
 			}
-			else{
-				List<Usuario> lista = this.getGerenciadorAmizades().getListaDeAmigos();
+			else if(tipoOrdenacao.equals("decrescente")){
+				
+				List<Usuario> lista = new ArrayList<Usuario>();
+				//List<Usuario> lista = this.getGerenciadorAmizades().getListaDeAmigos();
+				for(Usuario usr:this.getGerenciadorAmizades().getListaDeAmigos()){
+					lista.add(usr);
+				}
+				
 				while(!lista.isEmpty()){
 					Usuario usr = usuarioComMaisAltaReputacaoDaLista(lista);
+					
 					if (resposta.equals("")){
 						resposta += usr.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);}
 					else{
