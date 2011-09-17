@@ -83,4 +83,3 @@ expectError "Tipo inexistente" getEmprestimos idSessao=${sessaoMark} tipo="xpto"
 
 encerrarSistema
 quit
-

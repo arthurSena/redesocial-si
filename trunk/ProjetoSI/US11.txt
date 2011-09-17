@@ -1,4 +1,4 @@
-﻿# User Story 11 - Pesquisa de itens
+# User Story 11 - Pesquisa de itens
 
 zerarSistema
 

@@ -1,4 +1,4 @@
-﻿# User Story 10 - Registrar interesse em itens
+# User Story 10 - Registrar interesse em itens
 
 zerarSistema
 
