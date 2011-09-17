@@ -324,6 +324,8 @@ public class GerenciadorUsuarios {
 	public void desfazerAmizade(Usuario usuario, Usuario usuario2){
 		usuario.getGerenciadorAmizades().desfazerAmizade(usuario2);
 		usuario2.getGerenciadorAmizades().desfazerAmizade(usuario);
+		
+		
 	}
 	
 	public String getRanking(String idSessao, String categoria) throws Exception{

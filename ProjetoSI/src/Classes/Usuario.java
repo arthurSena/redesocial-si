@@ -186,34 +186,102 @@ public class Usuario {
 	public String pesquisarItem(String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao){
 		String resposta = "";
 		
-		
-		if (tipoOrdenacao.equals("crescente")){
-			for (Usuario usuario : this.getGerenciadorAmizades().getListaDeAmigos()){
-				if (resposta.equals("")){
-					resposta += usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
-					
-				} else if (!resposta.equals("") && !usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
-					resposta += "; " + usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+		if(criterioOrdenacao.equals("dataCriacao")){
+			if (tipoOrdenacao.equals("crescente")){
+				for (Usuario usuario : this.getGerenciadorAmizades().getListaDeAmigos()){
+					if (resposta.equals("")){
+						resposta += usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+						
+					} else if (!resposta.equals("") && !usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
+						resposta += "; " + usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+					}
 				}
-			}
-		} else {
-			for (int i = this.getGerenciadorAmizades().getListaDeAmigos().size() - 1; i >= 0; i--){
-				if (resposta.equals("")){
-					resposta += this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
-					
-				} else if (!resposta.equals("") && !this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
-					resposta += "; " + this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+			} else {
+				for (int i = this.getGerenciadorAmizades().getListaDeAmigos().size() - 1; i >= 0; i--){
+					if (resposta.equals("")){
+						resposta += this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+						
+					} else if (!resposta.equals("") && !this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
+						resposta += "; " + this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+					}
 				}
 			}
 		}
+		else if(criterioOrdenacao.equals("reputacao")){
+			if (tipoOrdenacao.equals("crescente")){
+				
+				
+				List<Usuario> lista = this.getGerenciadorAmizades().getListaDeAmigos();
+				
+				while(!lista.isEmpty()){
+					
+					Usuario usr = usuarioComMenorReputacaoDaLista(lista);
+					if (resposta.equals("")){
+						resposta += usr.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);}
+					else{
+						resposta += "; "+usr.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+					}
+					lista.remove(usr);
+				}
+			}
+			else{
+				List<Usuario> lista = this.getGerenciadorAmizades().getListaDeAmigos();
+				while(!lista.isEmpty()){
+					Usuario usr = usuarioComMaisAltaReputacaoDaLista(lista);
+					if (resposta.equals("")){
+						resposta += usr.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);}
+					else{
+						resposta += "; "+usr.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+					}
+					lista.remove(usr);
+				}
+			}
+		}
+//		if (tipoOrdenacao.equals("crescente")){
+//			for (Usuario usuario : this.getGerenciadorAmizades().getListaDeAmigos()){
+//				if (resposta.equals("")){
+//					resposta += usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+//					
+//				} else if (!resposta.equals("") && !usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
+//					resposta += "; " + usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+//				}
+//			}
+//		} else {
+//			for (int i = this.getGerenciadorAmizades().getListaDeAmigos().size() - 1; i >= 0; i--){
+//				if (resposta.equals("")){
+//					resposta += this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+//					
+//				} else if (!resposta.equals("") && !this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
+//					resposta += "; " + this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+//				}
+//			}
+//		}
 		
 		
 		return resposta;
+	}
+	private Usuario usuarioComMaisAltaReputacaoDaLista(List<Usuario> lista){
+		Usuario usuario = lista.get(0);
+		for(Usuario usr: lista){
+			if (usr.getReputacao()>usuario.getReputacao()){
+				usuario = usr;
+			}
+		}return usuario;
+	}
+	
+	private Usuario usuarioComMenorReputacaoDaLista(List<Usuario> lista){
+		Usuario usuario = lista.get(0);
+		for(Usuario usr: lista){
+			if (usr.getReputacao()<usuario.getReputacao()){
+				usuario = usr;
+			}
+		}return usuario;
 	}
 	
 	public int getReputacao(){
 		return getGerenciadorItens().quantEmprestimosCompletados();
 	}
+	
 	
 
 	

@@ -232,6 +232,8 @@ public class RedeSocial {
 //			throw new Exception ("Requisição de empréstimo inexistente");
 //			
 //		}
+	//	this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorAmizades().ehMeuAmigo(this.getGerenciadorUsuarios().buscarUsuarioBeneficiado(idRequisicaoEmprestimo));
+		
 		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().aprovarRequisicaoEmprestimo(this.getGerenciadorUsuarios().requisicaoEmprestimoExiste(idRequisicaoEmprestimo),idRequisicaoEmprestimo);
 	}
 	
