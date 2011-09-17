@@ -456,8 +456,84 @@ public class RedeSocial {
 	}
 	
 	
+	public String pesquisarItem (String idSessao, String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao) throws Exception{
+		if (!stringValida(idSessao)) {
+			throw new Exception("Sessão inválida");
+		}
+		
+		try {
+			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+			
+		} catch (Exception e){
+			throw new Exception ("Sessão inexistente");
+		}
+		
+		if (!stringValida(chave)) {
+			throw new Exception("Chave inválida");
+		}
+		
+		if (!stringValida(atributo)) {
+			throw new Exception("Atributo inválido");
+		}
+		
+		if (!atributoValido(atributo)) {
+			throw new Exception("Atributo inexistente");
+		}
+		
+		if (!stringValida(tipoOrdenacao)) {
+			throw new Exception("Tipo inválido de ordenação");
+		}
+		
+		if (!tipoOrdenacaoValido(tipoOrdenacao)) {
+			throw new Exception("Tipo de ordenação inexistente");
+		}
+		
+		
+		if (!stringValida(criterioOrdenacao)) {
+			throw new Exception("Critério inválido de ordenação");
+		}
+		
+		if (!criterioOrdenacaoValido(criterioOrdenacao)) {
+			throw new Exception("Critério de ordenação inexistente");
+		}
+		
+		String resp = "";
+		resp = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).pesquisarItem(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+		
+		if (resp.equals("")){
+			resp = "Nenhum item encontrado";
+		}
+		
+		return resp;
+	}
+	 
 	
+	private boolean atributoValido(String atributo){
+		
+		if (atributo.equals("nome") || atributo.equals("descricao") || atributo.equals("categoria")){
+			return true;
+		}
+		
+		return false;
+	}
 	
+	private boolean tipoOrdenacaoValido(String tipoOrdenacao){
+		
+		if (tipoOrdenacao.equals("crescente") || tipoOrdenacao.equals("decrescente")){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean criterioOrdenacaoValido(String criterioOrdenacao){
+		
+		if (criterioOrdenacao.equals("dataCriacao") || criterioOrdenacao.equals("reputacao")){
+			return true;
+		}
+		return false;
+	}
+
 	
 	
 }

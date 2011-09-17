@@ -175,21 +175,34 @@ public class Usuario {
 	
 	private String nomeModificado(String nome){
 		String nomeID = (login.charAt(0) + "").toUpperCase();
-		for (int i =1; i <nome.length();i++){
+		for (int i = 1; i <nome.length();i++){
 			nomeID += login.charAt(i);
 		}return nomeID;
 	}
 	
-	
-
-	
 	public String pesquisarItem(String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao){
 		String resposta = "";
 		
-		
-		for (Usuario usuario : this.getGerenciadorAmizades().getListaDeAmigos()){
-			resposta += usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+		if (tipoOrdenacao.equals("crescente")){
+			for (Usuario usuario : this.getGerenciadorAmizades().getListaDeAmigos()){
+				if (resposta.equals("")){
+					resposta += usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+					
+				} else if (!resposta.equals("") && !usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
+					resposta += "; " + usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+				}
+			}
+		} else {
+			for (int i = this.getGerenciadorAmizades().getListaDeAmigos().size(); 0 < i; i--){
+				if (resposta.equals("")){
+					resposta += this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+					
+				} else if (!resposta.equals("") && !this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
+					resposta += "; " + this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+				}
+			}
 		}
+		
 		
 		return resposta;
 	}
