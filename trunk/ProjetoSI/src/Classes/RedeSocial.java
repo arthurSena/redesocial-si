@@ -581,7 +581,34 @@ public class RedeSocial {
 		
 		this.getGerenciadorUsuarios().desfazerAmizade(usuario, usuario2);
 		
-	}  
+	} 
+	
+	public void apagarItem (String idSessao, String idItem) throws Exception{
+		if (!stringValida(idSessao)) {
+			throw new Exception("Sessão inválida");
+		}
+		
+		try {
+			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+			
+		} catch (Exception e){
+			throw new Exception ("Sessão inexistente");
+		}
+		
+		if (!stringValida(idItem)) {
+			throw new Exception("Identificador do item é inválido");
+		}
+		
+		if (this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemPorID(idItem) == null){
+			throw new Exception("Item inexistente");
+		}
+		
+		Usuario usuario = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		Item item = this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem);
+		
+		usuario.getGerenciadorItens().apagarItem(item);
+
+	}
 	
 	
 }

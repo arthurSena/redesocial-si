@@ -44,12 +44,12 @@ expectError "Identificador do item é inválido" apagarItem idSessao=${sessaoMar
 expectError "Item inexistente" apagarItem idSessao=${sessaoMark} idItem="xpto"
 expectError "Item inexistente" apagarItem idSessao=${sessaoMark} idItem=${idItem1}
 
-expectError "O usuário não tem permissão para apagar este item" apagarItem idSessao=${sessaoMark} idItem={idItem3}
+expectError "O usuário não tem permissão para apagar este item" apagarItem idSessao=${sessaoMark} idItem=${idItem3}
 expectError "Requisição de empréstimo inexistente" aprovarEmprestimo idSessao=${sessaoMark} idRequisicaoEmprestimo=${idRequisicaoEmprestimo1}
 
 idRequisicaoEmprestimo2=requisitarEmprestimo idSessao=${sessaoMark} idItem=${idItem3} duracao=7
 idEmprestimo2=aprovarEmprestimo idSessao=${sessaoBill} idRequisicaoEmprestimo=${idRequisicaoEmprestimo2}
-expectError "O usuário não pode apagar este item enquanto estiver emprestado" apagarItem idSessao=${sessaoBill} idItem={idItem3}
+expectError "O usuário não pode apagar este item enquanto estiver emprestado" apagarItem idSessao=${sessaoBill} idItem=${idItem3}
 
 encerrarSistema
 quit
