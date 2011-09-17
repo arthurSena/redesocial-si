@@ -74,8 +74,6 @@ public class GerenciadorMensagens {
 					msgReturn = msg;
 				}
 			}
-			System.out.println(destinatario.getLogin() + "a");
-			System.out.println((destinatario.getGerenciadorMensagens().listaDeMensagens.isEmpty()));
 		} else{
 			Mensagem msg = new Mensagem(destinatario, assunto, mensagem);
 			this.addMensagem(msg);

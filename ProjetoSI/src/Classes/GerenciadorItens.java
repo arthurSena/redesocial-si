@@ -9,11 +9,13 @@ public class GerenciadorItens {
 	private List<Item> listaMeusItens;
 	private List<Item> itensPraEmprestar;
 	private List<Item> itensPraDevolver;
+	private List<Emprestimo> listaDeEmprestimosCompletados;
 	
 	public GerenciadorItens(){
 		listaMeusItens = new ArrayList<Item>();
 		itensPraDevolver = new ArrayList<Item>();
 		itensPraEmprestar = new ArrayList<Item>();
+		listaDeEmprestimosCompletados = new ArrayList<Emprestimo>();
 	}
 	
 	public void adicionarItem(Item it)throws Exception{
@@ -33,6 +35,10 @@ public class GerenciadorItens {
 
 	public List<Item> getItensPraEmprestar() {
 		return itensPraEmprestar;
+	}
+	
+	public int quantEmprestimosCompletados(){
+		return this.listaDeEmprestimosCompletados.size();
 	}
 
 	public void setItensPraEmprestar(List<Item> itensPraEmprestar) {
@@ -93,7 +99,7 @@ public class GerenciadorItens {
 			}
 			else{
 				retorno += requisicoes.split("; ")[i] + "; ";
-				System.out.println(requisicoes.split("; ")[i]);
+
 			}
 			
 			
@@ -217,9 +223,10 @@ public class GerenciadorItens {
 	}
 	
 	public String requisitarEmprestimos(Usuario beneficiado,String idItem, int dias) throws Exception{
-		if (buscarItemPorID(idItem).getEmprestimo()!=null && buscarItemPorID(idItem).getEmprestimo().getBeneficiado().equals(beneficiado)){
+		if (buscarItemPorID(idItem).getEmprestimo()!=null && buscarItemPorID(idItem).getEmprestimo().getBeneficiado().equals(beneficiado) && buscarItemPorID(idItem).getEmprestimo().emprestimoFoiRequisitado()){
 			throw new Exception("Requisição já solicitada");
 		}
+
 		return buscarItemPorID(idItem).criarRequisicaoEmprestimo(beneficiado, dias);
 	}
 	
@@ -322,6 +329,10 @@ public class GerenciadorItens {
 //		} else {
 			this.getListaMeusItens().remove(item);
 //		}
+	}
+	
+	public void addEmprestimoCompletado(Emprestimo emp){
+		this.listaDeEmprestimosCompletados.add(emp);
 	}
 
 }
