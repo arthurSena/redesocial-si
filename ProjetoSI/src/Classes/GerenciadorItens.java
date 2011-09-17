@@ -274,5 +274,17 @@ public class GerenciadorItens {
 			}
 		}
 	}
+	
+	public String buscarItemCadastrado(String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao){
+		String resp = "";
+		
+		for (Item item : this.getListaMeusItens()){
+			if (!item.pesquisa(chave, atributo).equals("")){
+				resp += item.pesquisa(chave, atributo);
+			}
+		}
+		
+		return resp;
+	}
 
 }

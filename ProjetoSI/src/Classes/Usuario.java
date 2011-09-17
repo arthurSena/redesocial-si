@@ -179,4 +179,20 @@ public class Usuario {
 			nomeID += login.charAt(i);
 		}return nomeID;
 	}
+	
+	
+
+	
+	public String pesquisarItem(String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao){
+		String resposta = "";
+		
+		
+		for (Usuario usuario : this.getGerenciadorAmizades().getListaDeAmigos()){
+			resposta += usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+		}
+		
+		return resposta;
+	}
+	
+	
 }
