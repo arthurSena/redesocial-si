@@ -23,6 +23,7 @@ public class GerenciadorItens {
 			throw new Exception("Item nao pode ser igual a null");
 		}
 		listaMeusItens.add(it);
+		itensPraEmprestar.add(it);
 	}
 
 	public List<Item> getListaMeusItens() {
@@ -239,6 +240,7 @@ public class GerenciadorItens {
 		}
 		for (Item it: listaMeusItens){
 			if (it.getEmprestimo()!=null && it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo) && !it.getEmprestimo().emprestimoFoiAprovado()){
+				this.getItensPraEmprestar().remove(it);
 				return it.getEmprestimo().aprovarEmprestimo();
 			}
 			else if(it.getEmprestimo()!=null && it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo) && it.getEmprestimo().emprestimoFoiAprovado()){
@@ -286,7 +288,11 @@ public class GerenciadorItens {
 	
 	
 	
-	public void confirmarTerminoEmprestimo(String idEmprestimo){
+	public void confirmarTerminoEmprestimo(Item item){
+		this.getItensPraEmprestar().add(item);	
+	}
+	
+	public void confirmarTerminoEmprestimo(String item){
 		
 	}
 	
@@ -325,13 +331,14 @@ public class GerenciadorItens {
 		return resp;
 	}
 	
-	public void apagarItem(Item item){
-//		if (this.getListaMeusItens().contains(item) && !itensPraEmprestar.contains(item)){
-//			//TODO lancar erro pois nao pode excluir item se ele ta emprstado
-//			
-//		} else {
+	public void apagarItem(Item item) throws Exception{
+		
+		if (this.getListaMeusItens().contains(item) && !this.getItensPraEmprestar().contains(item)){
+			throw new Exception ("O usuário não pode apagar este item enquanto estiver emprestado");
+			
+		} else {
 			this.getListaMeusItens().remove(item);
-//		}
+		}
 	}
 	
 	public void addEmprestimoCompletado(Emprestimo emp){
