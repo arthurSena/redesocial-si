@@ -1,4 +1,4 @@
-# User Story 11 - Pesquisa de itens
+﻿# User Story 11 - Pesquisa de itens
 
 zerarSistema
 
@@ -14,7 +14,6 @@ sessaoBill=abrirSessao login="bill"
 
 requisitarAmizade idSessao=${sessaoSteve} login="mark"
 requisitarAmizade idSessao=${sessaoBill} login="mark"
-requisitarAmizade idSessao=${sessaoXpto} login="mark"
 
 aprovarAmizade idSessao=${sessaoMark} login="steve"
 aprovarAmizade idSessao=${sessaoMark} login="bill"

@@ -80,4 +80,35 @@ public class Item {
     	}
     	return resp;
     }
+    
+    
+    public String pesquisa(String chave, String atributo){
+    	
+    	if (atributo.equals("nome")){
+    		String[] resp = this.getNome().split(" ");
+    		
+    		for ( String string : resp ){
+    			if (string.equalsIgnoreCase(chave)){
+    				return this.getNome();
+    			}    			
+    		}
+    	} else if (atributo.equals("descricao")){
+    		String[] resp = this.getDescricao().split(" ");
+    		
+    		for ( String string : resp){
+    			if (string.equalsIgnoreCase(chave)){
+    				return this.getNome();
+    			}
+    		}
+    	} else if (atributo.equals("categoria")){
+    		if (this.getCategoria().equalsIgnoreCase(chave)){
+    			return this.getNome();
+    		}
+    	} else {
+    		//TODO Lanca execao 
+    	}
+    	
+    	
+    	return "";
+    }
 }
