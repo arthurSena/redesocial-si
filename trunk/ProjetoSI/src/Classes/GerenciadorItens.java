@@ -234,6 +234,9 @@ public class GerenciadorItens {
 		if (!stringValida(idRequisicaoEmprestimo)){
 			throw new Exception("Identificador da requisição de empréstimo é inválido");
 		}
+		else if (!requisicaoExiste){
+			throw new Exception("Requisição de empréstimo inexistente");
+		}
 		for (Item it: listaMeusItens){
 			if (it.getEmprestimo()!=null && it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo) && !it.getEmprestimo().emprestimoFoiAprovado()){
 				return it.getEmprestimo().aprovarEmprestimo();
