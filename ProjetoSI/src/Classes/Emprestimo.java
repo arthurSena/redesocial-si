@@ -3,7 +3,6 @@ package Classes;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
@@ -128,8 +127,10 @@ public class Emprestimo {
 		return listaDeUsuariosInteressados;
 	}
 
-	public void registrarInteresse (Usuario usuario){
-		if (!getListaDeUsuariosInteressados().contains(usuario)){
+	public void registrarInteresse (Usuario usuario) throws Exception{
+		if (getListaDeUsuariosInteressados().contains(usuario)){
+			throw new Exception("O usuário já registrou interesse neste item");
+		} else {
 			this.listaDeUsuariosInteressados.add(usuario);
 		}
 	}
