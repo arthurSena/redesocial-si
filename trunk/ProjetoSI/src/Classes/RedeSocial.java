@@ -182,59 +182,16 @@ public class RedeSocial {
 	
 	
 	public String enviarMensagem (String idSessao, String destinatario, String assunto, String mensagem) throws Exception{
+		Usuario usuario = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		Usuario usuario2 = getGerenciadorUsuarios().buscarUsuarioPorDestinatario(destinatario);
 		
-		
-		if (!stringValida(idSessao)) {
-			throw new Exception("Sessão inválida");
-		}
-		
-		if (!stringValida(destinatario)){
-			throw new Exception ("Destinatário inválido");
-		}
-		
-		try {
-			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-		} catch (Exception e){
-			throw new Exception ("Sessão inexistente");
-		}
-		
-		try {
-			getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario);
-		} catch (Exception e){
-			throw new Exception ("Destinatário inexistente");
-		}
-		
-		if (!stringValida(assunto)){
-			throw new Exception("Assunto inválido");
-		}
-		
-		if (!stringValida(mensagem)){
-			throw new Exception("Mensagem inválida");
-		}
-		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().enviarMensagem(getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario), assunto, mensagem);
+		return getGerenciadorUsuarios().enviarMensagem(usuario, usuario2, assunto, mensagem);
 	}
 	
+	//TODO aqui um metodo tem q usar o outro, tipo enviarMensagem tem q usar o enviarMensagem passando o idEmprestimo
 	public String enviarMensagem (String idSessao, String destinatario, String assunto, String mensagem, String idRequisicaoEmprestimo) throws Exception{
-		if (!stringValida(idSessao)) {
-			throw new Exception("Sessão inválida");
-		}
-		
-		if (!stringValida(destinatario)){
-			throw new Exception ("Destinatário inválido");
-		}
-		
-		try {
-			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-			
-		} catch (Exception e){
-			throw new Exception ("Sessão inexistente");
-		}
-		
-		try {
-			getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario);
-		} catch (Exception e){
-			throw new Exception ("Destinatário inexistente");
-		}
+		Usuario usuario = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		Usuario usuario2 = getGerenciadorUsuarios().buscarUsuarioPorDestinatario(destinatario);
 		
 		if (!stringValida(mensagem)){
 			throw new Exception("Mensagem inválida");
@@ -244,18 +201,13 @@ public class RedeSocial {
 			throw new Exception("Assunto inválido");
 		}
 		
-		if (!stringValida(idRequisicaoEmprestimo)){
-			throw new Exception("Identificador da requisição de empréstimo é inválido");
-		}
-		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador3(idRequisicaoEmprestimo) == null){
-			throw new Exception("Requisição de empréstimo inexistente");
-		}
+		this.getGerenciadorUsuarios().buscarUsuarioEmprestador3(idRequisicaoEmprestimo);
 		
 		if (!this.getGerenciadorUsuarios().buscarUsuarioEmprestador3(idRequisicaoEmprestimo).equals(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)) && !this.getGerenciadorUsuarios().buscarUsuarioBeneficiado(idRequisicaoEmprestimo).equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
 			throw new Exception("O usuário não participa deste empréstimo");
 		}
 		
-		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().enviarMensagem(getGerenciadorUsuarios().buscarUsuarioPorLogin(destinatario), assunto, mensagem, idRequisicaoEmprestimo);
+		return getGerenciadorUsuarios().enviarMensagem(usuario, usuario2, assunto, mensagem, idRequisicaoEmprestimo);
 	}
 	
 	public String lerTopicos (String idSessao, String tipo) throws Exception{

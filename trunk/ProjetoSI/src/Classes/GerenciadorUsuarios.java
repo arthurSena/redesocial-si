@@ -82,6 +82,20 @@ public class GerenciadorUsuarios {
 
 	}
 	
+	
+	public Usuario buscarUsuarioPorDestinatario(String destinatario) throws Exception{
+		if (!stringValida(destinatario)){
+			throw new Exception ("Destinatário inválido");
+		}
+		
+		for (Usuario usr : listaDeUsuarios) {
+			if (usr.getLogin().equals(destinatario)) {
+				return usr;
+			}
+		}
+		
+		throw new Exception("Destinatário inexistente");
+	}
 
 	public Usuario buscarUsuarioPorLogin(String login) throws Exception {
 		if (!stringValida(login)) {
@@ -94,7 +108,9 @@ public class GerenciadorUsuarios {
 				return usr;
 			}
 		}
-		throw new Exception("Usuário inexistente");
+		
+		throw new Exception("Login inexistente");
+		
 	}
 
 	private boolean stringValida(String string) {
@@ -274,19 +290,32 @@ public class GerenciadorUsuarios {
 		return usuario;
 	}
 	
-	public Usuario buscarUsuarioEmprestador3(String idRequisicaoEmprestimo){
+	public Usuario buscarUsuarioEmprestador3(String idRequisicaoEmprestimo) throws Exception{
+		
+		if (!stringValida(idRequisicaoEmprestimo)){
+			throw new Exception("Identificador da requisição de empréstimo é inválido");
+		}
+		
+		Usuario usuario = null;
+		
 		for (Usuario usr: listaDeUsuarios){
 			
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
 				
-				if (it.getEmprestimo() != null /*&& !it.getEmprestimo().emprestimoFoiAprovado()*/){
-				//	System.out.println(it.getEmprestimo().getIDEmprestimo()==null);
+				if (it.getEmprestimo() != null){
 					if (it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo)){
-						return usr;
+						usuario = usr;
+						break;
 					}
 				}
 			}
-		}return null;
+		}
+		
+		if (usuario == null){
+			throw new Exception("Requisição de empréstimo inexistente");
+		}
+		
+		return usuario;
 	}
 	
 	public Item buscarItemEmprestador(String idEmprestimo) throws Exception{
@@ -619,5 +648,23 @@ public class GerenciadorUsuarios {
 			throw new Exception("Mensagem inválida");
 		}
 		return this.buscarUsuarioPorID(idSessao).getGerenciadorMensagens().enviarMensagem(buscarUsuarioPorLogin(destinatario), assunto, mensagem);
+	}
+
+	public String enviarMensagem(Usuario usuario, Usuario usuario2, String assunto, String mensagem) throws Exception {
+		if (!stringValida(assunto)){
+			throw new Exception("Assunto inválido");
+		}
+		
+		if (!stringValida(mensagem)){
+			throw new Exception("Mensagem inválida");
+		}
+		
+		return usuario.getGerenciadorMensagens().enviarMensagem(usuario2, assunto, mensagem);
+	}
+
+	public String enviarMensagem(Usuario usuario, Usuario usuario2,
+			String assunto, String mensagem, String idRequisicaoEmprestimo) throws Exception {
+		
+		return usuario.getGerenciadorMensagens().enviarMensagem(usuario2, assunto, mensagem, idRequisicaoEmprestimo);
 	}
 }
