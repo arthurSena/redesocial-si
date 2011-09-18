@@ -18,12 +18,13 @@ public class GerenciadorItens {
 		listaDeEmprestimosCompletados = new ArrayList<Emprestimo>();
 	}
 	
-	public void adicionarItem(Item it)throws Exception{
+	public String adicionarItem(Item it)throws Exception{
 		if (it==null){
 			throw new Exception("Item nao pode ser igual a null");
 		}
 		listaMeusItens.add(it);
 		itensPraEmprestar.add(it);
+		return it.getID();
 	}
 
 	public List<Item> getListaMeusItens() {

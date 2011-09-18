@@ -64,152 +64,68 @@ public class RedeSocial {
 
 	}
 
-	public String localizarUsuario(String idSessao, String chave,
-			String atributo) throws Exception {
+	public String localizarUsuario(String idSessao, String chave, String atributo) throws Exception {
 		return getGerenciadorUsuarios().localizarUsuario(idSessao, chave,
 				atributo);
 	}
 
-	public String getAtributoItem(String idItem, String atributo)
-			throws Exception {
+	public String getAtributoItem(String idItem, String atributo)throws Exception {
 		return getGerenciadorUsuarios().buscarDonoItem(idItem)
 				.getGerenciadorItens().getAtributoItem(idItem, atributo);
 	}
 
-	public String cadastrarItem(String idSessao, String nome, String descricao,
-			String categoria) throws Exception {
+	public String cadastrarItem(String idSessao, String nome, String descricao, String categoria) throws Exception {
+		Usuario usuario = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
 		Item it = new Item(nome, descricao, categoria);
-		String id = it.gerarID(this.getGerenciadorUsuarios().quantDeItensDosUsuariosLogados() + 1);
-		getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)
-				.getGerenciadorItens().adicionarItem(it);
-		return id;
+		
+		return getGerenciadorUsuarios().cadastrarItem(usuario, it);
 	}
 
-	public void criarUsuario(String login, String nome, String endereco)
-			throws Exception {
+	public void criarUsuario(String login, String nome, String endereco)throws Exception {
 		getGerenciadorUsuarios().criarUsuario(login, nome, endereco);
 	}
 
 	public String abrirSessao(String login) throws Exception {
-		if (!getGerenciadorUsuarios().logiEhUsado(login)) {
-			throw new Exception("Usuário inexistente");
-		}
 		Usuario usr = getGerenciadorUsuarios().buscarUsuarioPorLogin(login);
-		String id = usr.gerarID();
-		getGerenciadorUsuarios().getListaUsuariosLogados().add(usr);
-		return id;
-
+		return getGerenciadorUsuarios().abrirSessao(usr);
 	}
 
-	public String getAtributoUsuario(String login, String atributo)
-			throws Exception {
+	public String getAtributoUsuario(String login, String atributo) throws Exception {
 		return getGerenciadorUsuarios().getAtributoUsuario(login, atributo);
 	}
-
-	/**
-	 * Retorna a lista de amigos que o usuario passado como idSessao tem. Isso
-	 * em forma de string
-	 * 
-	 * @param idSessao
-	 * @return
-	 */
+	
 	public String getAmigos(String idSessao) throws Exception {
-
-		return getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)
-				.getGerenciadorAmizades().stringDeAmigos();
-
+		Usuario usuario = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		
+		return getGerenciadorUsuarios().getAmigos(usuario);
 	}
 
-	/**
-	 * Retorna a lista de amigos que o usuario passado como login tem. Isso em
-	 * forma de string
-	 * 
-	 * @param idSessao
-	 * @param login
-	 * @return
-	 */
-	public String getAmigos(String idSessao, String login) throws Exception {
-		//Usuario usuario = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-		
-		if (!stringValida(idSessao)) {
-			throw new Exception("Sessão inválida");
-		}
-		
-		try {
-			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-			
-		} catch (Exception e){
-			throw new Exception ("Sessão inexistente");
-		}
-		
-		
-		
+	public String getAmigos(String idSessao, String login) throws Exception {		
+		Usuario usuario = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
 		Usuario usuario2 = getGerenciadorUsuarios().buscarUsuarioPorLogin(login);
 		
-		if (usuario2.getGerenciadorAmizades().getListaDeAmigos().isEmpty()){
-			return "O usuário não possui amigos";
-		}
-
-		else if (!getGerenciadorUsuarios().logiEhUsado(login)) {
-			throw new Exception("Usuário inexistente");
-		}
-
-		else {	
-				return usuario2.getGerenciadorAmizades().stringDeAmigos();
-
-		}
+		return getGerenciadorUsuarios().getAmigos(usuario, usuario2);
 	}
 
 	public String getItens(String idSessao) throws Exception {
-
-		return getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)
-				.getGerenciadorItens().stringDeItens();
+		Usuario usuario = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		
+		return getGerenciadorUsuarios().getItens(usuario);
 
 	}
 
 	public String getItens(String idSessao, String login) throws Exception {
-
-		if (!getGerenciadorUsuarios()
-				.buscarUsuarioPorID(idSessao)
-				.getGerenciadorAmizades()
-				.ehMeuAmigo(
-						getGerenciadorUsuarios().buscarUsuarioPorLogin(login))) {
-			throw new Exception(
-					"O usuário não tem permissão para visualizar estes itens");
-		}
-
-		if (getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)
-				.getGerenciadorAmizades().buscaPerfil(login)
-				.getGerenciadorItens().getListaMeusItens().isEmpty()) {
-			return "O usuário não possui itens cadastrados";
-		}
+		Usuario usuario = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		Usuario usuario2 = getGerenciadorUsuarios().buscarUsuarioPorLogin(login);
 		
-		else {
-			return getGerenciadorUsuarios().buscarUsuarioPorID(idSessao)
-					.getGerenciadorAmizades().buscaPerfil(login)
-					.getGerenciadorItens().stringDeItens();
-		}
-
+		return getGerenciadorUsuarios().getItens(usuario, usuario2);
 	}
 	
 	public String requisitarEmprestimo(String idSessao, String idItem, int dias) throws Exception {
-		Usuario usr = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-		if (getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorAmizades().ehMeuAmigo(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
-			String idRequisicaoEmprestim = getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().requisitarEmprestimos(usr,idItem, dias);
-			
-			try {
-				String assunto = "Empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome() + " a " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome();
-				String mensagem = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getNome() + " solicitou o empréstimo do item " + this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getNome();
-				
-				enviarMensagem(idSessao, getGerenciadorUsuarios().buscarDonoItem(idItem).getLogin(), assunto, mensagem, idRequisicaoEmprestim);
-				
-			} catch (Exception e){
-				//System.out.println(e.getMessage());
-			}
-			return idRequisicaoEmprestim;
-		}
-		throw new Exception("O usuário não tem permissão para requisitar o empréstimo deste item");
-
+		Usuario usuario = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		Item item = getGerenciadorUsuarios().buscarItemPorID(idItem);
+		
+		return getGerenciadorUsuarios().requisitarEmprestimo(usuario, item, dias);
 	}
 	
 	public String getEmprestimos(String idSessao, String tipo)throws Exception{
@@ -317,7 +233,9 @@ public class RedeSocial {
 	}
 	
 	
-	public String enviarMensagem (String idSessao, String destinatario, String assunto, String mensagem) throws Exception{		
+	public String enviarMensagem (String idSessao, String destinatario, String assunto, String mensagem) throws Exception{
+		
+		
 		if (!stringValida(idSessao)) {
 			throw new Exception("Sessão inválida");
 		}

@@ -1,5 +1,7 @@
 package Classes;
 
+import java.util.Random;
+
 
 public class Item {
 	
@@ -22,10 +24,11 @@ public class Item {
 		else if(!categoriaValida(categoria)){
 			throw new Exception("Categoria inexistente");
 		}
-    	this.idItem = "";
+    	
     	this.nome = nome;
     	this.descricao = descricao;
     	this.categoria = categoria;
+    	this.idItem = gerarID();
     }
     
     public String getNome(){
@@ -44,8 +47,8 @@ public class Item {
     	return idItem;
     }
     
-    public String gerarID(int quantItens){
-		idItem += "${item" +quantItens + "}";
+    public String gerarID(){
+    	idItem = getNome() + "-" + (new Random()).nextInt(1000);
 		return idItem;
 	}
     
