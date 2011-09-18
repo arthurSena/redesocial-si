@@ -321,11 +321,21 @@ public class GerenciadorUsuarios {
 			usr.getGerenciadorItens().incrementarDias(dias);
 		}
 	}
-	public void desfazerAmizade(Usuario usuario, Usuario usuario2){
+	public void desfazerAmizade(Usuario usuario, Usuario usuario2) throws Exception{
 		usuario.getGerenciadorAmizades().desfazerAmizade(usuario2);
 		usuario2.getGerenciadorAmizades().desfazerAmizade(usuario);
 		
+		for(Item it : usuario.getGerenciadorItens().getListaMeusItens()){
+			if(it.getEmprestimo()!=null && it.getEmprestimo().getBeneficiado().equals(usuario2) && !it.getEmprestimo().emprestimoFoiAprovado()){
+				it.acabarEmprestimo();
+			}
+		}
 		
+		for(Item it : usuario2.getGerenciadorItens().getListaMeusItens()){
+			if(it.getEmprestimo()!=null && it.getEmprestimo().getBeneficiado().equals(usuario) && !it.getEmprestimo().emprestimoFoiAprovado()){
+				it.acabarEmprestimo();
+			}
+		}
 	}
 	
 	public String getRanking(String idSessao, String categoria) throws Exception{
@@ -346,7 +356,6 @@ public class GerenciadorUsuarios {
 			while(!listaUsuarioReputacao.isEmpty()){
 				Usuario usr = usuarioComMaisAltaReputacaoDaLista(listaUsuarioReputacao);
 				retorno+=usr.getLogin() + "; ";
-				System.out.println(usr.getReputacao());
 				listaUsuarioReputacao.remove(usr);
 			}
 			
@@ -363,7 +372,6 @@ public class GerenciadorUsuarios {
 			while(!listaUsuarioReputacao.isEmpty()){
 				Usuario usr = usuarioComMaisAltaReputacaoDaLista(listaUsuarioReputacao);
 				retorno+=usr.getLogin() + "; ";
-				System.out.println(usr.getReputacao());
 				listaUsuarioReputacao.remove(usr);
 			}
 			

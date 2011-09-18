@@ -195,5 +195,10 @@ public class Emprestimo {
 	public boolean foiCompletado(){
 		return isCompletado;
 	}
+	
+	public void cancelarRequisicaoEmprestimo(){
+		requisicaoEmprestimo = false;
+		idEmprestimo = "";
+	}
 }
 

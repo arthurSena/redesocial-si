@@ -231,13 +231,16 @@ public class GerenciadorItens {
 		return buscarItemPorID(idItem).criarRequisicaoEmprestimo(beneficiado, dias);
 	}
 	
-	public String aprovarRequisicaoEmprestimo(boolean requisicaoExiste, String idRequisicaoEmprestimo) throws Exception{
+	public String aprovarRequisicaoEmprestimo(boolean ehDonoDoItem,boolean usuarioSaoAmigos,boolean requisicaoExiste, String idRequisicaoEmprestimo) throws Exception{
 		if (!stringValida(idRequisicaoEmprestimo)){
 			throw new Exception("Identificador da requisição de empréstimo é inválido");
 		}
 		else if (!requisicaoExiste){
 			throw new Exception("Requisição de empréstimo inexistente");
 		}
+//		else if (!usuarioSaoAmigos){
+//			throw new Exception("Requisição de empréstimo inexistente");
+//		}
 		for (Item it: listaMeusItens){
 			if (it.getEmprestimo()!=null && it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo) && !it.getEmprestimo().emprestimoFoiAprovado()){
 				this.getItensPraEmprestar().remove(it);
@@ -252,7 +255,12 @@ public class GerenciadorItens {
 			throw new Exception("Requisição de empréstimo inexistente");
 		}
 		//throw new Exception("Requisição de empréstimo inexistente");
-		throw new Exception("O empréstimo só pode ser aprovado pelo dono do item");
+	//	if(!ehDonoDoItem){
+			throw new Exception("O empréstimo só pode ser aprovado pelo dono do item");
+		//}
+		//else{
+
+	//	}
 	}
 	
 	private boolean stringValida(String string) {
