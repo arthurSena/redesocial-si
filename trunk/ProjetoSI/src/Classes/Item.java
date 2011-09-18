@@ -114,7 +114,7 @@ public class Item {
     }
     
     
-    public void acaba(){
-    	
+    public void acabarEmprestimo(){
+    	emprestimo = null;
     }
 }

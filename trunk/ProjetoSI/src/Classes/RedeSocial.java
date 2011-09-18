@@ -219,22 +219,23 @@ public class RedeSocial {
 	public String aprovarEmprestimo(String idSessao, String idRequisicaoEmprestimo)throws Exception{
 		Usuario usuario = null;
 		Usuario usuario2 = null;
+		boolean usuariosSaoAmigos = true;
 		
+		
+		boolean ehDonoDoItem = true;
 		try {
 			usuario = this.getGerenciadorUsuarios().buscarUsuarioBeneficiado(idRequisicaoEmprestimo);
 			usuario2 = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-		
-			if (!usuario.getGerenciadorAmizades().ehMeuAmigo(usuario2)){
-				throw new Exception ("Requisição de empréstimo inexistente");
-				
-			}
+
+			usuariosSaoAmigos = usuario.getGerenciadorAmizades().ehMeuAmigo(usuario2);
+			ehDonoDoItem = getGerenciadorUsuarios().buscarUsuarioEmprestador(idSessao).equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao));
+			System.out.println("a");
 		} catch (Exception e){
-//			if (e.getMessage().equals("Requisição de empréstimo inexistente")){
-//				throw new Exception("Requisição de empréstimo inexistente");
-//			}
+			
+
 		}
 		
-		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().aprovarRequisicaoEmprestimo(this.getGerenciadorUsuarios().requisicaoEmprestimoExiste(idRequisicaoEmprestimo),idRequisicaoEmprestimo);
+		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().aprovarRequisicaoEmprestimo(ehDonoDoItem,usuariosSaoAmigos,this.getGerenciadorUsuarios().requisicaoEmprestimoExiste(idRequisicaoEmprestimo),idRequisicaoEmprestimo);
 	}
 	
 	
@@ -293,7 +294,7 @@ public class RedeSocial {
 		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().confirmarTerminoEmprestimo(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo));
 		
 		if(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().foiCompletado()){
-			System.out.println("TAH ENTRANDO AKI !!!");
+
 			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().addEmprestimoCompletado(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo());
 		}
 		
