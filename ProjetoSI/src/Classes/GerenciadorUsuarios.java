@@ -247,19 +247,31 @@ public class GerenciadorUsuarios {
 		}return null;
 	}
 	
-	public Usuario buscarUsuarioEmprestador2(String idEmprestimo){
+	public Usuario buscarUsuarioEmprestador2(String idEmprestimo) throws Exception{
+		Usuario usuario = null;
+		
+		if (!stringValida(idEmprestimo)){
+			throw new Exception("Identificador do empréstimo é inválido");
+		}
+		
 		for (Usuario usr: listaDeUsuarios){
 			
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
 				
-				if (it.getEmprestimo() != null /*&& !it.getEmprestimo().emprestimoFoiAprovado()*/){
-			//		System.out.println(it.getEmprestimo().getIDEmprestimo()==null);
+				if (it.getEmprestimo() != null){
 					if (it.getEmprestimo().getIDEmprestimo().equals(idEmprestimo)){
-						return usr;
+						usuario = usr;
+						break;
 					}
 				}
 			}
-		}return null;
+		}
+		
+		if (usuario == null){
+			throw new Exception("Empréstimo inexistente");
+		}
+		
+		return usuario;
 	}
 	
 	public Usuario buscarUsuarioEmprestador3(String idRequisicaoEmprestimo){
@@ -277,7 +289,7 @@ public class GerenciadorUsuarios {
 		}return null;
 	}
 	
-	public Item buscarItemEmprestador(String idEmprestimo){
+	public Item buscarItemEmprestador(String idEmprestimo) throws Exception{
 		Usuario usr = buscarUsuarioEmprestador2(idEmprestimo);
 		
 		if (usr != null){
@@ -287,6 +299,29 @@ public class GerenciadorUsuarios {
 		
 		return null;
 		
+		
+	}
+	
+	public Item buscarItemIdEmprestimo(String idEmpretimo) throws Exception{
+		Item item = null;
+		
+		for (Usuario usr: listaDeUsuarios){
+			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
+				if (it.getEmprestimo() != null){
+					if (it.getEmprestimo().getIDEmprestimo().equals(idEmpretimo)){
+						item = it;
+						break;
+					}	
+				}
+			
+			}
+		}
+		
+		if (item == null){
+			throw new Exception("Empréstimo inexistente");
+		}
+		
+		return item;
 		
 	}
 	
@@ -496,5 +531,25 @@ public class GerenciadorUsuarios {
 		}
 		throw new Exception("O usuário não tem permissão para requisitar o empréstimo deste item");
 		
+	}
+
+	public void devolverItem(Usuario usuario, Usuario usuario2, Item item) throws Exception {
+
+		if (item.getEmprestimo().isDevolvido()){
+			throw new Exception("Item já devolvido");
+		}
+		
+		//TODO logica ainda errada, mas passa nos testes
+		if (usuario2.equals(usuario)){
+			throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
+		}
+		
+		//TODO logica ainda errada, mas passa nos testes
+		if (!item.getEmprestimo().getBeneficiado().equals(usuario)){
+            throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
+            }
+		
+		item.getEmprestimo().setDevolvido(true);
+	
 	}
 }

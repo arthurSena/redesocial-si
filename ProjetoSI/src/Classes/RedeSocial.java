@@ -156,34 +156,12 @@ public class RedeSocial {
 	
 	
 	public void devolverItem(String idSessao, String idEmprestimo) throws Exception{
-		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-		if (!stringValida(idEmprestimo)){
-			throw new Exception("Identificador do empréstimo é inválido");
-		}
+		Usuario usuario = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		Usuario usuario2 = this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo);
+		Item item = this.getGerenciadorUsuarios().buscarItemIdEmprestimo(idEmprestimo);
 		
-		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo) == null){
-			throw new Exception("Empréstimo inexistente");
-		}
-		
-		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo) == null){
-			throw new Exception("Empréstimo inexistente");
-		}
-		
-		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().isDevolvido()){
-			throw new Exception("Item já devolvido");
-		}
-		
-		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
-			throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
-		}
-		
-		if (!this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getBeneficiado().equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
-            throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
-            }
-
-		
-		this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().setDevolvido(true);
-		}
+		getGerenciadorUsuarios().devolverItem(usuario, usuario2, item);	
+	}
 		
 	
 	
