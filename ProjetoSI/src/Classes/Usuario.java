@@ -59,10 +59,20 @@ public class Usuario {
 		gerenciaMensagens = new GerenciadorMensagens();
 	}
 	
+	/**
+	 * Recupera o Perfil do Usuario
+	 * @return
+	 *        Perfil do Usuario
+	 */
 	public String visualizarPerfil(){
 		return nome + " - " + this.end;
 	}
 	
+	/**
+	 * Recupera o ID do Usuario
+	 * @return
+	 *         ID do Usuario
+	 */
 	public String getID(){
 		return ID;
 	}
@@ -157,6 +167,14 @@ public class Usuario {
 		return gerenciaMensagens;
 	}
 	
+	/**
+	 * Diz se um Usuario eh igual ou nao a outro Usuario
+	 * @param usr
+	 *        Usuario a ser comparado
+	 * @return
+	 *        True, caso os Usuarios sejam iguais
+	 *        False, caso contrario
+	 */
 	public boolean equals(Usuario usr){
 		if (!(usr instanceof Usuario)){
 			return false;
@@ -178,14 +196,44 @@ public class Usuario {
         return true;
     }
 	
-	private String nomeModificado(String nome){
-		String nomeID = (login.charAt(0) + "").toUpperCase();
-		for (int i = 1; i <nome.length();i++){
-			nomeID += login.charAt(i);
-		}return nomeID;
-	}
-	
-	public String pesquisarItem(String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao){
+	/**
+	 * Pesqusa um Item do Usuario
+	 * @param chave
+	 * @param atributo
+	 * @param tipoOrdenacao
+	 * @param criterioOrdenacao
+	 * @return
+	 * @throws Exception
+	 */
+	public String pesquisarItem(String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao)throws Exception{
+		if (!stringValida(chave)) {
+			throw new Exception("Chave inválida");
+		}
+		
+		if (!stringValida(atributo)) {
+			throw new Exception("Atributo inválido");
+		}
+		
+		if (!atributoValido(atributo)) {
+			throw new Exception("Atributo inexistente");
+		}
+		
+		if (!stringValida(tipoOrdenacao)) {
+			throw new Exception("Tipo inválido de ordenação");
+		}
+		
+		if (!tipoOrdenacaoValido(tipoOrdenacao)) {
+			throw new Exception("Tipo de ordenação inexistente");
+		}
+		
+		
+		if (!stringValida(criterioOrdenacao)) {
+			throw new Exception("Critério inválido de ordenação");
+		}
+		
+		if (!criterioOrdenacaoValido(criterioOrdenacao)) {
+			throw new Exception("Critério de ordenação inexistente");
+		}
 		String resposta = "";
 		
 		if(criterioOrdenacao.equals("dataCriacao")){
@@ -248,26 +296,10 @@ public class Usuario {
 				}
 			}
 		}
-//		if (tipoOrdenacao.equals("crescente")){
-//			for (Usuario usuario : this.getGerenciadorAmizades().getListaDeAmigos()){
-//				if (resposta.equals("")){
-//					resposta += usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
-//					
-//				} else if (!resposta.equals("") && !usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
-//					resposta += "; " + usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
-//				}
-//			}
-//		} else {
-//			for (int i = this.getGerenciadorAmizades().getListaDeAmigos().size() - 1; i >= 0; i--){
-//				if (resposta.equals("")){
-//					resposta += this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
-//					
-//				} else if (!resposta.equals("") && !this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
-//					resposta += "; " + this.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
-//				}
-//			}
-//		}
 		
+		if(resposta.isEmpty()){
+			return  "Nenhum item encontrado";
+		}
 		
 		return resposta;
 	}
@@ -289,11 +321,41 @@ public class Usuario {
 		}return usuario;
 	}
 	
+	/**
+	 * Recupera a Reputacao do Usuario, ou seja, um numero que
+	 * representa o numero de emprestimos completados pelo Usuario
+	 * @return
+	 *        Reputacao do Usuario
+	 */
 	public int getReputacao(){
 		return getGerenciadorItens().quantEmprestimosCompletados();
 	}
 	
+	private boolean atributoValido(String atributo){
+		
+		if (atributo.equals("nome") || atributo.equals("descricao") || atributo.equals("categoria")){
+			return true;
+		}
+		
+		return false;
+	}
 	
+	private boolean tipoOrdenacaoValido(String tipoOrdenacao){
+		
+		if (tipoOrdenacao.equals("crescente") || tipoOrdenacao.equals("decrescente")){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean criterioOrdenacaoValido(String criterioOrdenacao){
+		
+		if (criterioOrdenacao.equals("dataCriacao") || criterioOrdenacao.equals("reputacao")){
+			return true;
+		}
+		return false;
+	}
 
 	
 }

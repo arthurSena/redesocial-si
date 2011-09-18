@@ -7,6 +7,11 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Classe que representa um Emprestrimo criado por um Usuario
+ * @author ARTHUR SENA, RODOLFO DE LIMA, RENNAN PINTO, IGOR GOMES
+ *
+ */
 
 public class Emprestimo {
 	
@@ -31,6 +36,16 @@ public class Emprestimo {
 	private boolean isCompletado;
 	private int metodoFoiXamado = 0;
 	
+	/**
+	 * Inicia os atributos da classe
+	 * @param beneficiado
+	 *           Usuario Beneficiado do emprestimo
+	 * @param duracao
+	 * 			Tempo de duracao, em dias, do emprestimo
+	 * @throws Exception
+	 *         Caso a duracao seja menor ou igual a zero 
+	 *         Caso o Usuario beneficiado seja igual a null
+	 */
 	public Emprestimo(Usuario beneficiado, int duracao)throws Exception{
 		if (beneficiado==null){
 			throw new Exception("Beneficiado nao pode ser igual a null");
@@ -50,37 +65,82 @@ public class Emprestimo {
 		dataDevolucao = null;
 	}
 	
+	/**
+	 * Recupera o Usuario beneficiado
+	 * @return
+	 *       Usuario beneficiado
+	 */
+	
 	public Usuario getBeneficiado(){
 		return beneficiado;
 	}
+	
+	/**
+	 * Recupera o ID de Requisicao de Emprestimo
+	 * @return
+	 *        ID de Requisicao de Emprestimo
+	 */
 	
 	public String getIDRequisicao(){
 		return idRequisicao;
 	}
 	
+	/**
+	 * Recupera o ID de Emprestimo
+	 * @return
+	 *        ID de Emprestimo
+	 */
+	
 	public String getIDEmprestimo(){
 		return idEmprestimo;
 	}
 	
+	/**
+	 * Diz se o emprestimo foi ou nao aprovado
+	 * @return
+	 *       Se o emprestimo foi ou nao aprovado
+	 */
 	public boolean emprestimoFoiAprovado(){
 		return emprestimoAprovado;
 	}
+	
+	/**
+	 * Diz se o Item emprestado foi devolvido
+	 * @return
+	 *        Se o Item emrpestado foi devolvido
+	 */
 	
 	public boolean isDevolucao() {
 		return devolucao;
 	}
 
+	/**
+	 * Altera a Devolucao do Item
+	 * @param devolucao
+	 *           Boolean que diz se o item foi ou nao devolvido
+	 */
+	
 	public void setDevolucao(boolean devolucao) {
 		if(devolucao){
-			this.isCompletado = ((!isRequisitarDevolucao()) /*|| (isDevolucao() && !tempoEmprestimoNaoExpiro()*/);
+			this.isCompletado = ((!isRequisitarDevolucao()));
 		}
 		this.devolucao = devolucao;		
 	}
 
+	/**
+	 * Diz se o Item emprestado foi devolvido
+	 * @return
+	 *        Se o Item emrpestado foi devolvido
+	 */
 	public boolean isDevolvido() {
 		return devolvido;
 	}
-
+	
+	/**
+	 * Altera a Devolucao do Item
+	 * @param devolucao
+	 *           Boolean que diz se o item foi ou nao devolvido
+	 */
 	public void setDevolvido(boolean devolvido) {
 		this.devolvido = devolvido;
 	}
@@ -97,36 +157,71 @@ public class Emprestimo {
 		return gerarIDEmprestimo();
 	}
 	
-	
+	/**
+	 * Gera o ID de Requisicao de Emprestimo
+	 * @return
+	 *        ID de Requisicao de Emprestimo
+	 */
 	public String gerarIDRequisicao(){
 		idRequisicao = beneficiado.getID() + "Requisicao" + (new Random()).nextInt(1000);
 		return idRequisicao;
 	}
 	
+	/**
+	 * Gera o ID de Emprestimo
+	 * @return
+	 *        ID de Emprestimo
+	 */
 	public String gerarIDEmprestimo(){
 		idEmprestimo = beneficiado.getID() + "Emprestimo" + (new Random()).nextInt(1000);
-
-		//idRequisicao = null;
 		return idEmprestimo;
 	}
-
-	public void requisitarDevolucao() {
+	
+	/**
+	 * Requisita a Devolucao do Item
+	 * @throws Exception
+	 *            Caso a devolucao ja tenha sido requisitada
+	 */
+	
+	public void requisitarDevolucao() throws Exception {
+		if(requisitarDevolucao){
+			throw new Exception ("Devolução já requisitada");
+		}
 		if(calendario==null){
 			calendario = new  GregorianCalendar();
 		}
+		
 		this.requisitarDevolucao = true;
 	}
 			
-
+	/**
+	 * Informa se foi requisitado a devolucao do Item
+	 * @return
+	 *       True, caso foi requisitado a devolucao
+	 *       False, caso contrario
+	 */
+	
 	public boolean isRequisitarDevolucao() {
-		
 		return requisitarDevolucao;
 	}
 	
+	/**
+	 * Retorna a lista de Usuarios interessados no item
+	 * @return
+	 *          lista de Usuarios interessados no item
+	 */
 	public List<Usuario> getListaDeUsuariosInteressados() {
 		return listaDeUsuariosInteressados;
 	}
 
+	/**
+	 * Registra interesse em pedir emprestado o Item
+	 * @param usuario
+	 *         Usuario interessado no Item
+	 * @throws Exception
+	 *         Caso o usuario ja tenha registrado interesse 
+	 */
+	
 	public void registrarInteresse (Usuario usuario) throws Exception{
 		if (getListaDeUsuariosInteressados().contains(usuario)){
 			throw new Exception("O usuário já registrou interesse neste item");
@@ -135,6 +230,10 @@ public class Emprestimo {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean tempoEmprestimoNaoExpiro(){
 		if (this.metodoFoiXamado>=1){
 			return isCancelado;
@@ -185,18 +284,37 @@ public class Emprestimo {
 		calendario.add(Calendar.DATE, dias);
 	}
 	
+	/**
+	 * Requisita o emprestimo
+	 */
 	public void requisitarEmprestimo(){
 		requisicaoEmprestimo = true;
 	}
+	
+	/**
+	 * Diz se o emprestimo foi ou nao requisitado por um Usuario
+	 * @return
+	 *       True, caso o emprestimo tenha sido requisitado
+	 *       False, caso contrario
+	 */
 	
 	public boolean emprestimoFoiRequisitado(){
 		return requisicaoEmprestimo;
 	}
 	
+	/**
+	 * Diz se o Emprestimo foi ou nao completado
+	 * @return True, caso o emprestimo foi completado
+	 *         False, caso contrario
+	 */
+	
 	public boolean foiCompletado(){
 		return isCompletado;
 	}
-	
+
+	/**
+	 * Cancela um pedido de requisicao de emprestimo
+	 */
 	public void cancelarRequisicaoEmprestimo(){
 		requisicaoEmprestimo = false;
 		idEmprestimo = "";
