@@ -1,4 +1,4 @@
-# User Story 10 - Registrar interesse em itens
+﻿# User Story 10 - Registrar interesse em itens
 
 zerarSistema
 
@@ -28,17 +28,17 @@ idItem2=cadastrarItem idSessao=${sessaoSteve} nome="Guia do mochileiro das galá
 idRequisicaoEmprestimo1=requisitarEmprestimo idSessao=${sessaoSteve} idItem=${idItem1} duracao=7
 idEmprestimo1=aprovarEmprestimo idSessao=${sessaoMark} idRequisicaoEmprestimo=${idRequisicaoEmprestimo1}
 
-registrarInteresse idSessao=${sessaoBill} idItem=${idItem1}
 registrarInteresse idSessao=${sessaoXpto} idItem=${idItem1}
+registrarInteresse idSessao=${sessaoBill} idItem=${idItem1}
 
-expect "Não há tópicos criados" lerTopicos idSessao=${sessaoBill} tipo="todos"
 expect "Não há tópicos criados" lerTopicos idSessao=${sessaoXpto} tipo="todos"
+expect "Não há tópicos criados" lerTopicos idSessao=${sessaoBill} tipo="todos"
 
 devolverItem idSessao=${sessaoSteve} idEmprestimo=${idEmprestimo1}
 confirmarTerminoEmprestimo idSessao=${sessaoMark} idEmprestimo=${idEmprestimo1}
 
-expect "O item The Social Network do usuário Mark Zuckerberg está disponível" lerTopicos idSessao=${sessaoBill} tipo="offtopic"
 expect "O item The Social Network do usuário Mark Zuckerberg está disponível" lerTopicos idSessao=${sessaoXpto} tipo="todos"
+expect "O item The Social Network do usuário Mark Zuckerberg está disponível" lerTopicos idSessao=${sessaoBill} tipo="offtopic"
 
 idRequisicaoEmprestimo2=requisitarEmprestimo idSessao=${sessaoBill} idItem=${idItem1} duracao=7
 idEmprestimo2=aprovarEmprestimo idSessao=${sessaoMark} idRequisicaoEmprestimo=${idRequisicaoEmprestimo2}

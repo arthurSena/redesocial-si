@@ -62,9 +62,30 @@ public class GerenciadorMensagens {
 		return false;
 	}
 	
+	private boolean assuntoExisteDestinatario(Usuario destiUsuario, String assunto){
+		
+		for (Mensagem msg : destiUsuario.getGerenciadorMensagens().getListaDeMensagens()){
+			if (msg.getAssunto().equals(assunto)){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	
 	public String enviarMensagem(Usuario destinatario, String assunto, String mensagem){
 		Mensagem msgReturn = null;
+		
+		if (assuntoExiste(assunto) && assuntoExisteDestinatario(destinatario, assunto)){
+			for (Mensagem msg : this.getListaDeMensagens()){
+				if (msg.getAssunto().equals(assunto)){
+					msg.addMensagem(mensagem);
+					msgReturn = msg;
+					
+					}				
+				}
+		} else {
 		
 		if (assuntoExiste(assunto)){
 			
@@ -72,15 +93,31 @@ public class GerenciadorMensagens {
 				if (msg.getAssunto().equals(assunto)){
 					msg.addMensagem(mensagem);
 					msgReturn = msg;
+					
+					}				
 				}
 			}
-		} else{
+		
+		if (assuntoExisteDestinatario(destinatario, assunto)){
+			for (Mensagem msg2 : destinatario.getGerenciadorMensagens().getListaDeMensagens()){
+				if (msg2.getAssunto().equals(assunto)){
+					msg2.addMensagem(mensagem);
+//					msgReturn = msg2;
+					}
+				} 
+			}
+		
+		
+		
+//		if (!assuntoExiste(assunto) && !assuntoExisteDestinatario(destinatario, assunto)){
+		else {
 			Mensagem msg = new Mensagem(destinatario, assunto, mensagem);
 			this.addMensagem(msg);
 			destinatario.getGerenciadorMensagens().addMensagem(msg);
 			msgReturn = msg;
 			
 			
+		}
 		}
 		return msgReturn.getIdMensagem();
 	}

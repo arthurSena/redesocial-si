@@ -220,22 +220,28 @@ public class RedeSocial {
 		Usuario usuario = null;
 		Usuario usuario2 = null;
 		boolean usuariosSaoAmigos = true;
-		
-		
+
 		boolean ehDonoDoItem = true;
+
 		try {
 			usuario = this.getGerenciadorUsuarios().buscarUsuarioBeneficiado(idRequisicaoEmprestimo);
 			usuario2 = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-
+		
 			usuariosSaoAmigos = usuario.getGerenciadorAmizades().ehMeuAmigo(usuario2);
 			ehDonoDoItem = getGerenciadorUsuarios().buscarUsuarioEmprestador(idSessao).equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao));
 			System.out.println("a");
-		} catch (Exception e){
 			
-
+			if (!usuario.getGerenciadorAmizades().ehMeuAmigo(usuario2)){
+				throw new Exception ("Requisição de empréstimo inexistente");
+				
+			}
+		} catch (Exception e){
+//			if (e.getMessage().equals("Requisição de empréstimo inexistente")){
+//				throw new Exception("Requisição de empréstimo inexistente");
+//			}
 		}
 		
-		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().aprovarRequisicaoEmprestimo(ehDonoDoItem,usuariosSaoAmigos,this.getGerenciadorUsuarios().requisicaoEmprestimoExiste(idRequisicaoEmprestimo),idRequisicaoEmprestimo);
+		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().aprovarRequisicaoEmprestimo(this.getGerenciadorUsuarios().requisicaoEmprestimoExiste(idRequisicaoEmprestimo),idRequisicaoEmprestimo);
 	}
 	
 	
@@ -294,7 +300,7 @@ public class RedeSocial {
 		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().confirmarTerminoEmprestimo(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo));
 		
 		if(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().foiCompletado()){
-
+			
 			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().addEmprestimoCompletado(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo());
 		}
 		
@@ -484,8 +490,18 @@ public class RedeSocial {
 			throw new Exception ("Sessão inexistente");
 		}
 		
+		if (this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).equals(this.getGerenciadorUsuarios().buscarDonoItem(idItem))){
+			throw new Exception ("O usuário não pode registrar interesse no próprio item");
+		}
+			
+		Item item = this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem);
+		Usuario usuario = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
 		
-		this.getGerenciadorUsuarios().buscarDonoItem(idItem).getGerenciadorItens().buscarItemPorID(idItem).getEmprestimo().registrarInteresse(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao));
+		if (item.getEmprestimo() == null){
+			throw new Exception("O usuário não tem permissão para registrar interesse neste item");
+		}
+		
+		item.getEmprestimo().registrarInteresse(usuario);
 		
 	}
 	
