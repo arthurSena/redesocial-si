@@ -552,4 +552,72 @@ public class GerenciadorUsuarios {
 		item.getEmprestimo().setDevolvido(true);
 	
 	}
+
+	public void confirmarTerminoEmprestimo(Usuario usuario2, Item item) throws Exception {
+//		Usuario usuario2 = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+//		Usuario usuario3 = this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo);
+		
+		
+		if (!usuario2.getGerenciadorItens().getListaMeusItens().contains(item)){
+			throw new Exception("O término do empréstimo só pode ser confirmado pelo dono do item");
+		}
+		
+		if (item.getEmprestimo().isDevolucao()){
+			throw new Exception("Término do empréstimo já confirmado");
+		}
+		
+		item.getEmprestimo().setDevolucao(true);
+		usuario2.getGerenciadorItens().confirmarTerminoEmprestimo(item);
+		
+		//TODO tirar essa logica daqui.
+		if(item.getEmprestimo().foiCompletado()){
+			usuario2.getGerenciadorItens().addEmprestimoCompletado(item.getEmprestimo());
+		}
+		
+		String assunto = "O item " + item.getNome() + " do usuário " + usuario2.getNome() + " está disponível";
+		String mensagem = "Agora você pode requisitar o empréstimo do " + item.getNome();
+		
+		for (Usuario usuario : item.getEmprestimo().getListaDeUsuariosInteressados() ){
+			String destinatario = usuario.getLogin();
+		
+			enviarMensagem(usuario2.getID(), destinatario, assunto, mensagem);
+		}
+	
+		
+		
+	}
+	
+	//TODO arrumar esse metodo
+	public String enviarMensagem (String idSessao, String destinatario, String assunto, String mensagem) throws Exception{
+		
+		
+		if (!stringValida(idSessao)) {
+			throw new Exception("Sessão inválida");
+		}
+		
+		if (!stringValida(destinatario)){
+			throw new Exception ("Destinatário inválido");
+		}
+		
+		try {
+			this.buscarUsuarioPorID(idSessao);
+		} catch (Exception e){
+			throw new Exception ("Sessão inexistente");
+		}
+		
+		try {
+			this.buscarUsuarioPorLogin(destinatario);
+		} catch (Exception e){
+			throw new Exception ("Destinatário inexistente");
+		}
+		
+		if (!stringValida(assunto)){
+			throw new Exception("Assunto inválido");
+		}
+		
+		if (!stringValida(mensagem)){
+			throw new Exception("Mensagem inválida");
+		}
+		return this.buscarUsuarioPorID(idSessao).getGerenciadorMensagens().enviarMensagem(buscarUsuarioPorLogin(destinatario), assunto, mensagem);
+	}
 }
