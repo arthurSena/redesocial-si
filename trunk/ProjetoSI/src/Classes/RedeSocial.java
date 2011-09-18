@@ -166,41 +166,11 @@ public class RedeSocial {
 	
 	
 	public void confirmarTerminoEmprestimo(String idSessao, String idEmprestimo) throws Exception{
-		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		Usuario usuario2 = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo);
+		Item item = this.getGerenciadorUsuarios().buscarItemIdEmprestimo(idEmprestimo);
 		
-		if (!stringValida(idEmprestimo)){
-			throw new Exception("Identificador do empréstimo é inválido");
-		}
-		
-		if (this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo) == null){
-			throw new Exception("Empréstimo inexistente");
-		}
-		
-		if (!this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo).equals(getGerenciadorUsuarios().buscarUsuarioPorID(idSessao))){
-			throw new Exception("O término do empréstimo só pode ser confirmado pelo dono do item");
-		}
-		
-		if (this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().isDevolucao()){
-			throw new Exception("Término do empréstimo já confirmado");
-		}
-		
-		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().setDevolucao(true);
-		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().confirmarTerminoEmprestimo(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo));
-		
-		if(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().foiCompletado()){
-
-			this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().addEmprestimoCompletado(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo());
-		}
-		
-		String assunto = "O item " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome() + " do usuário " + this.getGerenciadorUsuarios().buscarDonoItem(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getID()).getNome() + " está disponível";
-		String mensagem = "Agora você pode requisitar o empréstimo do " + this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome();
-		 
-		
-		for (Usuario usuario : this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getListaDeUsuariosInteressados() ){
-			String destinatario = usuario.getLogin();
-			enviarMensagem(idSessao, destinatario, assunto, mensagem);
-		}
-		
+		getGerenciadorUsuarios().confirmarTerminoEmprestimo(usuario2, item);
 	}
 	
 	private boolean stringValida(String string) {
