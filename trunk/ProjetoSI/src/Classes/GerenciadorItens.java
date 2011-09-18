@@ -3,13 +3,21 @@ package Classes;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Classe que Gerencia os Itens do Usuario
+ * @author ARTHUR SENA, RODOLFO DE LIMA, RENNAN PINTO, IGOR GOMES
+ *
+ */
 public class GerenciadorItens {
 	
 	private List<Item> listaMeusItens;
 	private List<Item> itensPraEmprestar;
 	private List<Item> itensPraDevolver;
 	private List<Emprestimo> listaDeEmprestimosCompletados;
+	
+	/**
+	 * Inicia os Atributos da Classe
+	 */
 	
 	public GerenciadorItens(){
 		listaMeusItens = new ArrayList<Item>();
@@ -18,6 +26,15 @@ public class GerenciadorItens {
 		listaDeEmprestimosCompletados = new ArrayList<Emprestimo>();
 	}
 	
+	/**
+	 * Adiciona um Item 
+	 * @param it
+	 *         Item a ser adicionado
+	 * @return
+	 *        ID do item
+	 * @throws Exception
+	 *        Caso o Item seja nulo
+	 */
 	public String adicionarItem(Item it)throws Exception{
 		if (it==null){
 			throw new Exception("Item nao pode ser igual a null");
@@ -27,14 +44,29 @@ public class GerenciadorItens {
 		return it.getID();
 	}
 
+	/**
+	 * Recupera uma lista com todos os itens do Usuario
+	 * @return
+	 *        lista com todos os itens do Usuario
+	 */
 	public List<Item> getListaMeusItens() {
 		return listaMeusItens;
 	}
-
+	
+	/**
+	 * Altera a lista de itens do Usuario
+	 * @param listaMeusItens
+	 *       Nova lista de itens do Usuario
+	 */
 	public void setListaMeusItens(List<Item> listaMeusItens) {
 		this.listaMeusItens = listaMeusItens;
 	}
 
+	/**
+	 * Recupera uma lista com todos itens que podem ser emprestados
+	 * @return
+	 *         Uma lista com todos itens que podem ser emprestados
+	 */
 	public List<Item> getItensPraEmprestar() {
 		return itensPraEmprestar;
 	}
@@ -55,6 +87,17 @@ public class GerenciadorItens {
 		this.itensPraDevolver = itensPraDevolver;
 	}
 	
+	/**
+	 * Recupera um determinado Atributo do Item
+	 * @param idItem
+	 *        ID do Item
+	 * @param atributo
+	 *        Atributo do item
+	 * @return
+	 *        Atributo do Item
+	 * @throws Exception
+	 *         Caso Atributo seja inexistente ou Invalido
+	 */
 	public String getAtributoItem(String idItem, String atributo)throws Exception{
 		if(!stringValida(atributo)){
             throw new Exception("Atributo inválido");
@@ -304,7 +347,12 @@ public class GerenciadorItens {
 	public void confirmarTerminoEmprestimo(String item){
 		
 	}
-	
+	/**
+	 * Confirma o Termino de um Emprestimo
+	 * @param usr
+	 * @param item
+	 * @return
+	 */
 	public String confirmarTerminoEmprestimo(Usuario usr, Item item){
 		String retorno = "";
 		
@@ -320,6 +368,11 @@ public class GerenciadorItens {
 		
 	}
 	
+	/**
+	 * Metodo pra simular a Passagem do Tempo no sistema
+	 * @param dias
+	 *         Dias passados
+	 */
 	public void incrementarDias(int dias){
 		for (Item it: listaMeusItens){
 			if (it.getEmprestimo()!=null){
@@ -328,6 +381,14 @@ public class GerenciadorItens {
 		}
 	}
 	
+	/**
+	 * Busca um Item do Usuario
+	 * @param chave
+	 * @param atributo
+	 * @param tipoOrdenacao
+	 * @param criterioOrdenacao
+	 * @return
+	 */
 	public String buscarItemCadastrado(String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao){
 		String resp = "";
 		
@@ -340,12 +401,23 @@ public class GerenciadorItens {
 		return resp;
 	}
 	
+	/**
+	 * Apaga um Item do Usuario
+	 * @param item
+	 *        Item a ser apagado
+	 * @throws Exception
+	 *        Caso o Item nao pertenca ao Usuario
+	 *        Caso o Item ja esteja emprestado
+	 */
 	public void apagarItem(Item item) throws Exception{
-		
-		if (this.getListaMeusItens().contains(item) && !this.getItensPraEmprestar().contains(item)){
+		if(!getListaMeusItens().contains(item)){
+			throw new Exception("O usuário não tem permissão para apagar este item");
+		}
+		else if (this.getListaMeusItens().contains(item) && !this.getItensPraEmprestar().contains(item)){
 			throw new Exception ("O usuário não pode apagar este item enquanto estiver emprestado");
 			
-		} else {
+		} 
+		else {
 			this.getListaMeusItens().remove(item);
 		}
 	}

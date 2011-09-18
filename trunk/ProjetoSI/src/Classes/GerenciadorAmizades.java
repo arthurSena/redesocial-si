@@ -192,6 +192,14 @@ public class GerenciadorAmizades {
 		return null;
 	}
 	
+	/**
+	 * Recupera as Requisicoes de Amizades
+	 * @return
+	 *         As Requisicoes de Amizades
+	 * @throws Exception
+	 *        Caso nao haja nenhuma requisicao de Amizade
+	 */
+	
 	public String getRequisicoesDeAmizade() throws Exception {
 
 		if (getListaDeProvaveisAmigos().isEmpty()) {
@@ -243,11 +251,19 @@ public class GerenciadorAmizades {
 		}
 		return true;
 	}
+	
+	/**
+	 * Desfaz a Amizade com um Amigo
+	 * @param usuario
+	 *          Usuario amigo
+	 */
 	public void desfazerAmizade (Usuario usuario){
 		this.listaDeAmigos.remove(usuario);
 	}
 	
-	
+	/**
+	 * Recupera o Amigo com mais alta Reputacao
+	 */
 	public Usuario amigoComReputacaoMaisAlta(){
 		
 		Usuario usuario = listaDeAmigos.get(0);

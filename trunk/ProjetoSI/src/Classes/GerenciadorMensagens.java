@@ -196,7 +196,7 @@ public class GerenciadorMensagens {
 		return repString;
 		
 	}
-
+	
 	public String lerMensagens(boolean resp,boolean resp2,String idTopico) throws Exception{
 		if (idTopico==null || idTopico.isEmpty()){
 			throw new Exception("Identificador do tópico é inválido");

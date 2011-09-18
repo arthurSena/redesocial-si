@@ -2,24 +2,57 @@ package Classes;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * Classe responsavel por Gerenciar os Usuarios do Sistema
+ * @author ARTHUR SENA, RODOLFO DE LIMA, IGOR GOMES, RENNAN PINTO
+ */
 
 public class GerenciadorUsuarios {
 
 	List<Usuario> listaDeUsuarios;
 	List<Usuario> listaDeUsuariosLogados;
-
+	
+	/**
+	 * Inicia os Atributos da Classe
+	 */
+	
 	public GerenciadorUsuarios() {
 		listaDeUsuarios = new ArrayList<Usuario>();
 		listaDeUsuariosLogados = new ArrayList<Usuario>();
 	}
 	
+	/**
+	 * Recupera a Lista de Usuarios cadastrados no Sistema
+	 * @return
+	 *       Lista de Usuarios cadastrados no Sistema
+	 */
+	
 	public List<Usuario> getListaUsuarios(){
 		return listaDeUsuarios;
 	}
 	
+	/**
+	 * Recupera a Lista de Usuarios logados no Sistema
+	 * @return
+	 *        Lista de Usuarios logados no Sistema
+	 */
+	
 	public List<Usuario> getListaUsuariosLogados(){
 		return listaDeUsuariosLogados;
 	}
+	
+	/**
+	 * Recupera um deteminado atributos do Usuario
+	 * @param login
+	 *          Login do Usuario
+	 * @param atributo
+	 *          Atributo do Usuario
+	 * @return
+	 * 			Atributo a ser retornado
+	 * @throws Exception
+	 *         Caso login esteja vazio ou seja inexistente
+	 *         Caso Atributo esteja vazio ou seja inexistente
+	 */
 	
 	 public String getAtributoUsuario(String login, String atributo)throws Exception{
          if (!stringValida(login)){
@@ -48,8 +81,21 @@ public class GerenciadorUsuarios {
          else{
                  throw new Exception("Atributo inexistente");
          }
- }
+	 }
 	
+	 /**
+	  * Cria e Cadastra um Usuario no Sistema
+	  * @param login
+	  *        Login do Usuario
+	  * @param nome
+	  *        Nome do Usuario
+	  * @param endereco
+	  *        Endereco do Usuario
+	  * @throws Exception
+	  *        Caso login ou nome ou endereco estejam vazios.
+	  *        Caso login ja seja usado.
+	  */
+	 
 	public void criarUsuario(String login, String nome, String endereco)throws Exception{
         Usuario usr = new Usuario(nome, login, endereco);
         if (logiEhUsado(login)){
@@ -59,6 +105,17 @@ public class GerenciadorUsuarios {
         listaDeUsuarios.add(usr);
 }
 
+	/**
+	 * Localiza um Usuario no Sistema
+	 * @param idSessao
+	 *         ID da Sessao do Usuario no sistema
+	 * @param chave
+	 *         
+	 * @param atributo
+	 * @return
+	 *      Usuario 
+	 * @throws Exception
+	 */
 	public String localizarUsuario(String idSessao, String chave,
 			String atributo) throws Exception {
 
@@ -414,6 +471,9 @@ public class GerenciadorUsuarios {
 		}
 	}
 	public void desfazerAmizade(Usuario usuario, Usuario usuario2) throws Exception{
+		if (!usuario.getGerenciadorAmizades().ehMeuAmigo(usuario2)){
+			throw new Exception("Amizade inexistente");
+		}
 		usuario.getGerenciadorAmizades().desfazerAmizade(usuario2);
 		usuario2.getGerenciadorAmizades().desfazerAmizade(usuario);
 		
@@ -583,8 +643,8 @@ public class GerenciadorUsuarios {
 	}
 
 	public void confirmarTerminoEmprestimo(Usuario usuario2, Item item) throws Exception {
-//		Usuario usuario2 = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-//		Usuario usuario3 = this.getGerenciadorUsuarios().buscarUsuarioEmprestador2(idEmprestimo);
+//		Usuario usuario2 =  buscarUsuarioPorID(idSessao);
+//		Usuario usuario3 =  buscarUsuarioEmprestador2(idEmprestimo);
 		
 		
 		if (!usuario2.getGerenciadorItens().getListaMeusItens().contains(item)){
@@ -665,6 +725,80 @@ public class GerenciadorUsuarios {
 	public String enviarMensagem(Usuario usuario, Usuario usuario2,
 			String assunto, String mensagem, String idRequisicaoEmprestimo) throws Exception {
 		
+		if (!stringValida(mensagem)){
+			throw new Exception("Mensagem inválida");
+		}
+		
+		if (!stringValida(assunto)){
+			throw new Exception("Assunto inválido");
+		}
+		
 		return usuario.getGerenciadorMensagens().enviarMensagem(usuario2, assunto, mensagem, idRequisicaoEmprestimo);
+	}
+	
+	public void requisitarDevolucao(String idSessao, String idEmprestimo) throws Exception{
+		
+    	buscarUsuarioPorID(idSessao);
+			
+		if (!stringValida(idEmprestimo)){
+			throw new Exception("Identificador do empréstimo é inválido");
+		}
+		
+		if ( buscarUsuarioEmprestador2(idEmprestimo) == null){
+			throw new Exception("Empréstimo inexistente");
+		}
+		
+		try {
+			boolean testa = (! buscarUsuarioEmprestador2(idEmprestimo).equals( buscarUsuarioPorID(idSessao)) && ! buscarUsuarioBeneficiado(idEmprestimo).equals(buscarUsuarioPorID(idSessao)));	
+		}catch (Exception e){
+			throw new Exception("O usuário não tem permissão para requisitar a devolução deste item");
+		}	
+		
+		if ( buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().isDevolucao()){
+			throw new Exception ("Item já devolvido");
+		}
+		
+		if ( buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().isDevolvido()){
+			throw new Exception ("Item já devolvido");
+		}
+		
+		 buscarUsuarioPorID(idSessao).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().requisitarDevolucao();
+		
+		try {
+			String assunto = "Empréstimo do item " +  buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome() + " a " +  buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getBeneficiado().getNome();
+			String mensagem =  buscarDonoItem( buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getID()).getNome() + " solicitou a devolução do item " +  buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getNome();
+			String destinatario =  buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getBeneficiado().getLogin();
+			
+			enviarMensagem(idSessao, destinatario, assunto, mensagem,  buscarUsuarioEmprestador2(idEmprestimo).getGerenciadorItens().buscarItemIdEmprestimo(idEmprestimo).getEmprestimo().getIDRequisicao());
+		} catch (Exception e){
+			System.out.println(e.getLocalizedMessage());
+		}
+	}
+
+	public String enviarMensagem(String idSessao, String destinatario,
+			String assunto, String mensagem, String idRequisicaoEmprestimo)
+			throws Exception {
+		Usuario usuario = buscarUsuarioPorID(idSessao);
+		Usuario usuario2 = buscarUsuarioPorDestinatario(destinatario);
+
+		if (!stringValida(mensagem)) {
+			throw new Exception("Mensagem inválida");
+		}
+
+		if (!stringValida(assunto)) {
+			throw new Exception("Assunto inválido");
+		}
+
+		buscarUsuarioEmprestador3(idRequisicaoEmprestimo);
+
+		if (!buscarUsuarioEmprestador3(idRequisicaoEmprestimo).equals(
+				buscarUsuarioPorID(idSessao))
+				&& !this.buscarUsuarioBeneficiado(idRequisicaoEmprestimo)
+						.equals(buscarUsuarioPorID(idSessao))) {
+			throw new Exception("O usuário não participa deste empréstimo");
+		}
+
+		return enviarMensagem(usuario, usuario2, assunto, mensagem,
+				idRequisicaoEmprestimo);
 	}
 }
