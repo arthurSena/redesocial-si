@@ -2,6 +2,7 @@ package Classes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -52,7 +53,7 @@ public class Usuario {
 		this.nome = nome;
 		this.login = login;
 		this.end = end;
-		this.ID = "";
+		this.ID = gerarID();
 		gerenciaAmizade = new GerenciadorAmizades();
 		gerenciaItens = new GerenciadorItens();
 		gerenciaMensagens = new GerenciadorMensagens();
@@ -73,8 +74,8 @@ public class Usuario {
 	 */
 	
 	public String gerarID(){
-		ID += "${sessao"+nomeModificado(this.login)+"}";
-		return ID;
+		this.ID += getNome() + "-" + (new Random()).nextInt(1000);
+		return this.ID;
 	}
 	
 	

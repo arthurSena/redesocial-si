@@ -200,7 +200,35 @@ public class GerenciadorUsuarios {
 		throw new Exception("Item inexistente");
 	}
 	
-	public String getEmprestimos(String idSessao, String tipo) throws Exception {
+	public Usuario buscarDonoItem(Item item) throws Exception {
+		
+		for (Usuario usr : listaDeUsuariosLogados) {
+			for (Item it : usr.getGerenciadorItens().getListaMeusItens()) {
+				if (it.equals(item)) {
+					return usr;
+				}
+			}
+		}
+		throw new Exception("Item inexistente");
+	}
+	
+	public Item buscarItemPorID(String idItem) throws Exception{
+		if (!stringValida(idItem)) {
+			throw new Exception("Identificador do item é inválido");
+		}
+		for (Usuario usr : listaDeUsuariosLogados) {
+			for (Item it : usr.getGerenciadorItens().getListaMeusItens()) {
+				if (it.getID().equals(idItem)) {
+					return it;
+				}
+			}
+		}
+		throw new Exception("Item inexistente");
+	}
+	
+	
+	public String getEmprestimos(String idSessao, String tipo) throws Exception {	
+		
 		return buscarUsuarioPorID(idSessao).getGerenciadorItens().getEmprestimo(buscarUsuarioEmprestador(idSessao),
 						buscarUsuarioPorID(idSessao), tipo);
 	}
@@ -402,5 +430,71 @@ public class GerenciadorUsuarios {
 			}
 			retorno += requisicoes.split("; ")[i] + "; ";
 		}return retorno;
+	}
+
+	public String cadastrarItem(Usuario usuario, Item it) throws Exception {
+		
+		return usuario.getGerenciadorItens().adicionarItem(it);
+	}
+
+	public String abrirSessao(Usuario usr) {
+		this.getListaUsuariosLogados().add(usr);
+		return usr.getID();
+		
+	}
+
+	public String getAmigos(Usuario usuario) {
+		return usuario.getGerenciadorAmizades().stringDeAmigos();
+		
+	}
+
+	public String getAmigos(Usuario usuario, Usuario usuario2) throws Exception {
+		
+		if (usuario2.getGerenciadorAmizades().getListaDeAmigos().isEmpty()){
+			return "O usuário não possui amigos";
+		}
+
+		else if (!logiEhUsado(usuario2.getLogin())) {
+			throw new Exception("Usuário inexistente");
+		}
+
+		else {	
+				return usuario2.getGerenciadorAmizades().stringDeAmigos();
+		}
+	}
+
+	public String getItens(Usuario usuario) {
+		return usuario.getGerenciadorItens().stringDeItens();
+		
+	}
+
+	public String getItens(Usuario usuario, Usuario usuario2) throws Exception {
+		
+		if (!usuario.getGerenciadorAmizades().ehMeuAmigo(usuario2)) {
+			throw new Exception("O usuário não tem permissão para visualizar estes itens");
+		}
+		
+		if (usuario2.getGerenciadorItens().getListaMeusItens().isEmpty()) {
+			return "O usuário não possui itens cadastrados";
+		}
+		
+		return usuario2.getGerenciadorItens().stringDeItens();
+		
+	}
+
+	public String requisitarEmprestimo(Usuario usuario, Item item, int dias) throws Exception {
+		Usuario usuario2 = buscarDonoItem(item);
+		
+		if ( usuario2.getGerenciadorAmizades().ehMeuAmigo(usuario)){
+			String idRequisicaoEmprestim = usuario2.getGerenciadorItens().requisitarEmprestimos(usuario, item.getID(), dias);
+			
+			String assunto = "Empréstimo do item " + item.getNome() + " a " + usuario.getNome();
+			String mensagem = usuario.getNome() + " solicitou o empréstimo do item " + item.getNome();
+			usuario.getGerenciadorMensagens().enviarMensagem(usuario2, assunto, mensagem, idRequisicaoEmprestim);
+							
+			return idRequisicaoEmprestim;
+		}
+		throw new Exception("O usuário não tem permissão para requisitar o empréstimo deste item");
+		
 	}
 }
