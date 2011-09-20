@@ -16,10 +16,10 @@ import java.util.Random;
 public class Emprestimo {
 	
 	private Usuario beneficiado;
-	private Usuario Emprestador;
+//	private Usuario Emprestador;
 	
 	private int duracao;
-	private String dataDevolucao;
+//	private String dataDevolucao;
 	
 	private String idRequisicao;
 	private String idEmprestimo;
@@ -34,7 +34,7 @@ public class Emprestimo {
 	private GregorianCalendar calendario;
 	private boolean isCancelado;
 	private boolean isCompletado;
-	private int metodoFoiXamado = 0;
+	private int metodoFoiChamado = 0;
 	
 	/**
 	 * Inicia os atributos da classe
@@ -62,7 +62,7 @@ public class Emprestimo {
 		devolucao = false;
 		devolvido = false;
 		requisitarDevolucao = false;
-		dataDevolucao = null;
+//		dataDevolucao = null;
 	}
 	
 	/**
@@ -145,10 +145,7 @@ public class Emprestimo {
 		this.devolvido = devolvido;
 	}
 
-	public String aprovarEmprestimo()throws Exception{
-		/*if (emprestimoAprovado){
-			throw new Exception("Empréstimo já aprovado");
-		}*/
+	public String aprovarEmprestimo() throws Exception{
 		emprestimoAprovado = true;
 		requisicaoEmprestimo = false;
 		GregorianCalendar calendario = new GregorianCalendar();
@@ -172,7 +169,7 @@ public class Emprestimo {
 	 * @return
 	 *        ID de Emprestimo
 	 */
-	public String gerarIDEmprestimo(){
+	private String gerarIDEmprestimo(){
 		idEmprestimo = beneficiado.getID() + "Emprestimo" + (new Random()).nextInt(1000);
 		return idEmprestimo;
 	}
@@ -235,9 +232,11 @@ public class Emprestimo {
 	 * @return
 	 */
 	public boolean tempoEmprestimoNaoExpiro(){
-		if (this.metodoFoiXamado>=1){
+		
+		if (this.metodoFoiChamado >= 1){
 			return isCancelado;
 		}
+		
 		boolean retorno = false;
 		String[] data1 = this.dataDeDevolucao.split("/");
 		String[] dataHJ = DateFormat.getDateInstance().format(this.calendario.getTime()).split("/");
@@ -273,7 +272,7 @@ public class Emprestimo {
 		}
 		
 		this.isCancelado = retorno;
-		this.metodoFoiXamado++;
+		this.metodoFoiChamado++;
 		return retorno;
 	}
 	

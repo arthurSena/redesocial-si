@@ -21,7 +21,6 @@ public class GerenciadorMensagens {
 	
 	public GerenciadorMensagens(){
 		listaDeMensagens = new LinkedList<Mensagem>();
-//		listaDeMensagensEnviadas = new ArrayList<Mensagem>();
 	}
 	
 	/**
@@ -85,7 +84,9 @@ public class GerenciadorMensagens {
 					
 					}				
 				}
-		} else {
+		} 
+		
+		else {
 		
 		if (assuntoExiste(assunto)){
 			
@@ -102,14 +103,10 @@ public class GerenciadorMensagens {
 			for (Mensagem msg2 : destinatario.getGerenciadorMensagens().getListaDeMensagens()){
 				if (msg2.getAssunto().equals(assunto)){
 					msg2.addMensagem(mensagem);
-//					msgReturn = msg2;
 					}
 				} 
 			}
 		
-		
-		
-//		if (!assuntoExiste(assunto) && !assuntoExisteDestinatario(destinatario, assunto)){
 		else {
 			Mensagem msg = new Mensagem(destinatario, assunto, mensagem);
 			this.addMensagem(msg);
