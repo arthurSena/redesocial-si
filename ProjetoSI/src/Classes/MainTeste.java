@@ -1,19 +1,19 @@
 package Classes;
 
-/*import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-*//**
+/**
  * Classe Principal do Sistema
  * @author ARTHUR SENA, IGOR GOMES, RENAN PINTO, RODOLFO DE LIMA
  * @version 1.0
- *//*
+ */
 
 
 public class MainTeste {
 	
 	private static RedeSocial rede = new RedeSocial();
-	
+	private static String idSessao = null;
 	public static void main(String[] args) {
 		
 		while (true){
@@ -38,49 +38,41 @@ public class MainTeste {
 	}
 	//---------------------#REALIZA LOGIN DO USUARIO#--------------------------
 	private static void fazerLogin(){
-		if (rede.getListaDeUsuarios().isEmpty()){
-			System.out.println("Nao ha nenhum usuario cadastrado!");
+		System.out.print("Digite seu Login: ");
+		String login = recebeEntrada();
+		try{
+			idSessao=rede.abrirSessao(login);
+			menuDoUsuario(login);
+		}catch(Exception e){
+			System.out.println(e.getMessage());
 		}
-		else{
-			System.out.print("Digite seu Login: ");
-			String login = recebeEntrada();
-			System.out.print("Digite sua Senha: ");
-			String senha = recebeEntrada();
-			
-			Usuario usr = localizarUsuario(login, senha);
-			if (usr == null){
-				System.out.println("Usuario Nao Encontrado");
-			}
-			else{
-				menuDoUsuario(usr);
-			}
-		}
+		
+		
 	}
 	//---------------------------------------------------------------------------
-	
-	
-	private static void menuDoUsuario(Usuario usr){
-		
-		System.out.println(usr.perfilUsuario());
-		System.out.println("Ol� sr(a): " + usr.getNome() + "\n"); 
+//	
+//	
+	private static void menuDoUsuario(String login) throws Exception{
+		System.out.println("Ola sr(a): " + rede.getAtributoUsuario(login, "nome") + "\n"); 
 		
 		while (true){
-			opcoesQueOUsuarioPodeFazer(usr);
+			opcoesDoUsuario();
 			String entrada = recebeEntrada();
 			
 			if (entrada.equals("1")){
-				cadastrarItem(usr);
+				cadastrarItem();
 			}
 			else if(entrada.equals("2")){
 				localizarUsuario();
 			}
 			else if(entrada.equals("3")){
-				System.out.println(usr.perfilUsuario());
+				visualizarPerfil();
 			}
 			else if(entrada.equals("4")){
-				visualizarPerfilDosAmigos(usr);
+			      requisicaoDeAmizade();
 			}
 			else if(entrada.equals("5")){
+				idSessao = null;
 				System.out.println("Usuario saiu com sucesso!");
 				break;
 			}
@@ -90,91 +82,37 @@ public class MainTeste {
 		}
 	}
 	
-	//------------------------#IMPRIMI O PERFIL DOS AMIGOS DO USUARIO#------------------------
+	
+	private static void visualizarPerfil() throws Exception{
+		String amigos = rede.getAmigos(idSessao);
+		String itens = rede.getItens(idSessao);
+		System.out.println("Amigos: " + amigos + "\n");
+		System.out.println("Itens: " + itens + "\n");
+	}
+//	------------------------#IMPRIMI O PERFIL DOS AMIGOS DO USUARIO#------------------------
 	private static void visualizarPerfilDosAmigos(Usuario usr){
 		
-		ArrayList<Usuario> listaDeAmigos = usr.getGerenciadorAmizades().getListaDeAmigos();
 		
-		if(listaDeAmigos.isEmpty()){
-			System.out.println("Voce Nao tem nenhum amigo =( \n");
-		}
-		else{
-			for (Usuario usuarios: listaDeAmigos){
-				System.out.println(usuarios.perfilUsuario());
-				System.out.println("------------------------");
-			}
-		}
 
 	}
-	
-	
+//	
+//	
 	//---------------------------#LOCALIZA UM USUARIO#-------------------------------------
 	private static void localizarUsuario(){
-		System.out.println("Voce deseja localizar Usuarios atraves de: \n"+
-				            "1)Nome\n2)Endereco");
+
+		System.out.print("Digite a Palvra-Chave: ");
+		String chave = recebeEntrada();
 		
-		String opcao = recebeEntrada();
+		System.out.print("Digite o Atributo: ");
+		String atributo = recebeEntrada();
 		
-		if (opcao.equals("1")){
-			System.out.println("Digite o nome: ");
-			String nome = recebeEntrada();
-			try{
-				ArrayList<Usuario> listaDeUsuarios = rede.buscarUsuarioPorNome(nome);
-				System.out.println(listaDeUsuarios.size() + "Usuarios tem o nome de "+nome);
-				
-				for(Usuario usr: listaDeUsuarios){
-					System.out.println(usr.perfilUsuario());
-					System.out.println("\n-------------------");
-				}
-			}
-			
-			catch(Exception e){
-				System.out.println(e.getMessage());
-			}
-		}
-		else if(opcao.equals("2")){
-			String estado, cidade, rua, bairro, numero, cep;
-			System.out.println("\n----------------ENDERECO------------");
-			
-			System.out.print("Estado: ");
-			estado = recebeEntrada();
-			
-			System.out.print("Cidade: ");
-			cidade = recebeEntrada();
-			
-			System.out.print("Bairro: ");
-			bairro = recebeEntrada();
-			
-			System.out.print("Rua: ");
-			rua = recebeEntrada();
-			
-			System.out.print("Numero: ");
-			numero = recebeEntrada();
-			
-			System.out.print("Cep: ");
-			cep = recebeEntrada();
-			
-			try{
-				Endereco endereco = new Endereco(estado, cidade, rua, bairro, numero, cep);
-				ArrayList<Usuario> listaDeUsuarios = rede.buscarUsuarioPorEndereco(endereco);
-				System.out.println(listaDeUsuarios.size()+" Usuarios satisfazem esse endereco");
-				
-				for(Usuario usr: listaDeUsuarios){
-					System.out.println(usr.perfilUsuario());
-					System.out.println("\n-------------------");
-				}
-			}
-			
-			catch(Exception e){
-				System.out.println(e.getMessage());
-			}
-		}
-		else{
-			System.out.println("\nOpcao Invalida");
+		try {
+			String resposta = rede.localizarUsuario(idSessao, chave, atributo);
+			System.out.println("Usuarios Localizados: " + resposta + "\n");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 	}
-	
-	
 	//-----------------------#IMPRIMI MENU PRINCIPAL#----------------------------
 	
 	private static void imprimirMenuPrincipal(){
@@ -182,9 +120,9 @@ public class MainTeste {
 		           " O que voce deseja fazer?                     \n" +
 		           " 1) Fazer Login\n 2) Quero Me Cadastrar\n 3) Sair"   );
 	}
-	
-	//---------------------------------------------------------------------------
-	
+//	
+//	//---------------------------------------------------------------------------
+//	
 	//-------------------------#RECEBE UMA ENTRADA VIA TECLADO#------------------
 	
 	private static String recebeEntrada(){
@@ -194,72 +132,32 @@ public class MainTeste {
 	}
 	//---------------------------------------------------------------------------
 	
-	//-------------#LOCALIZA UM USUARIO DA REDE ATRAVES DA SENHA E LOGIN#-------------------
-	private static Usuario localizarUsuario(String login, String senha){
-		
-		Usuario usr = null;
-		
-		for(Usuario usuarios: rede.getListaDeUsuarios()){
-			if (usuarios.getLogin().equals(login) && usuarios.getSenha().equals(senha)){
-				usr= usuarios;
-			}
-		}return usr;
-		
-	}
-	//-----------------------------------------------------------------------------
-	
 	//-----------------------#CADASTRAR UM USUARIO NO SISTEMA#----------------------
 	
 	private static void cadastrarUsuario(){
-		String nomeCompleto,senha ,login;
-		String estado, cidade, rua, bairro, numero, cep;
-		Endereco endereco = null;		
-		
+		String nomeCompleto ,login, endereco;
 		System.out.println("----------#BEM-VINDO AO SISTEMA DE CADASTRO#----------\n"+
 				            "AVISO: Nao se preocupe, seus dados pessoais sao sigilosos e ficarao guardados conosco!");
 		
 		System.out.print("\nNome completo: ");
 		nomeCompleto = recebeEntrada();
 		
-		System.out.println("Seu Login: ");
+		System.out.print("Seu Login: ");
 		login = recebeEntrada();
 		
-		System.out.println("Sua Senha: ");
-		senha= recebeEntrada();
-		
-		System.out.println("\n----------------ENDERECO------------");
-		
-		System.out.print("Estado: ");
-		estado = recebeEntrada();
-		
-		System.out.print("Cidade: ");
-		cidade = recebeEntrada();
-		
-		System.out.print("Bairro: ");
-		bairro = recebeEntrada();
-		
-		System.out.print("Rua: ");
-		rua = recebeEntrada();
-		
-		System.out.print("Numero: ");
-		numero = recebeEntrada();
-		
-		System.out.print("Cep: ");
-		cep = recebeEntrada();
+		System.out.print("Endereco: ");
+		endereco = recebeEntrada();
 		
 		try{
-			endereco = new Endereco(estado, cidade, rua, bairro, numero, cep);
-			Usuario novoUsuario = new Usuario(nomeCompleto, login, senha, endereco);
-			rede.adicionaUsuario(novoUsuario);
-			System.out.println("Cadastro Realizado com Sucesso!\n");
-		}
-		catch(Exception e){
+			rede.criarUsuario(login, nomeCompleto, endereco);
+			System.out.println("Usuario Cadastrado com Sucesso!!!");
+		}catch(Exception e){
 			System.out.println(e.getMessage());
 		}
 	}
 	//----------------------------CADASTRAR UM ITEM NO SISTEMA------------------------------------------------
 	
-	private static void cadastrarItem(Usuario usr){
+	private static void cadastrarItem(){
 		String nome, descricao, categoria;
 				
 		System.out.print("Digite o nome do item: ");
@@ -268,62 +166,31 @@ public class MainTeste {
 		System.out.print("Digite a descicao do item: ");
 		descricao = recebeEntrada();
 		
-		//TODO Acho que devemos criar um enum para a categoria
-			
-		while (true){
-			imprimirMenuItens();
-			String entrada = recebeEntrada();
-			
-			if (entrada.equals("1")){
-				categoria = "Livro";
-				break;
-			}
-			else if(entrada.equals("2")){
-				categoria =  "Filme";
-				break;
-			}
-			else if(entrada.equals("3")){
-				categoria = "Jogos";
-				break;
-			}
-			else{
-				System.out.println("Opcao Invalida!");
-			}
-		}
+		System.out.print("Digite a categoria do item: ");
+		categoria = recebeEntrada();
 		
 		try {
-			usr.getGerenciadorItens().adicionarItemParaEmprestar(new Item(nome, descricao, categoria));
-			System.out.println(categoria + " cadastrado com sucesso\n");
+			rede.cadastrarItem(idSessao, nome, descricao, categoria);
+			System.out.println("Item cadastrado com Sucesso!!!\n");
 		} catch (Exception e) {
-			System.out.print(e.getLocalizedMessage());
-			//TODO depois arrumar isso;
+			System.out.println(e.getMessage());
 		}
 		
 	}
-	
-	
-	//---------------------------------------------------------------------------
-	
-	//-----------------------#IMPRIMI MENU Itens#----------------------------
-	
-	private static void imprimirMenuItens(){
-		System.out.print("Digite a categoria do item:\n " +
-		           "1) Livro\n 2) Filme\n 3) Jogos"   );
+//---------------------------------------------------------------------------
+
+	private static void requisicaoDeAmizade() throws Exception{
+		System.out.print("Digite o de quem voce deseja a Amizade: ");
+		String loginAmigo = recebeEntrada();
+		rede.requisitarAmizade(idSessao, loginAmigo);
 	}
 	
-	//---------------------------------------------------------------------------
 	
+//-----------------------#IMPRIMI MENU Usuario#----------------------------
 	
-	//-----------------------#IMPRIMI MENU Usuario#----------------------------
-	
-	//TODO Depois mudar nome desse metodo ta ridiculo. =]
-	private static void opcoesQueOUsuarioPodeFazer(Usuario usr){
+	private static void opcoesDoUsuario(){
 		System.out.print("O que deseja fazer?\n " + 
-        "1) Cadastrar novo item\n 2) Localizar Usuario\n 3) Visualizar Meu Perfil\n 4) Visualizar Perfil dos Meus Amigos\n 5)Deslogar\n"   );
+        "1) Cadastrar novo item\n 2) Localizar Usuario\n 3) Visualizar Meu Perfil\n 4) Adicionar Amigo\n 5)Deslogar\n"   );
 		
 	}
-	
-	
-	
 }
-*/
