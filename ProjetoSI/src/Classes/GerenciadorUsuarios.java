@@ -544,6 +544,7 @@ public class GerenciadorUsuarios {
 			}
 		}return usuario;
 	}
+	
 	//TODO dpois arruma isso
 	private String formatarRequisicoes(String requisicoes){
 		String retorno = "";
@@ -801,4 +802,139 @@ public class GerenciadorUsuarios {
 		return enviarMensagem(usuario, usuario2, assunto, mensagem,
 				idRequisicaoEmprestimo);
 	}
+	
+	public String pesquisarItem(Usuario usuario2, String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao)throws Exception{
+		if (!stringValida(chave)) {
+			throw new Exception("Chave inválida");
+		}
+		
+		if (!stringValida(atributo)) {
+			throw new Exception("Atributo inválido");
+		}
+		
+		if (!atributoValido(atributo)) {
+			throw new Exception("Atributo inexistente");
+		}
+		
+		if (!stringValida(tipoOrdenacao)) {
+			throw new Exception("Tipo inválido de ordenação");
+		}
+		
+		if (!tipoOrdenacaoValido(tipoOrdenacao)) {
+			throw new Exception("Tipo de ordenação inexistente");
+		}
+		
+		
+		if (!stringValida(criterioOrdenacao)) {
+			throw new Exception("Critério inválido de ordenação");
+		}
+		
+		if (!criterioOrdenacaoValido(criterioOrdenacao)) {
+			throw new Exception("Critério de ordenação inexistente");
+		}
+		String resposta = "";
+		
+		if(criterioOrdenacao.equals("dataCriacao")){
+			if (tipoOrdenacao.equals("crescente")){
+				for (Usuario usuario : usuario2.getGerenciadorAmizades().getListaDeAmigos()){
+					if (resposta.equals("")){
+						resposta += usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+						
+					} else if (!resposta.equals("") && !usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
+						resposta += "; " + usuario.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+					}
+				}
+			} else {
+				for (int i = usuario2.getGerenciadorAmizades().getListaDeAmigos().size() - 1; i >= 0; i--){
+					if (resposta.equals("")){
+						resposta += usuario2.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+						
+					} else if (!resposta.equals("") && !usuario2.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao).equals("")){
+						resposta += "; " + usuario2.getGerenciadorAmizades().getListaDeAmigos().get(i).getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+					}
+				}
+			}
+		}
+		else if(criterioOrdenacao.equals("reputacao")){
+			if (tipoOrdenacao.equals("crescente")){
+				
+				List<Usuario> lista = new ArrayList<Usuario>();
+				//List<Usuario> lista = this.getGerenciadorAmizades().getListaDeAmigos();
+				for(Usuario usr: usuario2.getGerenciadorAmizades().getListaDeAmigos()){
+					lista.add(usr);
+				}
+				while(!lista.isEmpty()){
+					
+					Usuario usr = usuarioComMenorReputacaoDaLista(lista);
+					if (resposta.equals("")){
+						resposta += usr.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);}
+					else{
+						resposta += "; "+usr.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+					}
+					lista.remove(usr);
+				}
+			}
+			else if(tipoOrdenacao.equals("decrescente")){
+				
+				List<Usuario> lista = new ArrayList<Usuario>();
+				//List<Usuario> lista = this.getGerenciadorAmizades().getListaDeAmigos();
+				for(Usuario usr: usuario2.getGerenciadorAmizades().getListaDeAmigos()){
+					lista.add(usr);
+				}
+				
+				while(!lista.isEmpty()){
+					Usuario usr = usuarioComMaisAltaReputacaoDaLista(lista);
+					
+					if (resposta.equals("")){
+						resposta += usr.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);}
+					else{
+						resposta += "; "+usr.getGerenciadorItens().buscarItemCadastrado(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+					}
+					lista.remove(usr);
+				}
+			}
+		}
+		
+		if(resposta.isEmpty()){
+			return  "Nenhum item encontrado";
+		}
+		
+		return resposta;
+	}
+	
+	private Usuario usuarioComMenorReputacaoDaLista(List<Usuario> lista){
+		Usuario usuario = lista.get(0);
+		for(Usuario usr: lista){
+			if (usr.getReputacao() < usuario.getReputacao()){
+				usuario = usr;
+			}
+		}return usuario;
+	}
+	
+	private boolean atributoValido(String atributo){
+		
+		if (atributo.equals("nome") || atributo.equals("descricao") || atributo.equals("categoria")){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean tipoOrdenacaoValido(String tipoOrdenacao){
+		
+		if (tipoOrdenacao.equals("crescente") || tipoOrdenacao.equals("decrescente")){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean criterioOrdenacaoValido(String criterioOrdenacao){
+		
+		if (criterioOrdenacao.equals("dataCriacao") || criterioOrdenacao.equals("reputacao")){
+			return true;
+		}
+		return false;
+	}
+	
 }

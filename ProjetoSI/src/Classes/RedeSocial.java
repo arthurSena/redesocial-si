@@ -231,7 +231,7 @@ public class RedeSocial {
 	
 	
 	public String pesquisarItem (String idSessao, String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao) throws Exception{
-		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).pesquisarItem(chave, atributo, tipoOrdenacao, criterioOrdenacao);
+		return this.getGerenciadorUsuarios().pesquisarItem(this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao) ,chave, atributo, tipoOrdenacao, criterioOrdenacao);
 	}
 	 
 	
