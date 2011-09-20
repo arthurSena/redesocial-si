@@ -11,8 +11,8 @@ import java.util.List;
 
 public class GerenciadorAmizades {
 
-	private ArrayList<Usuario> listaDeAmigos;
-	private ArrayList<Usuario> listaDeProvaveisAmigos;
+	private List<Usuario> listaDeAmigos;
+	private List<Usuario> listaDeProvaveisAmigos;
 	
 	/**
 	 * Inicia os Atributos da Classe
@@ -28,7 +28,7 @@ public class GerenciadorAmizades {
 	 * @return Lista de Amigos do Usuario
 	 */
 	
-	public ArrayList<Usuario> getListaDeAmigos() {
+	public List<Usuario> getListaDeAmigos() {
 		return listaDeAmigos;
 	}
 	
@@ -37,7 +37,7 @@ public class GerenciadorAmizades {
 	 * @return A Lista com os provaveis Amigos do Usuario
 	 */
 	
-	public ArrayList<Usuario> getListaDeProvaveisAmigos() {
+	public List<Usuario> getListaDeProvaveisAmigos() {
 		return listaDeProvaveisAmigos;
 	}
 	
@@ -56,9 +56,6 @@ public class GerenciadorAmizades {
 		else if(listaDeAmigos.contains(usr)){
 			throw new Exception("Os usuários já são amigos");
 		}
-		/*else if(!listaDeProvaveisAmigos.contains(usr)){
-			throw new Exception("Requisição de amizade inexistente");
-		}*/
 		listaDeAmigos.add(usr);
 		listaDeProvaveisAmigos.remove(usr);
 	}
