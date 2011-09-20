@@ -47,7 +47,7 @@ public class Item {
     	return idItem;
     }
     
-    public String gerarID(){
+    private String gerarID(){
     	idItem = getNome() + "-" + (new Random()).nextInt(1000);
 		return idItem;
 	}
