@@ -36,6 +36,7 @@ public class TesteUsuario {
 		try {
 			@SuppressWarnings("unused")
 			Usuario usuario5 = new Usuario("", "login teste", "endereco teste");
+			Assert.fail();
 		} catch (Exception e){
 			Assert.assertEquals("Erro devia dar nome invalido", "Nome inválido", e.getMessage());
 		}
@@ -43,6 +44,7 @@ public class TesteUsuario {
 		try {
 			@SuppressWarnings("unused")
 			Usuario usuario5 = new Usuario("nome teste", "", "endereco teste");
+			Assert.fail();
 		} catch (Exception e){
 			Assert.assertEquals("Erro devia dar login invalido", "Login inválido", e.getMessage());
 		}
@@ -50,6 +52,7 @@ public class TesteUsuario {
 		try {
 			@SuppressWarnings("unused")
 			Usuario usuario5 = new Usuario("nome teste", "login teste", "");
+			Assert.fail();
 		} catch (Exception e){
 			Assert.assertEquals("Erro devia dar endereco invalido", "Endereco inválido", e.getMessage());
 		}
