@@ -379,7 +379,7 @@ public class GerenciadorUsuarios {
 		Usuario usr = buscarUsuarioEmprestador2(idEmprestimo);
 		
 		if (usr != null){
-			usr.getGerenciadorItens().confirmarTerminoEmprestimo(idEmprestimo);
+			usr.getGerenciadorItens().confirmarTerminoEmprestimo(buscarItemEmprestador(idEmprestimo));
 		}
 		
 		
