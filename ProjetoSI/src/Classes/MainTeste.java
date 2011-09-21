@@ -72,6 +72,27 @@ public class MainTeste {
 			      requisicaoDeAmizade();
 			}
 			else if(entrada.equals("5")){
+				enviarMensagem();
+			}
+			else if(entrada.equals("6")){
+				lerMensagem();
+			}
+			else if(entrada.equals("7")){
+				visualizarPerfilDosAmigos();
+			}
+			else if(entrada.equals("8")){
+				fazerEmprestimo();
+			}
+			else if(entrada.equals("9")){
+				verRankingUsuarios();
+			}
+			else if(entrada.equals("10")){
+				aprovarEmprestimo();
+			}
+			else if(entrada.equals("11")){
+				aprovarAmizade();
+			}
+			else if(entrada.equals("15")){
 				idSessao = null;
 				System.out.println("Usuario saiu com sucesso!");
 				break;
@@ -83,16 +104,24 @@ public class MainTeste {
 	}
 	
 	
+	
 	private static void visualizarPerfil() throws Exception{
 		String amigos = rede.getAmigos(idSessao);
 		String itens = rede.getItens(idSessao);
 		System.out.println("Amigos: " + amigos + "\n");
 		System.out.println("Itens: " + itens + "\n");
 	}
+	
+	
+	
 //	------------------------#IMPRIMI O PERFIL DOS AMIGOS DO USUARIO#------------------------
-	private static void visualizarPerfilDosAmigos(Usuario usr){
+	private static void visualizarPerfilDosAmigos() throws Exception{
 		
+		System.out.print("Digite o Login do Usuario que vc quer ver o perfil: ");
+		String login = recebeEntrada();
 		
+		System.out.println("Amigos: " + rede.getAmigos(idSessao, login));
+		System.out.println("Itens: " + rede.getItens(idSessao, login));
 
 	}
 //	
@@ -170,7 +199,8 @@ public class MainTeste {
 		categoria = recebeEntrada();
 		
 		try {
-			rede.cadastrarItem(idSessao, nome, descricao, categoria);
+			String idItem = rede.cadastrarItem(idSessao, nome, descricao, categoria);
+			System.out.println("ID do Item cadastrado: "+idItem);
 			System.out.println("Item cadastrado com Sucesso!!!\n");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -180,17 +210,101 @@ public class MainTeste {
 //---------------------------------------------------------------------------
 
 	private static void requisicaoDeAmizade() throws Exception{
-		System.out.print("Digite o de quem voce deseja a Amizade: ");
+		System.out.print("Digite o login de quem voce deseja a Amizade: ");
 		String loginAmigo = recebeEntrada();
 		rede.requisitarAmizade(idSessao, loginAmigo);
+		System.out.println("Um Pedido de Amizade foi enviado para " + loginAmigo);
 	}
 	
+	private static void enviarMensagem() throws Exception{
+		String destinatario, assunto, mensagem;
+		
+		System.out.print("Digite o Login do Destinatario: ");
+		destinatario =  recebeEntrada();
+		
+		System.out.print("Digite o Assunto da Mensagem: ");
+		assunto = recebeEntrada();
+		
+		System.out.print("Digite a Mensagem: ");
+		mensagem = recebeEntrada();
+		
+		String idMensagem = rede.enviarMensagem(idSessao, destinatario, assunto, mensagem);
+		System.out.println("idMensagem: " + idMensagem);
+	}
+	
+	private static void fazerEmprestimo() throws Exception{
+		String idItem;
+		int dias;
+		System.out.println("Digite o ID do Item a ser Emprestado: ");
+		idItem = recebeEntrada();
+		
+		System.out.println("Digita a Quantade de dias que vc qr passar com o Item: ");
+		dias = Integer.parseInt(recebeEntrada());
+		String idRequisicao = rede.requisitarEmprestimo(idSessao, idItem, dias);
+		System.out.println("ID de Requisicao de Emprestimo: " + idRequisicao);
+		System.out.println("O Emprestimo foi requisitado!!!\n");
+	}
+	
+	private static void lerMensagem() throws Exception{
+		System.out.print("Digite o ID da Mensagem que vc quer Ler: ");
+		String idTopico = recebeEntrada();
+		System.out.println(rede.lerMensagens(idSessao, idTopico));
+
+		while(true){
+			System.out.println("Voce deseja Responder Mensagem: \n1)SIM 2)NAO");
+			String opcao = recebeEntrada();
+			
+			if(opcao.equals("1")){
+				System.out.print("Digite a Resposta: ");
+				String msg = recebeEntrada();
+				
+				System.out.print("Digite o Login do Destinatario: ");
+				String destinatario = recebeEntrada();
+				
+				System.out.print("Digite o Assunto da Mensagem: ");
+				String assunto = recebeEntrada();
+				rede.enviarMensagem(msg, destinatario, assunto, msg);
+			}
+			else if(opcao.equals("2")){
+				break;
+			}
+			else{
+				System.out.println("Opcao Invalida!!!\n");
+			}
+		}
+		
+	}
+	
+	
+	private static void aprovarEmprestimo() throws Exception{
+		System.out.print("Digite o ID da requisicao de Emprestimo a ser Aprovada: ");
+		String idRequisicaoEmprestimo = recebeEntrada();
+		rede.aprovarEmprestimo(idSessao, idRequisicaoEmprestimo);
+	}
+	
+	private static void verRankingUsuarios() throws Exception {
+		
+		System.out.println("Digite a Categoria: ");
+		String categoria = recebeEntrada();
+		System.out.println(rede.getRanking(idSessao, categoria));
+		
+		
+	}
+	
+	
+	private static void aprovarAmizade() throws Exception{
+		System.out.println("Digite o Login do Usuario: ");
+		String login = recebeEntrada();
+		rede.aprovarAmizade(idSessao, login);
+	}
 	
 //-----------------------#IMPRIMI MENU Usuario#----------------------------
 	
 	private static void opcoesDoUsuario(){
-		System.out.print("O que deseja fazer?\n " + 
-        "1) Cadastrar novo item\n 2) Localizar Usuario\n 3) Visualizar Meu Perfil\n 4) Adicionar Amigo\n 5)Deslogar\n"   );
-		
+		System.out
+				.print("O que deseja fazer?\n "
+						+ "1) Cadastrar novo item\n 2) Localizar Usuario\n 3) Visualizar Meu Perfil\n 4) Adicionar Amigo\n 5)Enviar Mensagens\n 6)Ler Mensagens\n 7)Visualizar Perfil dos Amigos\n 8)Fazer Emprestimo\n 9)Ver Ranking dos Usuarios 10)Aprovar Emprestimo\n 11)Aprovar Amizade");
 	}
+	
+	
 }
