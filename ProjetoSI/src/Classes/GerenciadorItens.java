@@ -54,15 +54,6 @@ public class GerenciadorItens {
 	}
 	
 	/**
-	 * Altera a lista de itens do Usuario
-	 * @param listaMeusItens
-	 *       Nova lista de itens do Usuario
-	 */
-	public void setListaMeusItens(List<Item> listaMeusItens) {
-		this.listaMeusItens = listaMeusItens;
-	}
-
-	/**
 	 * Recupera uma lista com todos itens que podem ser emprestados
 	 * @return
 	 *         Uma lista com todos itens que podem ser emprestados
@@ -75,16 +66,8 @@ public class GerenciadorItens {
 		return this.listaDeEmprestimosCompletados.size();
 	}
 
-	public void setItensPraEmprestar(List<Item> itensPraEmprestar) {
-		this.itensPraEmprestar = itensPraEmprestar;
-	}
-
 	public List<Item> getItensPraDevolver() {
 		return itensPraDevolver;
-	}
-
-	public void setItensPraDevolver(List<Item> itensPraDevolver) {
-		this.itensPraDevolver = itensPraDevolver;
 	}
 	
 	/**
@@ -99,6 +82,7 @@ public class GerenciadorItens {
 	 *         Caso Atributo seja inexistente ou Invalido
 	 */
 	public String getAtributoItem(String idItem, String atributo)throws Exception{
+		
 		if(!stringValida(atributo)){
             throw new Exception("Atributo inválido");
 		}
@@ -275,16 +259,13 @@ public class GerenciadorItens {
 		return buscarItemPorID(idItem).criarRequisicaoEmprestimo(beneficiado, dias);
 	}
 	
-	public String aprovarRequisicaoEmprestimo(boolean ehDonoDoItem,boolean usuarioSaoAmigos,boolean requisicaoExiste, String idRequisicaoEmprestimo) throws Exception{
+	public String aprovarRequisicaoEmprestimo(boolean ehDonoDoItem, boolean usuarioSaoAmigos, boolean requisicaoExiste, String idRequisicaoEmprestimo) throws Exception{
 		if (!stringValida(idRequisicaoEmprestimo)){
 			throw new Exception("Identificador da requisição de empréstimo é inválido");
 		}
 		else if (!requisicaoExiste){
 			throw new Exception("Requisição de empréstimo inexistente");
 		}
-//		else if (!usuarioSaoAmigos){
-//			throw new Exception("Requisição de empréstimo inexistente");
-//		}
 		for (Item it: listaMeusItens){
 			if (it.getEmprestimo()!=null && it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo) && !it.getEmprestimo().emprestimoFoiAprovado()){
 				this.getItensPraEmprestar().remove(it);
@@ -298,13 +279,8 @@ public class GerenciadorItens {
 		if (!requisicaoExiste){
 			throw new Exception("Requisição de empréstimo inexistente");
 		}
-		//throw new Exception("Requisição de empréstimo inexistente");
-	//	if(!ehDonoDoItem){
 			throw new Exception("O empréstimo só pode ser aprovado pelo dono do item");
-		//}
-		//else{
-
-	//	}
+		
 	}
 	
 	private boolean stringValida(String string) {
@@ -344,16 +320,13 @@ public class GerenciadorItens {
 		this.getItensPraEmprestar().add(item);	
 	}
 	
-	public void confirmarTerminoEmprestimo(String item){
-		
-	}
 	/**
 	 * Confirma o Termino de um Emprestimo
 	 * @param usr
 	 * @param item
 	 * @return
 	 */
-	public String confirmarTerminoEmprestimo(Usuario usr, Item item){
+	private String confirmarTerminoEmprestimo(Usuario usr, Item item){
 		String retorno = "";
 		
 		for (Item it: listaMeusItens){
@@ -419,6 +392,7 @@ public class GerenciadorItens {
 		} 
 		else {
 			this.getListaMeusItens().remove(item);
+			this.getItensPraEmprestar().remove(item);
 		}
 	}
 	
