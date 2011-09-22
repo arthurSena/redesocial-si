@@ -104,7 +104,7 @@ public class RedeSocial {
 		Usuario usuario = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
 		Usuario usuario2 = getGerenciadorUsuarios().buscarUsuarioPorLogin(login);
 		
-		return getGerenciadorUsuarios().getAmigos(usuario, usuario2);
+		return getGerenciadorUsuarios().getAmigos(usuario2);
 	}
 
 	public String getItens(String idSessao) throws Exception {
@@ -172,13 +172,9 @@ public class RedeSocial {
 	}
 	
 	public String enviarMensagem (String idSessao, String destinatario, String assunto, String mensagem) throws Exception{
-		Usuario usuario = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-		Usuario usuario2 = getGerenciadorUsuarios().buscarUsuarioPorDestinatario(destinatario);
-		
-		return getGerenciadorUsuarios().enviarMensagem(usuario, usuario2, assunto, mensagem);
+		return getGerenciadorUsuarios().enviarMensagem(idSessao, destinatario, assunto, mensagem);
 	}
 	
-	//TODO aqui um metodo tem q usar o outro, tipo enviarMensagem tem q usar o enviarMensagem passando o idEmprestimo
 	public String enviarMensagem (String idSessao, String destinatario, String assunto, String mensagem, String idRequisicaoEmprestimo) throws Exception{
 
 		return this.getGerenciadorUsuarios().enviarMensagem(idSessao, destinatario, assunto, mensagem, idRequisicaoEmprestimo);
@@ -202,7 +198,7 @@ public class RedeSocial {
 			resp1 = true;
 		}
 		
-		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idTopico,idSessao).getGerenciadorMensagens().lerMensagens(resp1,resp2,idTopico);
+		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().lerMensagens(resp1,resp2,idTopico);
 	}
 	
 	public void requisitarDevolucao(String idSessao, String idEmprestimo) throws Exception{
