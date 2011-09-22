@@ -4,7 +4,7 @@ import java.util.Random;
 
 
 /**
- * Esta Classe representa um Usu�rio da Rede Social
+ * Esta Classe representa um Usuario da Rede Social
  * 
  * @author ARTHUR SENA, RODOLFO DE LIMA, RENAN PINTO, IGOR GOMES
  * @version 1.0
@@ -36,7 +36,6 @@ public class Usuario {
 	 * @throws Exception
 	 *           Lanca excecao quando qualquer um dos parametros for Invalido
 	 */
-	
 	public Usuario(String nome, String login, String end)throws Exception{
 		if (!stringValida(nome)){
 			throw new Exception("Nome inválido");
@@ -87,7 +86,6 @@ public class Usuario {
 	 * @return 
 	 *        Endereco do Usuario
 	 */
-	
 	public String getEndereco(){
 		return end;
 	}
@@ -96,7 +94,6 @@ public class Usuario {
 	 * Recupera o Login
 	 * @return Login do Usuario
 	 */
-	
 	public String getLogin() {
 		return login;
 	}
@@ -105,7 +102,6 @@ public class Usuario {
 	 * Recupera o Nome
 	 * @return Nome do Usuario
 	 */
-	
 	public String getNome() {
 		return nome;
 	}
@@ -115,7 +111,6 @@ public class Usuario {
 	 * @return 
 	 *      O gerenciador de amizades do usuario
 	 */
-	
 	public GerenciadorAmizades getGerenciadorAmizades(){
 		return gerenciaAmizade;
 	}
@@ -125,7 +120,6 @@ public class Usuario {
 	 * @return 
 	 *      O gerenciador de itens do usuario
 	 */
-	
 	public GerenciadorItens getGerenciadorItens(){
 		return gerenciaItens;
 	}
@@ -135,7 +129,6 @@ public class Usuario {
 	 * @return 
 	 *      O gerenciador de mensagens do usuario
 	 */
-	
 	public GerenciadorMensagens getGerenciadorMensagens(){
 		return gerenciaMensagens;
 	}
