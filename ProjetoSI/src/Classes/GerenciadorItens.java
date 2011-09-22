@@ -53,6 +53,7 @@ public class GerenciadorItens {
 		return listaMeusItens;
 	}
 	
+
 	/**
 	 * Recupera uma lista com todos itens que podem ser emprestados
 	 * @return
@@ -66,9 +67,12 @@ public class GerenciadorItens {
 		return this.listaDeEmprestimosCompletados.size();
 	}
 
+	
 	public List<Item> getItensPraDevolver() {
 		return itensPraDevolver;
 	}
+
+
 	
 	/**
 	 * Recupera um determinado Atributo do Item
@@ -82,7 +86,6 @@ public class GerenciadorItens {
 	 *         Caso Atributo seja inexistente ou Invalido
 	 */
 	public String getAtributoItem(String idItem, String atributo)throws Exception{
-		
 		if(!stringValida(atributo)){
             throw new Exception("Atributo inválido");
 		}
@@ -266,6 +269,7 @@ public class GerenciadorItens {
 		else if (!requisicaoExiste){
 			throw new Exception("Requisição de empréstimo inexistente");
 		}
+
 		for (Item it: listaMeusItens){
 			if (it.getEmprestimo()!=null && it.getEmprestimo().getIDRequisicao().equals(idRequisicaoEmprestimo) && !it.getEmprestimo().emprestimoFoiAprovado()){
 				this.getItensPraEmprestar().remove(it);
@@ -279,6 +283,7 @@ public class GerenciadorItens {
 		if (!requisicaoExiste){
 			throw new Exception("Requisição de empréstimo inexistente");
 		}
+		
 			throw new Exception("O empréstimo só pode ser aprovado pelo dono do item");
 		
 	}
@@ -319,6 +324,7 @@ public class GerenciadorItens {
 	public void confirmarTerminoEmprestimo(Item item){
 		this.getItensPraEmprestar().add(item);	
 	}
+	
 	
 	/**
 	 * Confirma o Termino de um Emprestimo
