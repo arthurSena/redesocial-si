@@ -8,22 +8,27 @@ import java.util.List;
  * @author ARTHUR SENA, IGOR GOMES, RENAN PINTO, RODOLFO DE LIMA
  *
  */
+
 public class GerenciadorMensagens {
 	
-	private List<Mensagem> listaDeMensagens;	
+	private List<Mensagem> listaDeMensagens;
+
+	
 	
 	/**
-	* Inicia os Atributos da Classe
-	*/
+	 * Inicia os Atributos da Classe
+	 */
+	
 	public GerenciadorMensagens(){
 		listaDeMensagens = new LinkedList<Mensagem>();
 	}
 	
 	/**
-	* Recupera a Lista com todas as Mensagens Recebida do Usuario
+	*	Recupera a Lista com todas as Mensagens Recebida do Usuario
 	* @return 
 	*         Uma Lista com todas as mensagens do Usuario
 	*/
+	
 	public List<Mensagem> getListaDeMensagens(){
 		return listaDeMensagens;
 	}
@@ -36,6 +41,7 @@ public class GerenciadorMensagens {
 		this.getListaDeMensagens().add(mensagem);
 	}
 	
+
 	
 	private boolean assuntoExiste(String assunto){
 		
@@ -59,7 +65,7 @@ public class GerenciadorMensagens {
 		return false;
 	}
 	
-	 /**
+	/**
 	  * Responsavel por enviar mensagem
 	  * @param destinatario Destinatario da mensagem
 	  * @param assunto Assundo da mensagem 
@@ -111,7 +117,6 @@ public class GerenciadorMensagens {
 		}
 		return msgReturn.getIdMensagem();
 	}
-	
 	/**
 	 * Responsavel por enviar mensagem
 	 * @param destinatario Destinatario da mensagem
@@ -153,7 +158,6 @@ public class GerenciadorMensagens {
 			
 		}return retorno;
 	}
-	
 	/**
 	 * Reponsavel por retornar os topicos da mensagem
 	 * @param tipo Tipo da mensagem
@@ -184,6 +188,7 @@ public class GerenciadorMensagens {
 		} else{
 			for (int i =  this.getListaDeMensagens().size() -1 ; i>=0 ;i--){
 				 Mensagem msg = this.getListaDeMensagens().get(i);
+
 				if (msg.getTipoDaMensagem().equals(tipo) || tipo.equals("todos")){
 					repString += msg.getAssunto();
 					
@@ -197,16 +202,15 @@ public class GerenciadorMensagens {
 		return repString;
 		
 	}
-	
-	/**
-	 * Reponsavel por ler mensagens 
-	 * @param resp Verifica se o topico existe
-	 * @param resp2 Verifica se tem permissao
-	 * @param idTopico Id do topico 
-	 * @return Corpo da mensagem encontrada
-	 * @throws Exception Caso algum parametro seja invalido
-	 */
-	public String lerMensagens(boolean resp, boolean resp2, String idTopico) throws Exception{
+		/**
+		 * Reponsavel por ler mensagens 
+		 * @param resp Verifica se o topico existe
+		 * @param resp2 Verifica se tem permissao
+		 * @param idTopico Id do topico 
+		 * @return Corpo da mensagem encontrada
+		 * @throws Exception Caso algum parametro seja invalido
+		 */
+	public String lerMensagens(boolean resp,boolean resp2,String idTopico) throws Exception{
 		if (idTopico==null || idTopico.isEmpty()){
 			throw new Exception("Identificador do tópico é inválido");
 		}
