@@ -16,14 +16,9 @@ import java.util.Random;
 public class Emprestimo {
 	
 	private Usuario beneficiado;
-//	private Usuario Emprestador;
-	
 	private int duracao;
-//	private String dataDevolucao;
-	
 	private String idRequisicao;
 	private String idEmprestimo;
-	
 	private boolean requisicaoEmprestimo;
 	private boolean emprestimoAprovado;
 	private boolean devolucao;
@@ -62,7 +57,6 @@ public class Emprestimo {
 		devolucao = false;
 		devolvido = false;
 		requisitarDevolucao = false;
-//		dataDevolucao = null;
 	}
 	
 	/**
@@ -228,8 +222,10 @@ public class Emprestimo {
 	}
 	
 	/**
-	 * 
+	 * Ve se o Tempo de Emprestimo nao Expiro
 	 * @return
+	 *        True, caso tenha expirado
+	 *        False, caso contrario
 	 */
 	public boolean tempoEmprestimoNaoExpiro(){
 		
@@ -276,6 +272,11 @@ public class Emprestimo {
 		return retorno;
 	}
 	
+	/**
+	 * Adiciona a passagem do tempo
+	 * @param dias
+	 *           Dias a serem adicionas
+	 */
 	public void adicionarDias(int dias){
 		if (calendario==null){
 			calendario = new GregorianCalendar();			

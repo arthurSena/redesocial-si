@@ -139,7 +139,12 @@ public class GerenciadorUsuarios {
 
 	}
 	
-	
+	/**
+	 * 
+	 * @param destinatario
+	 * @return
+	 * @throws Exception
+	 */
 	public Usuario buscarUsuarioPorDestinatario(String destinatario) throws Exception{
 		if (!stringValida(destinatario)){
 			throw new Exception ("Destinatário inválido");
@@ -153,7 +158,16 @@ public class GerenciadorUsuarios {
 		
 		throw new Exception("Destinatário inexistente");
 	}
-
+	
+	/**
+	 * Busca um Usuario atraves do Login do mesmo
+	 * @param login
+	 *           Login do Usuario
+	 * @return
+	 *          Usuario encontrao
+	 * @throws Exception
+	 * 			Caso o Login seja Invalido ou inexistente
+	 */
 	public Usuario buscarUsuarioPorLogin(String login) throws Exception {
 		if (!stringValida(login)) {
 			throw new Exception("Login inválido");
@@ -177,6 +191,16 @@ public class GerenciadorUsuarios {
 		return true;
 	}
 
+	/**
+	 * Diz se o Login ja eh ultilizado por outro Usuario
+	 * @param login
+	 *         Login do Usuario
+	 * @return
+	 *       True, caso afirmativo
+	 *       False, caso negativo
+	 * @throws Exception
+	 *      Caso o loing seja invalido
+	 */
 	public boolean logiEhUsado(String login) throws Exception {
 		if (!stringValida(login)) {
 			throw new Exception("Login inválido");
@@ -194,7 +218,6 @@ public class GerenciadorUsuarios {
 		String listaUsuarios = "";
 		int cont = 0;
 		for (int i = 0; i<=listaDeUsuarios.size() - 1; i++) {
-		//for (int i = listaDeUsuarios.size() - 1; i >= 0; i--) {
 			Usuario usr = listaDeUsuarios.get(i);
 			if (!(usr.getID().equals(id))) {
 				if (atributo.equals("nome")
@@ -224,7 +247,15 @@ public class GerenciadorUsuarios {
 		}
 		return listaUsuarios;
 	}
-
+	/**
+	 * Busca um Usuario atraves do ID de Sessao do mesmo
+	 * @param idSessao
+	 *         ID de Sessao do Usuario
+	 * @return
+	 *        Usuario 
+	 * @throws Exception
+	 *        Caso o ID de sessao seja invalido
+	 */
 	public Usuario buscarUsuarioPorID(String idSessao) throws Exception {
 		if (!stringValida(idSessao)) {
 			throw new Exception("Sessão inválida");
@@ -237,21 +268,11 @@ public class GerenciadorUsuarios {
 		throw new Exception("Sessão inexistente");
 	}
 	
-	public Usuario buscarUsuarioPorID(String idTopico,String idSessao) throws Exception {
-		if (!stringValida(idSessao)) {
-			throw new Exception("Sessão inválida");
-		}
-		
-		for (Usuario usr : listaDeUsuariosLogados) {
-			if (usr.getID().equals(idSessao)) {
-				return usr;
-			}
-		}
-		
-		
-		throw new Exception("Sessão inexistente");
-	}
-	
+	/**
+	 * Recupera a Quantidade de Usuarios logados no sistema
+	 * @return
+	 *        Quantidade de Usuarios logados no sistema
+	 */
 	public int quantDeItensDosUsuariosLogados(){
 		int cont = 0;
 		for (Usuario usr: listaDeUsuariosLogados){
@@ -259,6 +280,15 @@ public class GerenciadorUsuarios {
 		}return cont;
 	}
 	
+	/**
+	 * Recupera o Dono do item
+	 * @param idItem
+	 *          ID do Item
+	 * @return
+	 *         Usuario dono do Item
+	 * @throws Exception
+	 *         Caso o ID do Item seja invalido
+	 */
 	public Usuario buscarDonoItem(String idItem) throws Exception {
 		if (!stringValida(idItem)) {
 			throw new Exception("Identificador do item é inválido");
@@ -273,6 +303,15 @@ public class GerenciadorUsuarios {
 		throw new Exception("Item inexistente");
 	}
 	
+	/**
+	 * Recupera o dono do Item
+	 * @param item
+	 *        Item 
+	 * @return
+	 *       Usuario dono do Item
+	 * @throws Exception
+	 *        caso o Item seja inexistente
+	 */
 	public Usuario buscarDonoItem(Item item) throws Exception {
 		
 		for (Usuario usr : listaDeUsuariosLogados) {
@@ -285,6 +324,15 @@ public class GerenciadorUsuarios {
 		throw new Exception("Item inexistente");
 	}
 	
+	/**
+	 * Recupera um Item atraves do ID do mesmo
+	 * @param idItem
+	 *          ID do Item
+	 * @return
+	 *          Item encontrado
+	 * @throws Exception
+	 *          Caso o parametro seja invalido
+	 */
 	public Item buscarItemPorID(String idItem) throws Exception{
 		if (!stringValida(idItem)) {
 			throw new Exception("Identificador do item é inválido");
@@ -310,7 +358,7 @@ public class GerenciadorUsuarios {
 		
 		for (Usuario usr: listaDeUsuarios){
 			for (Item it : usr.getGerenciadorItens().getListaMeusItens()){
-				if (it.getEmprestimo() != null /*&& it.getEmprestimo().emprestimoFoiAprovado()*/){
+				if (it.getEmprestimo() != null){
 					if (it.getEmprestimo().getBeneficiado().equals(buscarUsuarioPorID(idSessao))){
 						
 						return usr;
@@ -556,43 +604,59 @@ public class GerenciadorUsuarios {
 			retorno += requisicoes.split("; ")[i] + "; ";
 		}return retorno;
 	}
-
+	
+	/**
+	 * Cadastra um Item do Usuario
+	 * @param usuario
+	 *       Usuario dono do Item a ser cadastrado
+	 * @param it
+	 *        Item a ser cadastrado
+	 * @return
+	 *       ID do Item
+	 * @throws Exception
+	 */
 	public String cadastrarItem(Usuario usuario, Item it) throws Exception {
 		
 		return usuario.getGerenciadorItens().adicionarItem(it);
 	}
 
+	/**
+	 * Abre uma Sessao para o usuario
+	 * @param usr
+	 *         Usuario que sera aberta sessao
+	 * @return
+	 *        ID da sessa do Usuario
+	 */
 	public String abrirSessao(Usuario usr) {
 		this.getListaUsuariosLogados().add(usr);
 		return usr.getID();
 		
 	}
-
+	
+	/**
+	 * Recupera os Amigos do Usuarios
+	 * @param usuario
+	 *        Usuario passado como parametro
+	 * @return
+	 *        Amigos do Usuario
+	 */
 	public String getAmigos(Usuario usuario) {
 		return usuario.getGerenciadorAmizades().stringDeAmigos();
 		
 	}
-
-	public String getAmigos(Usuario usuario, Usuario usuario2) throws Exception {
-		
-		if (usuario2.getGerenciadorAmizades().getListaDeAmigos().isEmpty()){
-			return "O usuário não possui amigos";
-		}
-
-		else if (!logiEhUsado(usuario2.getLogin())) {
-			throw new Exception("Usuário inexistente");
-		}
-
-		else {	
-				return usuario2.getGerenciadorAmizades().stringDeAmigos();
-		}
-	}
-
+	
+	/**
+	 * Recupera os Itens do Usuarios
+	 * @param usuario
+	 *        Usuario possuidor dos Itens
+	 * @return
+	 *      Itens do Usuario em formato de String
+	 */
 	public String getItens(Usuario usuario) {
 		return usuario.getGerenciadorItens().stringDeItens();
 		
 	}
-
+	
 	public String getItens(Usuario usuario, Usuario usuario2) throws Exception {
 		
 		if (!usuario.getGerenciadorAmizades().ehMeuAmigo(usuario2)) {
@@ -622,31 +686,44 @@ public class GerenciadorUsuarios {
 		throw new Exception("O usuário não tem permissão para requisitar o empréstimo deste item");
 		
 	}
-
-	public void devolverItem(Usuario usuario, Usuario usuario2, Item item) throws Exception {
+	
+	/**
+	 * Devolve um item
+	 * @param usuario
+	 *         Usuario Emprestador
+	 * @param usuario2
+	 *          Usuario Beneficiado
+	 * @param item
+	 *         Item a ser devolvido
+	 * @throws Exception
+	 *         Caso o item ja tenha sido devolvido
+	 *         
+	 */
+	public void devolverItem(Usuario usuarioEmprestador, Usuario usuarioBeneficiado, Item item) throws Exception {
 
 		if (item.getEmprestimo().isDevolvido()){
 			throw new Exception("Item já devolvido");
 		}
 		
-		//TODO logica ainda errada, mas passa nos testes
-		if (usuario2.equals(usuario)){
+		if (usuarioBeneficiado.equals(usuarioEmprestador)){
 			throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
 		}
 		
-		//TODO logica ainda errada, mas passa nos testes
-		if (!item.getEmprestimo().getBeneficiado().equals(usuario)){
+
+		if (!item.getEmprestimo().getBeneficiado().equals(usuarioEmprestador)){
             throw new Exception("O item só pode ser devolvido pelo usuário beneficiado");
             }
 		
 		item.getEmprestimo().setDevolvido(true);
 	
 	}
-
+	/**
+	 * Confirma o termino de um Emprestimo
+	 * @param usuario2
+	 * @param item
+	 * @throws Exception
+	 */
 	public void confirmarTerminoEmprestimo(Usuario usuario2, Item item) throws Exception {
-//		Usuario usuario2 =  buscarUsuarioPorID(idSessao);
-//		Usuario usuario3 =  buscarUsuarioEmprestador2(idEmprestimo);
-		
 		
 		if (!usuario2.getGerenciadorItens().getListaMeusItens().contains(item)){
 			throw new Exception("O término do empréstimo só pode ser confirmado pelo dono do item");
@@ -659,7 +736,6 @@ public class GerenciadorUsuarios {
 		item.getEmprestimo().setDevolucao(true);
 		usuario2.getGerenciadorItens().confirmarTerminoEmprestimo(item);
 		
-		//TODO tirar essa logica daqui.
 		if(item.getEmprestimo().foiCompletado()){
 			usuario2.getGerenciadorItens().addEmprestimoCompletado(item.getEmprestimo());
 		}
@@ -676,8 +752,22 @@ public class GerenciadorUsuarios {
 		
 		
 	}
+	/**
+	 * Envia uma msg pra um destinatario
+	 * @param idSessao
+	 *         ID do remetente da msg
+	 * @param destinatario
+	 *        Login do destinatario da msg
+	 * @param assunto
+	 *       Assunto da msg
+	 * @param mensagem
+	 *       corpo da mensagem
+	 * @return
+	 *       ID da msg
+	 * @throws Exception
+	 *       Caso algum dos parametros seja invalido
+	 */
 	
-	//TODO arrumar esse metodo
 	public String enviarMensagem (String idSessao, String destinatario, String assunto, String mensagem) throws Exception{
 		
 		
@@ -711,19 +801,7 @@ public class GerenciadorUsuarios {
 		return this.buscarUsuarioPorID(idSessao).getGerenciadorMensagens().enviarMensagem(buscarUsuarioPorLogin(destinatario), assunto, mensagem);
 	}
 
-	public String enviarMensagem(Usuario usuario, Usuario usuario2, String assunto, String mensagem) throws Exception {
-		if (!stringValida(assunto)){
-			throw new Exception("Assunto inválido");
-		}
-		
-		if (!stringValida(mensagem)){
-			throw new Exception("Mensagem inválida");
-		}
-		
-		return usuario.getGerenciadorMensagens().enviarMensagem(usuario2, assunto, mensagem);
-	}
-
-	public String enviarMensagem(Usuario usuario, Usuario usuario2,
+	private String enviarMensagem(Usuario usuario, Usuario usuario2,
 			String assunto, String mensagem, String idRequisicaoEmprestimo) throws Exception {
 		
 		if (!stringValida(mensagem)){
@@ -737,6 +815,15 @@ public class GerenciadorUsuarios {
 		return usuario.getGerenciadorMensagens().enviarMensagem(usuario2, assunto, mensagem, idRequisicaoEmprestimo);
 	}
 	
+	/**
+	 * Requisita devolucao do Item
+	 * @param idSessao
+	 *       ID de sessao do Usuario
+	 * @param idEmprestimo
+	 *           Id de Emprestimo
+	 * @throws Exception
+	 *             Caso algum parametro seja invalido
+	 */
 	public void requisitarDevolucao(String idSessao, String idEmprestimo) throws Exception{
 		
     	buscarUsuarioPorID(idSessao);
@@ -775,7 +862,16 @@ public class GerenciadorUsuarios {
 			System.out.println(e.getLocalizedMessage());
 		}
 	}
-
+	/**
+	 * Eniva uma Mensagem para outro Usuario sobre um pedido de requisicao e emrpestimo
+	 * @param idSessao
+	 * @param destinatario
+	 * @param assunto
+	 * @param mensagem
+	 * @param idRequisicaoEmprestimo
+	 * @return
+	 * @throws Exception
+	 */
 	public String enviarMensagem(String idSessao, String destinatario,
 			String assunto, String mensagem, String idRequisicaoEmprestimo)
 			throws Exception {
@@ -803,6 +899,16 @@ public class GerenciadorUsuarios {
 				idRequisicaoEmprestimo);
 	}
 	
+	/**
+	 * Pesquisa um Item do Usuario
+	 * @param usuario2
+	 * @param chave
+	 * @param atributo
+	 * @param tipoOrdenacao
+	 * @param criterioOrdenacao
+	 * @return
+	 * @throws Exception
+	 */
 	public String pesquisarItem(Usuario usuario2, String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao)throws Exception{
 		if (!stringValida(chave)) {
 			throw new Exception("Chave inválida");
@@ -859,7 +965,6 @@ public class GerenciadorUsuarios {
 			if (tipoOrdenacao.equals("crescente")){
 				
 				List<Usuario> lista = new ArrayList<Usuario>();
-				//List<Usuario> lista = this.getGerenciadorAmizades().getListaDeAmigos();
 				for(Usuario usr: usuario2.getGerenciadorAmizades().getListaDeAmigos()){
 					lista.add(usr);
 				}
@@ -877,7 +982,6 @@ public class GerenciadorUsuarios {
 			else if(tipoOrdenacao.equals("decrescente")){
 				
 				List<Usuario> lista = new ArrayList<Usuario>();
-				//List<Usuario> lista = this.getGerenciadorAmizades().getListaDeAmigos();
 				for(Usuario usr: usuario2.getGerenciadorAmizades().getListaDeAmigos()){
 					lista.add(usr);
 				}

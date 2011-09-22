@@ -229,7 +229,6 @@ public class GerenciadorAmizades {
 		
 	}
 	
-	//TODO depois arrumar isso
 	private String formatarRequisicoes(String requisicoes){
 		String retorno = "";
 		for (int i =0;i< requisicoes.split("; ").length;i++){

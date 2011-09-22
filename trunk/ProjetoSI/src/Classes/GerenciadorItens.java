@@ -63,10 +63,21 @@ public class GerenciadorItens {
 		return itensPraEmprestar;
 	}
 	
+	/**
+	 * Recupera a quantidade de Emprestimos Completados
+	 * @return
+	 *       Quantidade de Emprestimos Completados
+	 */
+	
 	public int quantEmprestimosCompletados(){
 		return this.listaDeEmprestimosCompletados.size();
 	}
 
+	/**
+	 * Recupera os Itens que precisam ser devolvidos
+	 * @return
+	 *          Itens que precisam ser devolvidos
+	 */
 	
 	public List<Item> getItensPraDevolver() {
 		return itensPraDevolver;
@@ -138,10 +149,30 @@ public class GerenciadorItens {
 		}return retorno;
 	}
 	
+	/**
+	 * Recupera a Quantidade de Itens do Usuario
+	 * @return
+	 *         Quantidade de Itens do Usuario
+	 */
+	
 	public int getQuantidadeMeusItens(){
 		return listaMeusItens.size();
 	}
 	
+	/**
+	 * Recupera os Emrpestimos do usuario
+	 * @param usr1
+	 *          Usuario participante do Emprestimo
+	 * @param usr
+	 * 			Usuario participante do Emprestimo
+	 * @param tipo
+	 * 		O parâmetro tipo representa o papel exercido pelo usuário no empréstimo
+	 * @return
+	 * 	   Recupera os Emprestimos do Usuario baseado
+	 * @throws Exception
+	 *         Caso alguns dos parametros seja invalido
+	 * 
+	 */
 	public String getEmprestimo(Usuario usr1, Usuario usr, String tipo)throws Exception{
 		if (!stringValida(tipo)){
 			throw new Exception("Tipo inválido");
@@ -254,6 +285,20 @@ public class GerenciadorItens {
 		}
 	}
 	
+	/**
+	 * Requisita um Emprestimo
+	 * @param beneficiado
+	 *           Usuario Beneficiado pelo Emprestimo
+	 * @param idItem
+	 *           ID do Item que sera requisitado
+	 * @param dias
+	 *           Dias que o Beneficiado passara com o Item
+	 * @return
+	 *          ID de requisicao de Emprestimo
+	 * @throws Exception
+	 *          Caso algum dos Parametros seja invalido
+	 */
+	
 	public String requisitarEmprestimos(Usuario beneficiado,String idItem, int dias) throws Exception{
 		if (buscarItemPorID(idItem).getEmprestimo()!=null && buscarItemPorID(idItem).getEmprestimo().getBeneficiado().equals(beneficiado) && buscarItemPorID(idItem).getEmprestimo().emprestimoFoiRequisitado()){
 			throw new Exception("Requisição já solicitada");
@@ -261,6 +306,22 @@ public class GerenciadorItens {
 
 		return buscarItemPorID(idItem).criarRequisicaoEmprestimo(beneficiado, dias);
 	}
+	
+	/**
+	 * Aprova Um Emprestimo
+	 * @param ehDonoDoItem
+	 *           Diz se eh o Dono que esta aprovando o Emprestimo
+	 * @param usuarioSaoAmigos
+	 *           Diz se os Usuarios sao amigos
+	 * @param requisicaoExiste
+	 *           Diz se a requisicao Existe
+	 * @param idRequisicaoEmprestimo
+	 *           ID de Requisicao que sera efetivada como Emprestimo
+	 * @return
+	 *          ID do Emprestimo
+	 * @throws Exception
+	 *           Caso algums dos Parametros seja Invalido
+	 */
 	
 	public String aprovarRequisicaoEmprestimo(boolean ehDonoDoItem, boolean usuarioSaoAmigos, boolean requisicaoExiste, String idRequisicaoEmprestimo) throws Exception{
 		if (!stringValida(idRequisicaoEmprestimo)){
@@ -304,6 +365,14 @@ public class GerenciadorItens {
 		return null;
 	}
 	
+	/**
+	 * Busca um Item que esta Emprestado
+	 * @param idEmpretimo
+	 *            ID do Emprestimo do Item
+	 * @return
+	 *          Item emprestado
+	 */
+	
 	public Item buscarItemIdEmprestimo(String idEmpretimo){
 		
 		for (Item it : getListaMeusItens()){
@@ -320,32 +389,16 @@ public class GerenciadorItens {
 	}
 	
 	
+	/**
+	 * Confirma o Termino do Emprestimo
+	 * @param item
+	 *            Item cujo emprestimo foi terminado
+	 */
 	
 	public void confirmarTerminoEmprestimo(Item item){
 		this.getItensPraEmprestar().add(item);	
 	}
-	
-	
-	/**
-	 * Confirma o Termino de um Emprestimo
-	 * @param usr
-	 * @param item
-	 * @return
-	 */
-	private String confirmarTerminoEmprestimo(Usuario usr, Item item){
-		String retorno = "";
-		
-		for (Item it: listaMeusItens){
-			if (!it.equals(item)){
-				retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Andamento";
-			} else {
-				
-				retorno += usr.getLogin()+ "-" + it.getEmprestimo().getBeneficiado().getLogin() + ":" + it.getNome() + ":Completado";
-			}
-		}
-		return retorno;
-		
-	}
+
 	
 	/**
 	 * Metodo pra simular a Passagem do Tempo no sistema
@@ -363,10 +416,15 @@ public class GerenciadorItens {
 	/**
 	 * Busca um Item do Usuario
 	 * @param chave
+	 * 			O parâmetro chave é a String a ser localizada no espaço de um atributo especificado.
 	 * @param atributo
+	 *          Atributo a ser buscado
 	 * @param tipoOrdenacao
+	 *          Tipo de Ordenação que deve ser feita
 	 * @param criterioOrdenacao
+	 *          O criterio de ordena que deve ser feito
 	 * @return
+	 *          Itens encontrados
 	 */
 	public String buscarItemCadastrado(String chave, String atributo, String tipoOrdenacao, String criterioOrdenacao){
 		String resp = "";
@@ -402,6 +460,11 @@ public class GerenciadorItens {
 		}
 	}
 	
+	/**
+	 * Adciona um Emprestimo Completado
+	 * @param emp
+	 *         Emprestimo que foi completado
+	 */
 	public void addEmprestimoCompletado(Emprestimo emp){
 		this.listaDeEmprestimosCompletados.add(emp);
 	}
