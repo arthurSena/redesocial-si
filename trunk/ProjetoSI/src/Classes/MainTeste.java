@@ -265,6 +265,7 @@ public class MainTeste {
 		try {
 			idMensagem = rede.enviarMensagem(idSessao, destinatario, assunto, mensagem);
 			System.out.println("idMensagem: " + idMensagem);
+			System.out.println("\nMensagem enviada com Sucesso!!!\n");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -308,7 +309,9 @@ public class MainTeste {
 					System.out.print("Digite o Assunto da Mensagem: ");
 					String assunto = recebeEntrada();
 					try {
-						rede.enviarMensagem(msg, destinatario, assunto, msg);
+						String idMesg=rede.enviarMensagem(msg, destinatario, assunto, msg);
+						System.out.println("ID da mensagem: " + idMesg);
+						System.out.println("\nMensagem enviada com Sucesso!!!\n");
 					} catch (Exception e) {
 						System.out.println(e.getMessage());
 					}
@@ -332,7 +335,8 @@ public class MainTeste {
 		System.out.print("Digite o ID da requisicao de Emprestimo a ser Aprovada: ");
 		String idRequisicaoEmprestimo = recebeEntrada();
 		try {
-			rede.aprovarEmprestimo(idSessao, idRequisicaoEmprestimo);
+			String idEmprestimo = rede.aprovarEmprestimo(idSessao, idRequisicaoEmprestimo);
+			System.out.println("ID do Emprestimo: "+idEmprestimo);
 			System.out.println("\nEmprestimo Aprovado com Sucesso!!!\n");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
