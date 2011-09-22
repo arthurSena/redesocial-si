@@ -1,13 +1,11 @@
 package Testes;
 
 import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import Classes.Emprestimo;
-import Classes.GerenciadorAmizades;
 import Classes.GerenciadorItens;
 import Classes.Item;
 import Classes.Usuario;
