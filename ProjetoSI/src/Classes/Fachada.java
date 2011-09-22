@@ -205,10 +205,10 @@ public class Fachada {
 	 * @throws Exception
 	 */
 	public String getAmigos(String idSessao, String login) throws Exception {		
-		Usuario usuario = getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
 		Usuario usuario2 = getGerenciadorUsuarios().buscarUsuarioPorLogin(login);
 		
-		return getGerenciadorUsuarios().getAmigos(usuario, usuario2);
+		return getGerenciadorUsuarios().getAmigos(usuario2);
 	}
 
 	/**
@@ -329,10 +329,10 @@ public class Fachada {
 	 * @throws Exception
 	 */
 	public String enviarMensagem (String idSessao, String destinatario, String assunto, String mensagem) throws Exception{
-		Usuario usuario = this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
-		Usuario usuario2 = getGerenciadorUsuarios().buscarUsuarioPorDestinatario(destinatario);
+		this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao);
+		getGerenciadorUsuarios().buscarUsuarioPorDestinatario(destinatario);
 		
-		return getGerenciadorUsuarios().enviarMensagem(usuario, usuario2, assunto, mensagem);
+		return getGerenciadorUsuarios().enviarMensagem(idSessao, destinatario, assunto, mensagem);
 	}
 	
 	/**
@@ -382,7 +382,7 @@ public class Fachada {
 			resp1 = true;
 		}
 		
-		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idTopico,idSessao).getGerenciadorMensagens().lerMensagens(resp1,resp2,idTopico);
+		return this.getGerenciadorUsuarios().buscarUsuarioPorID(idSessao).getGerenciadorMensagens().lerMensagens(resp1,resp2,idTopico);
 	}
 	
 	/**
