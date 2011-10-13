@@ -21,6 +21,8 @@ public class Usuario {
 	private GerenciadorAmizades gerenciaAmizade;
 	private GerenciadorMensagens gerenciaMensagens;
 	private GerenciadorItens gerenciaItens;
+	
+	private AtividadesUsuario atividades;
 
 
 	/**
@@ -178,5 +180,20 @@ public class Usuario {
 	 */
 	public int getReputacao(){
 		return getGerenciadorItens().quantEmprestimosCompletados();
+	}
+	
+	public void criarHistoricoAtividades(){
+		atividades = new AtividadesUsuario();
+	}
+	
+	public String getHistoricoAtividades(){
+		if(atividades.naoTemAtividades()){
+			return "Não há atividades";
+		}
+		return atividades.getAtividades();
+	}
+	
+	public void addAtividade(String atividade){
+		atividades.adicionarAtividades(atividade);
 	}
 }

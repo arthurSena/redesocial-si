@@ -629,6 +629,7 @@ public class GerenciadorUsuarios {
 	 */
 	public String abrirSessao(Usuario usr) {
 		this.getListaUsuariosLogados().add(usr);
+		usr.criarHistoricoAtividades();
 		return usr.getID();
 		
 	}
@@ -1004,6 +1005,124 @@ public class GerenciadorUsuarios {
 		}
 		
 		return resposta;
+	}
+	
+	public String historicoAtividades(String idSessao)throws Exception{
+		
+		return formataString(this.buscarUsuarioPorID(idSessao).getHistoricoAtividades());
+	}
+	
+	public void adicionarAtividadesUsuario(String idSessao, String login, String tipoAtividade) throws Exception{
+		String nome1 = buscarUsuarioPorID(idSessao).getNome();
+		
+		String nome2 = buscarUsuarioPorLogin(login).getNome();
+		
+		if(tipoAtividade.equals("amizade")){
+			String atividade1 =  nome1 +" e " + nome2 + " são amigos agora";
+			buscarUsuarioPorID(idSessao).addAtividade(atividade1);
+			
+			String atividade2 = nome2 +" e " + nome1 + " são amigos agora";
+			buscarUsuarioPorLogin(login).addAtividade(atividade2);
+		}
+	}
+	
+	public void adicionarAtividadesUsuario(String idSessao, Usuario usr, Item it) throws Exception{
+		String nome1 = buscarUsuarioPorID(idSessao).getNome();
+		
+		String nome2 = usr.getNome();
+		
+		String nomeItem  = it.getNome();
+		
+		String atividade = nome1 + " emprestou " + nomeItem + " a " + nome2; 
+		buscarUsuarioPorID(idSessao).addAtividade(atividade);
+		
+		
+		
+	}
+	
+	
+	public void adicionarAtividadesUsuario(String idSessao, Item it, String tipoAtividade) throws Exception{
+		
+		if(tipoAtividade.equals("item")){
+			String nome1 = buscarUsuarioPorID(idSessao).getNome();
+			String atividade1 =  nome1 + " cadastrou " + it.getNome();
+			buscarUsuarioPorID(idSessao).addAtividade(atividade1);
+		}
+		else if(tipoAtividade.equals("interesse")){
+			String nome1 = buscarUsuarioPorID(idSessao).getNome();
+			String atividade1 =  nome1 + " tem interesse pelo item " + it.getNome() + " de " + buscarDonoItem(it).getNome();
+			buscarUsuarioPorID(idSessao).addAtividade(atividade1);
+		}
+		else if(tipoAtividade.equals("terminoEmprestimo")){
+			String nome1 = buscarUsuarioPorID(idSessao).getNome();
+			String atividade1 =  nome1 + " confirmou o término do empréstimo do item " + it.getNome();
+			buscarUsuarioPorID(idSessao).addAtividade(atividade1);
+		}
+			
+	}
+	
+	private String teste(String str){
+		String temp = "";
+		
+		for(int i = str.split("; ").length-1;i>=0;i--){
+			if(i!=0){
+				temp += str.split("; ")[i] + "; ";
+				
+			}
+			else{
+				temp += str.split("; ")[i];
+				
+			}
+		}
+		return temp;
+	}
+	
+	public String historicoAtividadesConjunto(String idSessao) throws Exception{
+		Usuario usr = this.buscarUsuarioPorID(idSessao);
+		String atividades = (usr.getHistoricoAtividades());
+		
+		String temp = "";
+		
+		for(Usuario amigos : usr.getGerenciadorAmizades().getListaDeAmigos()){
+				temp+=amigos.getHistoricoAtividades();
+			
+		}
+		temp+=atividades;
+		temp = temp.replaceAll("]", ",");
+		String temp2 = "";
+		
+//		return temp;
+		for(String x : temp.split(",")){
+			if (!(x.contains(" e " + usr.getNome()))){
+				temp2 += x +",";
+			}
+		}
+	return (removePontoVirgula(formataString2(temp2)));
+		
+	}
+	
+	
+	private String removePontoVirgula(String str){
+		
+		String temporaria = "";
+		str = str.replaceAll("; ", ";");
+		
+		for(int i = 0 ; i< str.split(";").length;i++){
+			if(i!=str.split(";").length-1){
+				temporaria += str.split(";")[i] + "; ";
+			} else{
+				temporaria += str.split(";")[i];
+			}
+		}return temporaria;
+		
+	}
+	
+	private String formataString(String str){
+		return str.replace("[", "").replace("]", "").replaceAll(",", ";");
+	}
+	
+	private String formataString2(String str){
+		return str.replace("[", "").replace(",", ";").replaceAll(",", ";");
 	}
 	
 	private Usuario usuarioComMenorReputacaoDaLista(List<Usuario> lista){
